@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"josephsun.cn","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="用统计来描述数据为了使对变量描述更加精确，需要定量测量或者描述性统计方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[空间分析]-叁·地理统计7">
+<meta property="og:url" content="https://josephsun.cn/posts/88f0d19d/">
+<meta property="og:site_name" content="JosephSun&#39;s Blogs">
+<meta property="og:description" content="用统计来描述数据为了使对变量描述更加精确，需要定量测量或者描述性统计方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/image-20210118205748239-1610974674093-1610977511815-1610977799710.png">
+<meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/image-20210118210403242-1610975392938-1610977510108.png">
+<meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/image-20210118210910295-1610975371296-1610975395433-1610977508556.png">
+<meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/image-20210118213806428-1610977102900-1610977506517.png">
+<meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/image-20210118213937514-1610977190548-1610977504697.png">
+<meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/image-20210118214444420-1610977498340.png">
+<meta property="og:image" content="https://josephsun.cn/image-20210118214902282-1610977756518-1610978017495.png">
+<meta property="article:published_time" content="2021-01-18T13:52:00.000Z">
+<meta property="article:modified_time" content="2022-12-30T10:44:11.625Z">
+<meta property="article:author" content="JoeSun">
+<meta property="article:tag" content="空间分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://josephsun.cn/posts/88f0d19d/image-20210118205748239-1610974674093-1610977511815-1610977799710.png">
+
+
+<link rel="canonical" href="https://josephsun.cn/posts/88f0d19d/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://josephsun.cn/posts/88f0d19d/","path":"posts/88f0d19d/","title":"[空间分析]-叁·地理统计7"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>[空间分析]-叁·地理统计7 | JosephSun's Blogs</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156331840-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-156331840-2","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1263cea084ac2c7b896396b81f9a4fbc"></script>
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JosephSun's Blogs</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">孙先生的失眠日记</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-cv"><a href="/CV/" rel="section"><i class="fa fa-user fa-fw"></i>CV</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-archive fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E7%BB%9F%E8%AE%A1%E6%9D%A5%E6%8F%8F%E8%BF%B0%E6%95%B0%E6%8D%AE"><span class="nav-number">1.</span> <span class="nav-text">用统计来描述数据</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9B%86%E4%B8%AD%E8%B6%8B%E5%8A%BF%E5%BA%A6%E9%87%8F%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">集中趋势度量方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E6%81%B0%E5%BD%93%E7%9A%84%E6%96%B9%E6%B3%95%E7%A0%94%E7%A9%B6%E9%9B%86%E4%B8%AD%E8%B6%8B%E5%8A%BF"><span class="nav-number">1.1.1.</span> <span class="nav-text">选择恰当的方法研究集中趋势</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A6%BB%E5%B7%AE%E7%9A%84%E5%BA%A6%E9%87%8F%E6%96%B9%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">离差的度量方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AB%98%E9%98%B6%E7%9F%A9%E5%8F%8A%E9%87%8F%E6%B5%8B%E5%8F%98%E9%87%8F%E5%88%86%E5%B8%83%E7%89%B9%E6%80%A7%E7%9A%84%E5%85%B6%E4%BB%96%E6%95%B0%E5%80%BC%E6%96%B9%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">高阶矩及量测变量分布特性的其他数值方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%97%B6%E5%BA%8F%E6%95%B0%E6%8D%AE%E7%9A%84%E6%8F%8F%E8%BF%B0%E6%80%A7%E7%BB%9F%E8%AE%A1"><span class="nav-number">1.4.</span> <span class="nav-text">使用时序数据的描述性统计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%9A%84%E6%8F%8F%E8%BF%B0%E6%80%A7%E7%BB%9F%E8%AE%A1"><span class="nav-number">1.5.</span> <span class="nav-text">空间数据的描述性统计</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="JoeSun"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">JoeSun</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/JosephSun-6" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;JosephSun-6" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:417773447@qq.com" title="E-Mail → mailto:417773447@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://josephsun.cn/posts/88f0d19d/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="JoeSun">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JosephSun's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="[空间分析]-叁·地理统计7 | JosephSun's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [空间分析]-叁·地理统计7
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-18 21:52:00" itemprop="dateCreated datePublished" datetime="2021-01-18T21:52:00+08:00">2021-01-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-12-30 18:44:11" itemprop="dateModified" datetime="2022-12-30T18:44:11+08:00">2022-12-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">空间分析</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/posts/88f0d19d/" class="post-meta-item leancloud_visitors" data-flag-title="[空间分析]-叁·地理统计7" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="用统计来描述数据"><a href="#用统计来描述数据" class="headerlink" title="用统计来描述数据"></a>用统计来描述数据</h3><p>为了使对变量描述更加精确，需要定量测量或者描述性统计方法。</p>
+<span id="more"></span>
+
+<h4 id="集中趋势度量方法"><a href="#集中趋势度量方法" class="headerlink" title="集中趋势度量方法"></a>集中趋势度量方法</h4><ol>
+<li><p>中列数——两个端点的算术平均值。容易计算但是易受两个端点的影响。</p>
+</li>
+<li><p>众数——与分布峰值有关。</p>
+</li>
+<li><p>中位数</p>
+<p>上四分位数、下四分位数</p>
+</li>
+<li><p>平均值——平衡点，点图上以平均值为中心，依据权重放置在一条直线上，每个观测值的权重取决于其与平均值之间的距离。分布在端点两侧的权重较大，靠近平均值的权重较小，为了平衡，均值左右两侧的权重总和必须要与该直线上权重相等。</p>
+</li>
+</ol>
+<h5 id="选择恰当的方法研究集中趋势"><a href="#选择恰当的方法研究集中趋势" class="headerlink" title="选择恰当的方法研究集中趋势"></a>选择恰当的方法研究集中趋势</h5><p>对于标称数据，众数是反映集中趋势的唯一方法。</p>
+<p>对于有序数据，中位数与众数有相同的作用。通常情况下，常常选择中位数。</p>
+<p>对于定量数据，四种数据度量方式都可以，但是极少选择中列数，因为受观测值端值影响较大。</p>
+<h4 id="离差的度量方式"><a href="#离差的度量方式" class="headerlink" title="离差的度量方式"></a>离差的度量方式</h4><ol>
+<li><p>极差——一组观测结果的极差是指其最大值与最小值之差。与集中趋势度量方法的中列数相同。</p>
+</li>
+<li><p>四分位差——一组分布的第一四分位数与第三四分位数之差。鉴于极差仅仅依赖于分布的极端值，四分位差则采用分布的四分之一以度量离散性。所以大体上来说，四分位差是一个更为稳定的离散度量标准。同一总体的不同样本可能会有极为不同的离差，但是往往具有相似的四分位差。</p>
+<p>无论是极差还是四分位差都没有很好的利用观察结果及其观测值的整体性。另外还有三个关于离差的度量可供使用，它们都利用了一个分布中所有的观测结果的值。由于这三个度量均以离差或每个观测结果与平均值的差距为基础，所以它们是相互关联的。该平均值被作为分布的中心，因为它是唯一最令人满意的集中趋势的度量。</p>
+</li>
+<li><p>平均偏差——有时平均值的偏差之和是零，即正负偏差相互抵消。导致基于平均偏差的离散计算中的一个问题——无论一个变量如何分布，其平均偏差之和始终为零。为了克服这一问题，平均偏差只关注偏差的绝对值。平均偏差被定义为<br>$$<br>\frac{1}{n} \sum_{i&#x3D;1} ^{n} |X_i - \overline X|<br>$$</p>
+</li>
+<li><p>标准偏差</p>
+<p>样本标准偏差<br>$$<br>s &#x3D; \sqrt{\frac{1}{n-1} \sum_{i&#x3D;1} ^{n}(X_i - \overline X)^2}<br>$$<br>总体标准偏差<br>$$<br>\sigma &#x3D;\sqrt{\frac{1}{N} \sum _{i&#x3D;1}^{N} (X_i- \mu)^2 }<br>$$</p>
+</li>
+<li><p>方差</p>
+<p>样本方差<br>$$<br>s^2 &#x3D;\frac{1}{n-1} \sum_{i&#x3D;1} ^{n}(X_i - \overline X)^2<br>$$<br>总体方差<br>$$<br>\sigma^2 &#x3D; \frac{1}{N} \sum _{i&#x3D;1}^{N} (X_i- \mu)^2<br>$$<br>标准差和方差都可以表示出平均值实际上整体分布多么典型。这些度量越大，观测到的扩散和不典型平均值也越大。当所有的观察值等于平均值时，所有的偏差以及$s$和$s^2$均为零。比如算术平均值，标准差对于极值点十分敏感。因为它涉及偏差平方，标准差提供了更多相对权重较大的偏差。一个高度偏态分布或者几个几点观测将会有一个相对较大的标准差。</p>
+<p>通常情况下，偏态分布常用中位数和四分位数等数据汇总统计表示。</p>
+</li>
+<li><p>变异系数——一个带有样本均值$\overline X$和标准差$s$的变量分布的变异系数(CV)定义为<br>$$<br>CV&#x3D; \frac{s}{X}<br>$$<br>对于总体，用$\mu$替代$\overline X$和用$\sigma$替代$s$可以得到相同的效果。因为$\overline X$和$s$用相同的单位被度量(即变量$X$的单位)，所以可以使用CV来比较不同的单位或尺度度量变量。</p>
+</li>
+</ol>
+<h4 id="高阶矩及量测变量分布特性的其他数值方法"><a href="#高阶矩及量测变量分布特性的其他数值方法" class="headerlink" title="高阶矩及量测变量分布特性的其他数值方法"></a>高阶矩及量测变量分布特性的其他数值方法</h4><p>一个总体分布的特征参数有时也被称为总体的矩，关于平均值的r阶矩定义为<br>$$<br>m^r&#x3D;E(X-\mu)^r&#x3D; \frac {1}{N} \sum^N <em>{i&#x3D;1} (X_i-\mu)^r<br>$$<br>有关平均值的二阶矩是方差：<br>$$<br>m^2&#x3D;E(X-\mu)^2&#x3D;\frac {1}{N}\sum</em>{i&#x3D;1}^N (X_i - \mu)^2<br>$$<br>均值和方差是一个单变量的频率分布特性最常用的度量。然而有时，我们取一个分布的高阶矩来描述一个分布形状的其他特征。特别是对倾斜度的度量是基于有关的平均值的3阶矩，对峰度的度量是基于平均值的4阶矩。</p>
+<p>偏度：<br>$$<br>\frac{1}{N \sigma^3}\sum_{i&#x3D;1}^N(X_i - \mu)^3<br>$$<br>正态分布具有零偏态值，每个对称分布也是一样。偏度大于零的值指示正偏态。其中大部分变量的观测结果在平均值的左侧，因此相对较少的观测具有比平均值更高的值。偏斜度小于零的值表示负偏斜，此时变量的观测值小于平均值的数量比大于平均值的数量要小。</p>
+<p>峰度：<br>$$<br>\frac{1}{N \sigma^3}\sum_{i&#x3D;1}^N(X_i - \mu)^4<br>$$<br>峰度度量变量的频数分布分布在中心聚集的程度。当观测值紧密聚集，直方图显示出明显的峰，峰度度量倾向于大于3。当观测均匀地分布在中心值的不同方向，直方图相对平坦，峰度的度量倾向于小于3。</p>
+<h4 id="使用时序数据的描述性统计"><a href="#使用时序数据的描述性统计" class="headerlink" title="使用时序数据的描述性统计"></a>使用时序数据的描述性统计</h4><p>从定义上来说，就是一串按时间维度索引的数据。用描述性的语言来解释什么是时序数据，简单的说，就是这类数据描述了某个被测量的主体在一个时间范围内的每个时间点上的测量值。对时序数据进行建模的话，会包含三个重要部分，分别是：主体，时间点和测量值。</p>
+<p>时序数据通常用描述性统计量来获取额外的洞察时序的特征。尤其是，用于计算观测变量子集的集中趋势的方法可能会用来描述数据的平稳时序。</p>
+<p>时序的平滑是一种用于抑制在时间变化中记录的变量值的波动的统计过程。平滑是常用于查明潜在趋势或时序中的周期性分量。平滑的序列和原始的时序之间的区别常被认定为随机分量。我们往往最感兴趣的是平滑或系统的时序分量，而不是围绕在它周围的随机波动。集中趋势的不同测量被用于执行数据平滑处理。</p>
+<h4 id="空间数据的描述性统计"><a href="#空间数据的描述性统计" class="headerlink" title="空间数据的描述性统计"></a>空间数据的描述性统计</h4><ol>
+<li><p>面数据</p>
+<p>不幸的是，除非我们愿意利用区域中心或者其他一些有代表性的点从而将面数据转换成点数据，否则对地区或者其他区域的统计描述通常无法获得数据的空间构成。然而再对离散区域单位，如县、市或省以及其他许多行政单位进行人口普查时，这种由图形和统计数据的汇总技术特别适用于等值线以及加强统计表图。</p>
+<ul>
+<li><p><strong>区位商</strong>——常用于进行地理和区位经济分析，并且它具有更加广泛的应用。区位商是一个用于比较一个地区的特殊活动在总体空间水平上所占有份额的指数。<em>具体定义</em>为：$j$区域内活动i的区位商等于$i$所占$j$区域总活动的百分比，即基础区域的总活动除以活动$i$，或者：<br>$$<br>LQ_i^j &#x3D; \frac{A_i^j &#x2F; \sum_{i&#x3D;1}^n A_i^j}{B_i&#x2F; \sum_{i&#x3D;1}^n B_i}<br>$$<br>式中$A_i^j$表示活动$i$在$j$区域占据的水平，$B_i$表示活动$i$在基础区域内的水平，$n$表示活动的数量。</p>
+<p>区域商可以用以下规则解释：</p>
+<p>①如果$LQ&gt;1$，则表明活动$i$在总区域相对集中于该区域一些。</p>
+<p>②如果$LQ&#x3D;1$，则表明该区域中活动$i$占据的份额可以代表总区域中活动$i$占据的份额。</p>
+<p>③如果$LQ&lt;1$，则表明该区域中活动$i$占据的份额低于总体观测值，或者说低于总区域的发现。</p>
+</li>
+<li><p><strong>区域系数</strong>——区位商的一个缺点是，每个被分析的区域都需要计算一个值，对于一个也许有300或者更多普查人口的城市，即使是区位商已经被绘制出来，这也将是一种非常低效的总结形式。此时需要更有效的替代系数，区位系数($CL$)通过一个单一的数字来描述一个活动的相对集中度。<em>具体定义</em>：</p>
+<p>区位系数($CL$)是对于某些区域中一个活动的相对集中度的测量，$CL$计算方法是：</p>
+<p>①将基础或者研究区域作为一个整体，计算每一个区域中活动$i$的分布<br>$$<br>A_i^j&#x2F;B_i<br>$$<br>其中，$j&#x3D;1,2,3,…,m$，$j$代表区域；</p>
+<p>②计算每一个区域在总区域或者研究区域内活动中占有的份额：<br>$$<br>\sum_{i&#x3D;1}^n A_i^j &#x2F; \sum_{i&#x3D;1}^n B_i<br>$$<br>③对于每一个区域$j$，将步骤①所得的值减去步骤②中的值，得到正负差异，$CL$是正或者负差异的总和。</p>
+<p>区位系数值的范围是0到1。$LQ$的取值是0到正无穷，两者是不同的。如果$CL&#x3D;0$，这说明给定的活动均与分布于整个区域的总活动中。如果$CL&#x3D;1$，那么说明该活动集中于一个地区。</p>
+</li>
+<li><p><strong>洛伦茨曲线</strong>是另外一种表示空间单元之间变量分布的方式，虽然它通常被用来衡量一个变量在空间范略内不平等分布的程度。</p>
+<p>例如，如果一个国家的居民拥有相同的收入，那么收入是平等的。但是，如果一个国家包含富人和穷人，那么收入分配上就存在着一地不平等。这是一个对于面数据十分形象的比输。一个活动可以集中于一个或者几个区城，也可以在一个区域中均匀分布。洛伦茨曲线就是对这种不平等程度的图形化显示。</p>
+<p>运用区位商以及区位系数，洛伦茨曲线将某些活动的空间分布和基础分布进行比较，洛伦茨曲线通过以下规则进行构造：</p>
+<p>①计算各个区域的区位商，包括研究区域，按区位商将各地区降序排列。</p>
+<p>②按照步骤①中确定的目标活动以及基础活动的顺序计算累积百分比。</p>
+<p>③作出目标活动以及基础活动的累积百分比，并加入点以产生一个洛伦茨曲线。</p>
+<p>洛伦茨曲线有几个重要的性质。如果我们感兴趣的活动是均勾分布在研究区域的，那就是说与基础活动是成比例的，那么洛伦茨曲线是一条45°的斜线。活动越集中，洛伦茨曲线越接近于一条斜线。在极限情况下，曲线沿X轴到达点(100，0)，然后垂直地到达点(100，100)。除了完全均匀分布的活动之外，洛伦茨曲线的斜率是不断增加的，这直接遵循了地区的$LQ$排序。</p>
+<p>最常与洛伦茨曲线结合使用的汇总方式是基尼系数，也称为差异性指数。基尼系数的取值范围是0到100%。有两种方法计算这一指数，首先它可以通过目标活动和基础活动的累积百分比的最大差异确定。</p>
+<p><strong>基尼系数或差异性指数</strong>是指图形化的洛伦茨曲线和对角线之间的最大垂直偏差。</p>
+<p>基尼系数或者CL的值较小则表明感兴趣的活动与所有活动在空间分布上存在相似性。这就是基尼系数为什么有时被称作差异性指数。</p>
+<p>洛伦茨曲线和基尼系数也可以用来衡量任何两个活动的百分比分布的相似程度，而非一定要与所有活动相比较。</p>
+<p>基尼系数可以在城市社会地理学中用来比较民族群体的空间分布。民族群体空间分布的相似性是评价其融人社会的一个有效指标。随着时间的推移，同化的发生，许多民族住宅隔离变得不再明显。基尼系数可以用来验证这一一假设。</p>
+</li>
+</ul>
+</li>
+<li><p>点数据</p>
+<p>所有用于面数据分析的方法同样适用于空间数据和非空间数据。然而，每一个方法都未能明确地将空间维度通过一个与变量相关的基本空间概念距离、方向或相对位置得以具体化。对于点数据的分析，这是不正确的统计方法。而对于距离以显式或隐式包含在这些方法中，这一分支我们称其为统计地理学。</p>
+<ol>
+<li><p>集中趋势的度量</p>
+<p>首先，点分布的中心或者平均值是多少?用地理统计学的术语来说就是，地图上这些点分布的中心在哪?为了确定地图的中心，我们使用以下5种方法:均值中心、加权均值中心、Manhattan 中位数、欧氏中位数、加权中位数。</p>
+<p>由于在地理文献中，这5种方法的性质往往被错误地陈述或者没有被充分判定，本节将对此进行仔细研究。</p>
+<p>①均值中心</p>
+<p>均值中心可以认为是点分布的“重心”，它是算术平均值的一个简单概括，很容易计算。</p>
+<p>均值中心的定义：将n个点的坐标表示为$(X_i,Y_i),i&#x3D;1,2,…,n$，该点分布的均值中心为$(\overline X , \overline Y)$，其值为<br>$$<br>\overline X&#x3D;\frac{1}{n} \sum^n _{i&#x3D;1}X_i \ ,\ \overline Y&#x3D;\frac{1}{n} \sum^n _{i&#x3D;1}Y_i<br>$$</p>
+<img src="image-20210118205748239-1610974674093-1610977511815-1610977799710.png" alt="点模式集中趋势的测度" style="zoom:67%;" />
+
+<p>②加权均值中心</p>
+<p>均值中心也可以关联地图上的每个点的频率、幅度和“权重”。</p>
+<p>加权均值中心的定义：令n个点的坐标为$(X_i,Y_i),i&#x3D;1,2,…,n$，令$w_i$代表第$n$个点的权重，加权平均值的坐标$(\overline X_w , \overline Y_w)$为<br>$$<br>\overline X&#x3D;\frac{\sum^n _{i&#x3D;1} w_i X_i}{\sum^n _{i&#x3D;1} w_i}  \ ,\ \overline Y&#x3D;\frac{\sum^n _{i&#x3D;1} w_i Y_i}{\sum^n _{i&#x3D;1} w_i}<br>$$<br>③Manhattan中位数</p>
+<p>中位数的概念也可以应用于点分布。对于一组n个观测值，中位数被定义为“中间”或者对于一组有序数据的第$(n+1)&#x2F;2$位观测值。我们如何寻找点分布中的中位数？这个意义上的空间中位数是两条垂线的交点一—平分南北和东西两个方向的垂线。</p>
+<p>Manhattan中位数出现了两个明显的问题。</p>
+<p>第一，当我们试图确定一组含有8个观测值分布的中位数时，根据定义，我们需要找到一条在南北方向上将两边各划分为4个观测值的直线，就像图中，任何在点A和C之间的垂线都将两侧分为4个点。类似地，点A和B之间的任一条水平线都将该组分为两个相同的部分。图中的阴影部分包括了所有具有Manhattan中位数特性的所有点，显然这并不是一个唯一的点。是哪里出错了吗？事实上是，当点的数量是偶数时，Manhattan中位数不唯一，而当点的个数是奇数时，Manhattan中位数唯一。</p>
+<img src="image-20210118210403242-1610975392938-1610977510108.png" alt="偶数个点的Manhattan中位数" style="zoom:67%;" />
+
+<p>该方法的第二个问题也可以用图来说明。假设地图的坐标被转移（转换）到虚线显示的位置，那么阴影部分定义的中位数会发生什么变化？它必须以同样的方式旋转，这将定义另一个直角坐标区域，因此在这个旋转轴下，Manhattan中位数的位置不唯一。</p>
+<p>从统计学的角度来说，这是不可取的。</p>
+<p>Manhattan中位数与频率分布的中位数有一条相同的性质，在频率分布中，中位数与其他n个观测值之间的距离绝对值之和最小。</p>
+<p>Manhattan中位数定义: 令n个观测值的坐标为$(X_i,Y_i),i&#x3D;1,2,…,n$，Manhattan中位数$(X_m ,Y_m)$使得下式最小：<br>$$<br>\sum _{i&#x3D;1}^n (|X_i - X_m|+|Y_i - Y_m|)<br>$$<br>也就是说，Manhattan中位数$(X_m ,Y_m)$到$n$个观测值的绝对距离之和最小。</p>
+<p>为什么被称为Manhattan中位数？想象一下，我们试图在一座城市定位一些设施，但这座城市限制南北和东西方向的通行，即无法像鸟儿在天上飞一样自由穿行。如图3-15所示，点$(X_i,Y_i)$和点$(X_m ,Y_m)$之间的Manhattan距离是$|X_i - X_m|+|Y_i - Y_m|$。绝对值的符号是用来确保计算的距离是非负的，空间距离的这种度量方法与在密集的矩形网格街道网络中移动有着密切的联系，尤其是Manhattan，因此命名为Manhattan公约或者Manhattan中位数。需要注意的是，两点之间的Manhattan距离总是比用勾股定理计算得到的距离要大，除非这两点位于南北线或者东西线上。我们将运用勾股定理求的距离称为欧几里得距离。</p>
+<img src="image-20210118210910295-1610975371296-1610975395433-1610977508556.png" alt="在Manhattan和欧氏度量中的点之间的距离" style="zoom:67%;" />
+
+<p>④欧氏中位数</p>
+<p>我们知道，在空间分布中，Manhattan中位数到$n$个观测点的Manhattan距离之和最小，那么我们会问，哪个点使得到同样$n$个观测点的欧氏距离最小呢？</p>
+<p>欧氏中位数定义: 令n个点的坐标为$(X_i,Y_i),i&#x3D;1,2,…,n$，欧氏中位数的对应坐标为$(X_e ,Y_e)$，并且使得下式最小<br>$$<br>\sum_{i&#x3D;1}^n \sqrt{(X_i - X_e)^2+(Y_i - Y_e)^2}<br>$$<br>欧氏中位数的位置很接近均值中心和Manhattan中位数，但不重合。</p>
+<p>⑤加权中位数</p>
+<p>正如均值中心可以一般化为加权均值中心值，欧氏中位数和Manhattan中位数也一样。加权Manhattan中位数是指上下左右的权重相等。不同于未加权的部分，问题的非唯一性并不是那么常见。相对于Manhattan中位数，地理学家更在意加权欧氏中位数。</p>
+<p>加权欧氏中位数定义: 令平面上一组点的坐标为 $(X_i,Y_i),i&#x3D;1,2,…,n$ ，对于每一个点都有一个附加的权重 $w_i$ ，加权欧氏中位数 $(X_{we} ,Y_{we})$ 使得下式最小：<br>$$<br>\sum_{i&#x3D;1}^n w_i \sqrt{(X_i - X_{we})^2+(Y_i - Y_{we})^2}<br>$$</p>
+<img src="image-20210118213806428-1610977102900-1610977506517.png" alt="点分布集中趋势的加权度量" style="zoom:67%;" />
+
+<p>这个问题也可以视为公共设施选址决策问题。给定设施使用者的位置，例如学生，那么学校的最佳位置是哪里呢？权重可以定义为一个街区内适龄儿童的数量，最小化对象可以定义为学生到学校的总路程最小，同时也使得儿童走过的平均距离最小，加权均值中心使得学生走过的距离平方和最小。鉴于我们关注的是他们行走的距离而不是距离的平方，所以加权欧氏距离是最简单的解决方法。</p>
+<p>定位空间中位数的问题是许多私营和公共设施选址问题的基石。确定整个设施的位置这一复杂问题已经引起了地理学家极大的关注，例如，对于潜在用户，5所学校的空间分布问题，我们称之为位置分配问题。一旦确定了一组设施的位置，消费者或者顾客会被分配到最佳，一般是距离最近的场所。下图显示了5个场所的最佳位置选择，韦伯问题的这一简单延伸被称为多源韦伯问题。现在有许多关于位置分配问题方面的理论以及对学校、医院和其他设施系统的实践类文献。在许多文献中，由于欧氏距离在现实中是不切实际的，因此我们经常使用网格距离的变形方法。</p>
+<img src="image-20210118213937514-1610977190548-1610977504697.png" alt="由5个设施构成的系统的最佳位置" style="zoom:67%;" />
+</li>
+<li><p>离散程度的测定</p>
+<p>除了对集中趋势的度量，空间分布的第二个重要特征是它的离散程度。在描述性统计中，离散性通常是基于离差的概念，各点与一个中心值，如均值或中位数之间的差距。在空间分布中，离差的概念是指观测点与中心点之间的实际距离。</p>
+<p>①标准差距离</p>
+<p>空间统计中，标准差距离对应常规统计的标准差。</p>
+<p>标准差距离定义：令n个观测值的坐标为$(X_i,Y_i),i&#x3D;1,2,…,n$，标准差距离被定义为<br>$$<br>SD&#x3D; \sqrt{\frac{1}{n} \sum_{i&#x3D;1}^n(X_i- \overline X)^2 + \frac{1}{n} \sum_{i&#x3D;1}^n(Y_i- \overline Y)^2 }<br>$$<br>②四分位法</p>
+<p>离散性可以通过四分位差的空间距离等价形象地表现出来。四分位计算法将一个点的分布四等分。围绕着中值分别是东、西、北与南。它们一同定义了一个矩形，其大小无疑取决于该点集的分布。图中给出了n&#x3D;16时点集分布的一个例子。在该例中，非唯一性的问题出现了，这是因为这些具有偶数个观察结果的点的中心值是一个区域。中心值的东边和西边都对应有8个点。许多线段满足这一准则。这儿被选中的一条位于两个中心观察结果的中间。相似地，南北方向上指出中位数的线段位于这一方向上两个中心观察结果的中间。定义四分位法时遵循同样的原则。东四分位处于靠近最东边第4个和第5个观察结果中间，西四分位处于靠近最西边第4个和第5个观察结果中间，等等。四分位法得到的矩形越大，点越离散。四分位法在地理文献中并不常见。</p>
+<img src="image-20210118214444420-1610977498340.png" alt="用四分位差描述点分布的离散性" style="zoom:67%;" />
+
+<p>③实证研究法</p>
+<p>有效地描述一组点分散情况的实证研究法是以曲线图表示中央区域一定距离处点的累积频率。例如，图b中以这种方式总结了图a的数据。容易发现，80%的点位于距离均值中心6英里远的位置，20%的点位于距离2英里远的位置，诸如此类。</p>
+<p><img src="/image-20210118214902282-1610977756518-1610978017495.png" alt="对点分布离散性的总结"></p>
+<p>均匀分布是一个有用的统计量——如果点集中于均值中心周围均匀散布，那么该百分比是在预料之中的。对于一个均值中心，给定半径的圆内包含点的数量关于圆的面积是成比例的。又因为圆的面积与半径的平方是成比例的，所以在图b的曲线图中，均匀分布并非呈现为一条直线。那么距离其均值中心6英里远的点占80%的均匀分布应以何形式呈现呢？由于方圆4英里构成的区域面积为$\pi·4&#x3D;16 \pi$，方圆6英里构成的区域面积为$\pi·62&#x3D;36\pi$，于是我们预计在4英里半径范围内，含有点的数量为6英里内的一。类似地，均匀分布在2英里内含有点的数量为6英里内的$\frac{16 \pi}{36 \pi}&#x3D;\frac{4}{9}$。比较得出，观察$36\pi$到的点分布比均匀分布在3英里范围内集中程度较大，而在3英里外集中程度较小。</p>
+<p>虽然集中趋势与离散的度量方法能够帮助我们对不同的点分布进行简单比较，然而它们对于点分布的真实情况只提供极为有限的信息。有些点为均匀分布，在地图上各个区域或多或少都有点的分布。而其他类型的点分布则非常集中，在地图上某一区域有许多点，然而其他大部分区域则空无一点。一个随机分布既含有均匀分布的元素，又含有集中分布的元素。</p>
+</li>
+</ol>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90/" rel="tag"># 空间分析</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/4a006ad1/" rel="prev" title="[空间分析]叁·地理统计6">
+                  <i class="fa fa-chevron-left"></i> [空间分析]叁·地理统计6
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/cd210ac3/" rel="next" title="[空间分析]肆·地理统计-相关分析">
+                  [空间分析]肆·地理统计-相关分析 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">晋ICP备20000688号-2 </a>
+      <img src="/image/beian.jpg" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=14082702000119" rel="noopener" target="_blank">晋公网安备 14082702000124号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JoeSun</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"lGA8jDiu9xwPn8eGaVF2Ne2q-gzGzoHsz","app_key":"lI98i4LNGKqPDmaQTixb93yG","security":false,"betterPerformance":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

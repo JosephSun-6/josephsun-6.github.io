@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"josephsun.cn","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="部署arcgis api for js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="arcgis api for js 部署">
+<meta property="og:url" content="https://josephsun.cn/posts/26796/">
+<meta property="og:site_name" content="JosephSun&#39;s Blogs">
+<meta property="og:description" content="部署arcgis api for js">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://josephsun.cn/1.jpg">
+<meta property="og:image" content="https://josephsun.cn/2.jpg">
+<meta property="article:published_time" content="2020-05-25T12:14:24.000Z">
+<meta property="article:modified_time" content="2020-06-18T02:24:09.403Z">
+<meta property="article:author" content="JoeSun">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="arcgis for js">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://josephsun.cn/1.jpg">
+
+
+<link rel="canonical" href="https://josephsun.cn/posts/26796/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://josephsun.cn/posts/26796/","path":"posts/26796/","title":"arcgis api for js 部署"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>arcgis api for js 部署 | JosephSun's Blogs</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156331840-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-156331840-2","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1263cea084ac2c7b896396b81f9a4fbc"></script>
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JosephSun's Blogs</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">孙先生的失眠日记</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-cv"><a href="/CV/" rel="section"><i class="fa fa-user fa-fw"></i>CV</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-archive fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#IIS%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">IIS设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#arcgis-api-%E4%B8%8B%E8%BD%BD%E9%80%94%E5%BE%84"><span class="nav-number">2.</span> <span class="nav-text">arcgis api 下载途径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IIS%E9%83%A8%E7%BD%B2%E9%85%8D%E7%BD%AE%E6%96%B9%E6%A1%88-%E4%BB%A53-27%E4%B8%BA%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">IIS部署配置方案(以3.27为例)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%AE%89%E8%A3%85"><span class="nav-number">5.</span> <span class="nav-text">测试安装</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="JoeSun"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">JoeSun</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/JosephSun-6" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;JosephSun-6" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:417773447@qq.com" title="E-Mail → mailto:417773447@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://josephsun.cn/posts/26796/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="JoeSun">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JosephSun's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="arcgis api for js 部署 | JosephSun's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          arcgis api for js 部署
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-05-25 20:14:24" itemprop="dateCreated datePublished" datetime="2020-05-25T20:14:24+08:00">2020-05-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-06-18 10:24:09" itemprop="dateModified" datetime="2020-06-18T10:24:09+08:00">2020-06-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/posts/26796/" class="post-meta-item leancloud_visitors" data-flag-title="arcgis api for js 部署" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>部署arcgis api for js</p>
+<span id="more"></span>
+
+<h2 id="IIS设置"><a href="#IIS设置" class="headerlink" title="IIS设置"></a>IIS设置</h2><p>打开控制面板-程序-启动或关闭windows功能-勾选 internet information services</p>
+<p>然后在windows图标那里点搜索IIS</p>
+<p>打开MIME类型把没有的添加进去</p>
+<p><img src="/1.jpg" alt="mime"></p>
+<h2 id="arcgis-api-下载途径"><a href="#arcgis-api-下载途径" class="headerlink" title="arcgis api 下载途径"></a>arcgis api 下载途径</h2><p>esri官网下载，下载需要注册 arcgis 用户才行，版本自己选择，官网下载<a target="_blank" rel="noopener" href="https://developers.arcgis.com/downloads/">最新版本api</a>。</p>
+<h2 id="IIS部署配置方案-以3-27为例"><a href="#IIS部署配置方案-以3-27为例" class="headerlink" title="IIS部署配置方案(以3.27为例)"></a>IIS部署配置方案(以3.27为例)</h2><ol>
+<li>把下载的arcgis api for js 3.27 离线包解压拷贝到 C:\inetpub\wwwroot 目录下。</li>
+<li><code>C:\Inetpub\wwwroot\arcgis_js_api\library\3.27\init.js</code>在文本编辑器中打开并搜索文本<code>&quot;https://[HOSTNAME_AND_PATH_TO_JSAPI]dojo&quot;</code>，然后将其替换为<code>&quot;http://hocalhost/arcgis_js_api/library/3.27/dojo&quot;</code></li>
+<li><code>C:\Inetpub\wwwroot\arcgis_js_api\library\3.27\dojo\dojo.js</code>在文本编辑器中打开并搜索文本<code>&quot;https://[HOSTNAME_AND_PATH_TO_JSAPI]dojo&quot;</code>，然后将其替换为<code>&quot;http://hocalhost/arcgis_js_api/library/3.27/dojo&quot;</code></li>
+</ol>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="测试安装"><a href="#测试安装" class="headerlink" title="测试安装"></a>测试安装</h2><p>现在，您应该能够使用以下URL从Web服务器访问ArcGIS API for JavaScript库：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;http://hocalhost/arcgis_js_api/library/3.27/init.js&quot;&gt;</span><br><span class="line">&lt;script src=&quot;http://hocalhost/arcgis_js_api/library/3.27compact/init.js&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>测试您的安装。您可以使用以下测试代码来验证用于JavaScript库的ArcGIS API安装。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">HTML</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;Content-Type&quot;</span> <span class="attr">content</span>=<span class="string">&quot;text/html; charset=utf-8&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Test Map<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;http://hocalhost/arcgis_js_api/library/3.27/3.27/esri/css/esri.css&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;http://hocalhost/arcgis_js_api/library/3.27/3.27/init.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">      <span class="selector-tag">html</span>,</span></span><br><span class="line"><span class="language-css">      <span class="selector-tag">body</span>,</span></span><br><span class="line"><span class="language-css">      <span class="selector-id">#map</span> &#123;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">height</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">width</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">margin</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">        <span class="attribute">padding</span>: <span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">      &#125;</span></span><br><span class="line"><span class="language-css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="built_in">require</span>([</span></span><br><span class="line"><span class="language-javascript">          <span class="string">&quot;esri/map&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">          <span class="string">&quot;esri/layers/ArcGISTiledMapServiceLayer&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">          <span class="string">&quot;dojo/domReady!&quot;</span></span></span><br><span class="line"><span class="language-javascript">      ],<span class="keyword">function</span>(<span class="params"><span class="built_in">Map</span>, ArcGISTiledMapServiceLayer</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">var</span> map = <span class="keyword">new</span> <span class="title class_">Map</span>(<span class="string">&quot;map&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">          <span class="comment">//If you do not have Internet access then you will need to point this url to your own locally accessible tiled service.</span></span></span><br><span class="line"><span class="language-javascript">          <span class="keyword">var</span> tiled = <span class="keyword">new</span> <span class="title class_">ArcGISTiledMapServiceLayer</span>(<span class="string">&quot;https://services.arcgisonline.com/arcgis/rest/services/Ocean/World_Ocean_Base/MapServer&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">          map.<span class="title function_">addLayer</span>(tiled);</span></span><br><span class="line"><span class="language-javascript">      &#125;);</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;map&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>最终显示效果为</p>
+<p><img src="/2.jpg" alt="xiaoguotu"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/js/" rel="tag"># js</a>
+              <a href="/tags/arcgis-for-js/" rel="tag"># arcgis for js</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/5740/" rel="prev" title="arcgis api for js 目录">
+                  <i class="fa fa-chevron-left"></i> arcgis api for js 目录
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/49962/" rel="next" title="Hexo 博客搭建之在文章中插入图片">
+                  Hexo 博客搭建之在文章中插入图片 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">晋ICP备20000688号-2 </a>
+      <img src="/image/beian.jpg" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=14082702000119" rel="noopener" target="_blank">晋公网安备 14082702000124号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JoeSun</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"lGA8jDiu9xwPn8eGaVF2Ne2q-gzGzoHsz","app_key":"lI98i4LNGKqPDmaQTixb93yG","security":false,"betterPerformance":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"josephsun.cn","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="这一节谈谈秩和检验和效应量。并用R语言去进行Mann-Whitney U 检验和效应量检验。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[空间分析]叁·地理统计3">
+<meta property="og:url" content="https://josephsun.cn/posts/70902fd3/">
+<meta property="og:site_name" content="JosephSun&#39;s Blogs">
+<meta property="og:description" content="这一节谈谈秩和检验和效应量。并用R语言去进行Mann-Whitney U 检验和效应量检验。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://josephsun.cn/posts/70902fd3/image-20201207143330219.png">
+<meta property="og:image" content="https://josephsun.cn/posts/70902fd3/image-20201207180019561.png">
+<meta property="og:image" content="https://josephsun.cn/posts/70902fd3/v2-50d52420f090ef578417ca74d0a5bf46_r.jpg">
+<meta property="og:image" content="https://josephsun.cn/posts/70902fd3/v2-e9315a7f1b0e83543e6360b6b32ea434_720w.png">
+<meta property="og:image" content="https://josephsun.cn/image-20201207213732564.png">
+<meta property="article:published_time" content="2020-12-06T13:19:35.000Z">
+<meta property="article:modified_time" content="2020-12-07T13:43:24.957Z">
+<meta property="article:author" content="JoeSun">
+<meta property="article:tag" content="空间分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://josephsun.cn/posts/70902fd3/image-20201207143330219.png">
+
+
+<link rel="canonical" href="https://josephsun.cn/posts/70902fd3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://josephsun.cn/posts/70902fd3/","path":"posts/70902fd3/","title":"[空间分析]叁·地理统计3"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>[空间分析]叁·地理统计3 | JosephSun's Blogs</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156331840-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-156331840-2","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1263cea084ac2c7b896396b81f9a4fbc"></script>
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JosephSun's Blogs</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">孙先生的失眠日记</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-cv"><a href="/CV/" rel="section"><i class="fa fa-user fa-fw"></i>CV</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-archive fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%A9%E5%92%8C%E6%A3%80%E9%AA%8C"><span class="nav-number">1.</span> <span class="nav-text">秩和检验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%A4%E6%A0%B7%E6%9C%AC%E6%AF%94%E8%BE%83%E7%9A%84%E7%A7%A9%E5%92%8C%E6%A3%80%E9%AA%8C%EF%BC%9AMann-Whitney-U-test"><span class="nav-number">1.0.1.</span> <span class="nav-text">两样本比较的秩和检验：Mann-Whitney U test</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">1.0.2.</span> <span class="nav-text">参考文献</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#R%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.0.3.</span> <span class="nav-text">R语言实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Effect-Size-%E6%95%88%E5%BA%94%E9%87%8F"><span class="nav-number">2.</span> <span class="nav-text">Effect Size (效应量)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#R%E8%AF%AD%E8%A8%80%E5%AE%9E%E7%8E%B0-1"><span class="nav-number">2.0.1.</span> <span class="nav-text">R语言实现</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE-1"><span class="nav-number">2.0.1.0.1.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="JoeSun"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">JoeSun</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/JosephSun-6" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;JosephSun-6" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:417773447@qq.com" title="E-Mail → mailto:417773447@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://josephsun.cn/posts/70902fd3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="JoeSun">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JosephSun's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="[空间分析]叁·地理统计3 | JosephSun's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [空间分析]叁·地理统计3
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-06 21:19:35" itemprop="dateCreated datePublished" datetime="2020-12-06T21:19:35+08:00">2020-12-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-12-07 21:43:24" itemprop="dateModified" datetime="2020-12-07T21:43:24+08:00">2020-12-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">空间分析</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/posts/70902fd3/" class="post-meta-item leancloud_visitors" data-flag-title="[空间分析]叁·地理统计3" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>这一节谈谈秩和检验和效应量。并用R语言去进行Mann-Whitney U 检验和效应量检验。</p>
+<span id="more"></span>
+
+<h2 id="秩和检验"><a href="#秩和检验" class="headerlink" title="秩和检验"></a>秩和检验</h2><p>1、配对资料的秩和检验：Wilcoxon符号秩检验</p>
+<p>2、两样本比较的秩和检验：Wilcoxon秩和检验(Mann-Whitney U test) —— <em>计量资料、等级资料</em></p>
+<p>3、完全随机设计多样本比较的秩和检验：Kruskal-Wallis H检验 —— <em>计量资料、等级资料</em></p>
+<p>4、随机区组设计资料的秩和检验：Friedman M检验</p>
+<p>公众号仅更新了Mann-Whitney U test，此类最为常用，其他的可以参考《非参数检验》这本书。</p>
+<h4 id="两样本比较的秩和检验：Mann-Whitney-U-test"><a href="#两样本比较的秩和检验：Mann-Whitney-U-test" class="headerlink" title="两样本比较的秩和检验：Mann-Whitney U test"></a>两样本比较的秩和检验：Mann-Whitney U test</h4><p>秩和检验方法最早是由维尔克松(Wilcoxon)提出，叫维尔克松两样本检验法。后来曼—惠特尼将其应用到两样本容量不等(n1不等于n2)的情况，因而又称为曼—惠特尼U检验(Mann-Whitney U test)。这种方法不要求满足任何分布，基于样本构造检验统计量，用来检验两个独立样本是否来自同一个总体或者用于比较两个独立样本的差异。通俗来说是通过推断总体的分布相同与否来判断样本是否存在差异。</p>
+<p>其原理是将数值转换成次序，混合排序，对异常值不敏感，只关心相对大小排序，不关心绝对。</p>
+<p>优点是不受总体分布限制，适用面广；适用于<strong>等级资料及两端无确定值</strong>的资料；易于理解，易于计算。缺点是符合参数检验的资料，倘若采用用秩和检验，则不能充分利用信息，检验功效低。</p>
+<p><strong>步骤：</strong></p>
+<p>第一步，两个样本混合排序</p>
+<p>第二步，计算每个样本秩的和，排列后的次序相加</p>
+<p>第三步，计算统计量<br>$$<br>U_1&#x3D;R_1-\frac{n_1(n_1+1)}{2}<br>$$</p>
+<p>$$<br>U_2&#x3D;R_2-\frac{n_2(n_2+1)}{2}<br>$$</p>
+<p><strong>小样本</strong>时利用Wilcoxon rank sum statistic分布精确计算p-value</p>
+<p><strong>大样本</strong>：如果$n_1&gt;10$或$n_2&gt;20$则可以采用正态近似法：<br>$$<br>W &#x3D; \frac { | T - n _ { 1 } ( N + 1 ) &#x2F; 2 | - 0.5 } { \sqrt { n _ { 1 } n _ { 2 } ( N + 1 ) &#x2F; 12 } }<br>$$<br>相同秩次较多时的校正：<br>$$<br>u &#x3D; \frac { | T - n _ { 1 } ( N + 1 ) &#x2F; 2 | - 0.5 } { \sqrt { \frac { n _ { 1 } n _ { 2 } ( N + 1 ) } { 12 } ( 1 - \frac { \sum ( t _ { j } ^ { 3 } - t _ { j } ) } { ( N ^ { 3 } - N ) } ) } }<br>$$</p>
+<h4 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h4><p>马廷老师的课件</p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/23950632">https://www.zhihu.com/question/23950632</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/150760480">https://zhuanlan.zhihu.com/p/150760480</a></p>
+<p>《现在应用统计与R语言》</p>
+<p>《非参数检验》</p>
+<p><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_6b36e6750100l9yg.html">http://blog.sina.com.cn/s/blog_6b36e6750100l9yg.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/b206c8e9551810a6f5248609.html">https://wenku.baidu.com/view/b206c8e9551810a6f5248609.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/93731886">https://zhuanlan.zhihu.com/p/93731886</a></p>
+<p><a target="_blank" rel="noopener" href="https://wolfsonliu.github.io/archive/2016/r-xue-xi-bi-ji-sheng-cheng-mo-ni-shu-ju.html">https://wolfsonliu.github.io/archive/2016/r-xue-xi-bi-ji-sheng-cheng-mo-ni-shu-ju.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/93731886">https://zhuanlan.zhihu.com/p/93731886</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.stat.umn.edu/geyer/old02/5601/examp/ranksum.html">http://www.stat.umn.edu/geyer/old02/5601/examp/ranksum.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Wilcoxon.html">https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Wilcoxon.html</a></p>
+<h4 id="R语言实现"><a href="#R语言实现" class="headerlink" title="R语言实现"></a>R语言实现</h4><p>为了执行两个样本的Wilcoxon检验，比较两个独立样本（x＆y）的<strong>均值</strong>，R函数提供了<strong>wilcox.test()</strong></p>
+<p>现随机检测两组不同人群”NA”和”CA”的某个生理指标 (不满足正态分布)</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> x1<span class="operator">&lt;-</span><span class="built_in">c</span><span class="punctuation">(</span><span class="number">8.50</span><span class="punctuation">,</span><span class="number">9.48</span><span class="punctuation">,</span><span class="number">8.65</span><span class="punctuation">,</span><span class="number">8.16</span><span class="punctuation">,</span><span class="number">8.83</span><span class="punctuation">,</span><span class="number">7.76</span><span class="punctuation">,</span><span class="number">8.63</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> x2<span class="operator">&lt;-</span><span class="built_in">c</span><span class="punctuation">(</span><span class="number">8.27</span><span class="punctuation">,</span><span class="number">8.20</span><span class="punctuation">,</span><span class="number">8.25</span><span class="punctuation">,</span><span class="number">8.14</span><span class="punctuation">,</span><span class="number">9.00</span><span class="punctuation">,</span><span class="number">8.10</span><span class="punctuation">,</span><span class="number">7.20</span><span class="punctuation">,</span><span class="number">8.32</span><span class="punctuation">,</span><span class="number">7.70</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> dat <span class="operator">&lt;-</span> data.frame<span class="punctuation">(</span>idx <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span>x1<span class="punctuation">,</span>x2<span class="punctuation">)</span><span class="punctuation">,</span> reg <span class="operator">=</span> <span class="built_in">rep</span><span class="punctuation">(</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;NA&quot;</span><span class="punctuation">,</span><span class="string">&quot;CA&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="number">7</span><span class="punctuation">,</span><span class="number">9</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> dat</span><br><span class="line">    idx reg</span><br><span class="line"><span class="number">1</span>  <span class="number">8.50</span>  <span class="literal">NA</span></span><br><span class="line"><span class="number">2</span>  <span class="number">9.48</span>  <span class="literal">NA</span></span><br><span class="line"><span class="number">3</span>  <span class="number">8.65</span>  <span class="literal">NA</span></span><br><span class="line"><span class="number">4</span>  <span class="number">8.16</span>  <span class="literal">NA</span></span><br><span class="line"><span class="number">5</span>  <span class="number">8.83</span>  <span class="literal">NA</span></span><br><span class="line"><span class="number">6</span>  <span class="number">7.76</span>  <span class="literal">NA</span></span><br><span class="line"><span class="number">7</span>  <span class="number">8.63</span>  <span class="literal">NA</span></span><br><span class="line"><span class="number">8</span>  <span class="number">8.27</span>  CA</span><br><span class="line"><span class="number">9</span>  <span class="number">8.20</span>  CA</span><br><span class="line"><span class="number">10</span> <span class="number">8.25</span>  CA</span><br><span class="line"><span class="number">11</span> <span class="number">8.14</span>  CA</span><br><span class="line"><span class="number">12</span> <span class="number">9.00</span>  CA</span><br><span class="line"><span class="number">13</span> <span class="number">8.10</span>  CA</span><br><span class="line"><span class="number">14</span> <span class="number">7.20</span>  CA</span><br><span class="line"><span class="number">15</span> <span class="number">8.32</span>  CA</span><br><span class="line"><span class="number">16</span> <span class="number">7.70</span>  CA</span><br></pre></td></tr></table></figure>
+
+<p>data.frame 是建立一个数据框，将所有数据放入，并标注其数据属性来自NA或CA，目的为了进行混合排序。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">boxplot<span class="punctuation">(</span>idx <span class="operator">~</span> reg<span class="punctuation">,</span> data <span class="operator">=</span> dat<span class="punctuation">,</span>col<span class="operator">=</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&#x27;red&#x27;</span><span class="punctuation">,</span><span class="string">&#x27;blue&#x27;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p>通过boxplot，查看数据属性。</p>
+<img src="image-20201207143330219.png" alt="image-20201207143330219" style="zoom:67%;" />
+
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> x11<span class="punctuation">(</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> plot<span class="punctuation">(</span>density<span class="punctuation">(</span>x2<span class="punctuation">,</span> bw<span class="operator">=</span><span class="number">0.5</span><span class="punctuation">)</span><span class="punctuation">,</span>xlab <span class="operator">=</span> <span class="string">&#x27;x&#x27;</span><span class="punctuation">,</span>ylab <span class="operator">=</span> <span class="string">&#x27;density&#x27;</span><span class="punctuation">,</span>main<span class="operator">=</span><span class="string">&quot;Kernel (高斯) density estimates&quot;</span><span class="punctuation">,</span> col<span class="operator">=</span><span class="string">&#x27;red&#x27;</span><span class="punctuation">,</span> lwd<span class="operator">=</span><span class="number">2</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> lines<span class="punctuation">(</span>density<span class="punctuation">(</span>x1<span class="punctuation">,</span> bw<span class="operator">=</span><span class="number">0.5</span><span class="punctuation">)</span><span class="punctuation">,</span> col<span class="operator">=</span><span class="string">&#x27;blue&#x27;</span><span class="punctuation">,</span> lwd<span class="operator">=</span><span class="number">2</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> legend<span class="punctuation">(</span><span class="string">&#x27;topright&#x27;</span><span class="punctuation">,</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;NA&quot;</span><span class="punctuation">,</span><span class="string">&quot;CA&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span> lty <span class="operator">=</span> <span class="number">1</span><span class="punctuation">,</span> col <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&#x27;blue&#x27;</span><span class="punctuation">,</span><span class="string">&#x27;red&#x27;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<img src="image-20201207180019561.png" alt="image-20201207180019561" style="zoom:67%;" />
+
+<p>NA和CA两组之间存在差异性，两者均值不同，采用Mann-Whitney U test来评估两组样本的差异性。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> wilcox.test<span class="punctuation">(</span>x1<span class="punctuation">,</span>x2<span class="punctuation">,</span>alternative <span class="operator">=</span> <span class="string">&#x27;two.sided&#x27;</span><span class="punctuation">,</span>paired <span class="operator">=</span> <span class="literal">FALSE</span><span class="punctuation">,</span>exact <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">	Wilcoxon rank <span class="built_in">sum</span> exact test</span><br><span class="line"></span><br><span class="line">data<span class="operator">:</span>  x1 and x2</span><br><span class="line">W <span class="operator">=</span> <span class="number">47</span><span class="punctuation">,</span> p<span class="operator">-</span>value <span class="operator">=</span> <span class="number">0.1142</span></span><br><span class="line">alternative hypothesis<span class="operator">:</span> true location shift is not equal to <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>W为Wilcoxon统计量，p-value为0.1142&gt;0.05，<em>无法拒绝原假设，根据此结果表明，在$\alpha$&#x3D;0.05的水平下，就所给数据而言，还不足以区分不同人群是否生理特征的显著差异性。</em></p>
+<p>另外，我还想对提一下wilcox.test()函数。</p>
+<p>它可以进行Wilcoxon符号秩检验，即wilcox.test(数据集，中位数，alternative &#x3D; “less”或者”great”或者”two.sided”，exact &#x3D; TRUE此项目的为是否精确计算P值，paired&#x3D;TALSE此项是逻辑变量说明是否为成对数据，conf.int是逻辑变量用于是否给出相应的置信区间)。</p>
+<p>也可以进行非成对样本的秩次和检验 — Mann-Whitney U 检验，wilcox.test(数据集1，数据集2，…）</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> wilcox.test<span class="punctuation">(</span>dat<span class="operator">$</span>idx<span class="punctuation">,</span>median<span class="punctuation">(</span>dat<span class="operator">$</span>idx<span class="punctuation">)</span><span class="punctuation">,</span>alternative <span class="operator">=</span> <span class="string">&#x27;greater&#x27;</span><span class="punctuation">,</span>paired <span class="operator">=</span> <span class="literal">FALSE</span><span class="punctuation">,</span>exact <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">	Wilcoxon rank <span class="built_in">sum</span> exact test</span><br><span class="line"></span><br><span class="line">data<span class="operator">:</span>  dat<span class="operator">$</span>idx and median<span class="punctuation">(</span>dat<span class="operator">$</span>idx<span class="punctuation">)</span></span><br><span class="line">W <span class="operator">=</span> <span class="number">8</span><span class="punctuation">,</span> p<span class="operator">-</span>value <span class="operator">=</span> <span class="number">0.5294</span></span><br><span class="line">alternative hypothesis<span class="operator">:</span> true location shift is greater than <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="operator">&gt;</span> wilcox.test<span class="punctuation">(</span>x1<span class="punctuation">,</span>x2<span class="punctuation">,</span>alternative <span class="operator">=</span> <span class="string">&#x27;greater&#x27;</span><span class="punctuation">,</span>paired <span class="operator">=</span> <span class="literal">FALSE</span><span class="punctuation">,</span>exact <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">,</span>correct <span class="operator">=</span> <span class="literal">FALSE</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">	Wilcoxon rank <span class="built_in">sum</span> exact test</span><br><span class="line"></span><br><span class="line">data<span class="operator">:</span>  x1 and x2</span><br><span class="line">W <span class="operator">=</span> <span class="number">47</span><span class="punctuation">,</span> p<span class="operator">-</span>value <span class="operator">=</span> <span class="number">0.05708</span></span><br><span class="line">alternative hypothesis<span class="operator">:</span> true location shift is greater than <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>解释结果时，先判断样本是否来自同一个总体样本，样本数目是否成对，非成对样本连续修正后结果的$p-value$与$\alpha$关系。套路为P值&#x3D;…&lt;[或&gt;]0.05，拒绝原假设[或无法拒绝原假设]，认为两者效果(作用因素、人群生理特征等等)差异显著[或无显著差异]。</p>
+<h2 id="Effect-Size-效应量"><a href="#Effect-Size-效应量" class="headerlink" title="Effect Size (效应量)"></a>Effect Size (效应量)</h2><blockquote>
+<p>Effect size is a statistical concept that measures the strength of the relationship between two variables on a numeric scale</p>
+</blockquote>
+<p>是衡量处理效应大小的指标，与显著性检验不同，这些指标是不受样本容量影响的。它表示不同处理下的总体均值之间差异的大小，可以在不同研究之间进行比较。一般用于针对某一研究领域内的元分析中。</p>
+<p>效应量（effect size）是对现象量级的定量度量。其包括两个变量之间的相关性，回归中的回归系数，平均差，甚至是发生某事的风险：如有多少人在心脏病发作后幸存下来。</p>
+<p>效应量是对统计检验的补充，可以评价统计的强度。效果量的结果有助于解释研究的实质意义，而不是统计意义的显著性。各个论文中不同时间地区的结论可以相互比较的方法，计算不同效应量，然后得出对比结论。</p>
+<p>换句话说，效应量就是说明p值显著不显著，采用”度”描述，显著程度。</p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Meta-analysis">Meta - analysis (元分析)</a></p>
+<blockquote>
+<p>统计学上来说，元分析（meta-analysis，或译作后设分析、整合分析、综合分析、统合分析、荟萃分析）是指将多个研究结果整合在一起的统计方法。就用途而言，它是文献回顾的新方法。</p>
+<p>文献回顾的传统方法是叙事式的，由作者自行挑选觉得重要的前人研究，当各研究结论冲突时，由作者自行判断哪一种结论较具价值。反之，后设分析采用系统化的资料收集和数值分析，让文献回顾更具客观性与证据力。这些组合后的结果会有助于以更加全面性的证据观察来支持或拒绝某一主题研究的假设，发现该主题迄今研究的不足处，发现各种可能影响效应量的中介因素。</p>
+</blockquote>
+<p>P值只能提供有限的信息，我们要知道的是误差有多大，相关性有多强，而效果量可以告诉我们这些。例如，当我们说“吸烟和一个人生活满意度显著相关。（p &lt;0 .001）”，但我们不知道它们的关联性有多强，如果我们发现相关系数是0.1，那么实际上它们相关性是挺弱的；又如果相关系数是0.7，那么实际上它们彼此间的关系是挺有趣的。</p>
+<p>Lakens (2013)中提到了关于各种指标的用途。</p>
+<img src="v2-50d52420f090ef578417ca74d0a5bf46_r.jpg" alt="preview" style="zoom:67%;" />
+
+<img src="v2-e9315a7f1b0e83543e6360b6b32ea434_720w.png" alt="img" style="zoom:67%;" />
+
+<p>常用的效应量包括r, Cohen’s d和odds ratio。对于T检验的效应量一般常用 Cohen’s d 效应量指标。<br>$$<br>Cohen’s d &#x3D; (M_2 - M_1)&#x2F;SD_{pooled}<br>$$</p>
+<p>$$<br>SD<del>pooled</del> 为联合方差 ： SD_{pooled} &#x3D;\sqrt {\frac{SD^2_1+SD^2_2}{2}}<br>$$</p>
+<p>$$<br>或 \ \ \ d &#x3D;\frac{|\overline x_1-\overline x_2|} {\sqrt{\frac{(n_1-1)s^2_1+(n2-1)s^2_2}{n_1+n_2-2} }}<br>$$</p>
+<h4 id="R语言实现-1"><a href="#R语言实现-1" class="headerlink" title="R语言实现"></a>R语言实现</h4><p>导入效应量的库和数据集文件，如果出现 <em>不存在叫‘effsize’这个名字的程辑包</em> ，运行一次 <em>install.packages(‘effsize’)</em> ，以后所有的这种问题均可以这样。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> library<span class="punctuation">(</span><span class="string">&#x27;effsize&#x27;</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> library<span class="punctuation">(</span>datasets<span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> data<span class="punctuation">(</span>iris<span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> summary<span class="punctuation">(</span>iris<span class="punctuation">)</span></span><br><span class="line">  Sepal.Length    Sepal.Width     Petal.Length  </span><br><span class="line"> Min.   <span class="operator">:</span><span class="number">4.300</span>   Min.   <span class="operator">:</span><span class="number">2.000</span>   Min.   <span class="operator">:</span><span class="number">1.000</span>  </span><br><span class="line"> <span class="number">1</span>st Qu.<span class="operator">:</span><span class="number">5.100</span>   <span class="number">1</span>st Qu.<span class="operator">:</span><span class="number">2.800</span>   <span class="number">1</span>st Qu.<span class="operator">:</span><span class="number">1.600</span>  </span><br><span class="line"> Median <span class="operator">:</span><span class="number">5.800</span>   Median <span class="operator">:</span><span class="number">3.000</span>   Median <span class="operator">:</span><span class="number">4.350</span>  </span><br><span class="line"> Mean   <span class="operator">:</span><span class="number">5.843</span>   Mean   <span class="operator">:</span><span class="number">3.057</span>   Mean   <span class="operator">:</span><span class="number">3.758</span>  </span><br><span class="line"> <span class="number">3</span>rd Qu.<span class="operator">:</span><span class="number">6.400</span>   <span class="number">3</span>rd Qu.<span class="operator">:</span><span class="number">3.300</span>   <span class="number">3</span>rd Qu.<span class="operator">:</span><span class="number">5.100</span>  </span><br><span class="line"> Max.   <span class="operator">:</span><span class="number">7.900</span>   Max.   <span class="operator">:</span><span class="number">4.400</span>   Max.   <span class="operator">:</span><span class="number">6.900</span>  </span><br><span class="line">  Petal.Width          Species  </span><br><span class="line"> Min.   <span class="operator">:</span><span class="number">0.100</span>   setosa    <span class="operator">:</span><span class="number">50</span>  </span><br><span class="line"> <span class="number">1</span>st Qu.<span class="operator">:</span><span class="number">0.300</span>   versicolor<span class="operator">:</span><span class="number">50</span>  </span><br><span class="line"> Median <span class="operator">:</span><span class="number">1.300</span>   virginica <span class="operator">:</span><span class="number">50</span>  </span><br><span class="line"> Mean   <span class="operator">:</span><span class="number">1.199</span>                  </span><br><span class="line"> <span class="number">3</span>rd Qu.<span class="operator">:</span><span class="number">1.800</span>                  </span><br><span class="line"> Max.   <span class="operator">:</span><span class="number">2.500</span> </span><br></pre></td></tr></table></figure>
+
+<p>Iris 鸢尾花数据集是一个经典数据集，在统计学习和机器学习领域都经常被用作示例。数据集内包含 3 类共 150 条记录，每类各 50 个数据，每条记录都有 4 项特征：花萼长度、花萼宽度、花瓣长度、花瓣宽度。</p>
+<p>我们想要探查有关”versicolor”与”virginica”的花瓣宽度之间是否存在差异性。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> x1 <span class="operator">=</span> iris<span class="operator">$</span>Sepal.Width<span class="punctuation">[</span>iris<span class="operator">$</span>Species<span class="operator">==</span><span class="string">&quot;versicolor&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="operator">&gt;</span> x2 <span class="operator">=</span> iris<span class="operator">$</span>Sepal.Width<span class="punctuation">[</span>iris<span class="operator">$</span>Species<span class="operator">==</span><span class="string">&quot;virginica&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="operator">&gt;</span> <span class="built_in">length</span><span class="punctuation">(</span>x1<span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">[</span><span class="number">1</span><span class="punctuation">]</span> <span class="number">50</span></span><br><span class="line"><span class="operator">&gt;</span> <span class="built_in">length</span><span class="punctuation">(</span>x2<span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">[</span><span class="number">1</span><span class="punctuation">]</span> <span class="number">50</span></span><br><span class="line"><span class="operator">&gt;</span> cohen.d<span class="punctuation">(</span>x1<span class="punctuation">,</span>x2<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">Cohen<span class="string">&#x27;s d</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">d estimate: -0.6411522 (medium)</span></span><br><span class="line"><span class="string">95 percent confidence interval:</span></span><br><span class="line"><span class="string">     lower      upper </span></span><br><span class="line"><span class="string">-1.0481150      -0.2341893 </span></span><br></pre></td></tr></table></figure>
+
+<p>根据效应量与相关性大小的度量，即下表</p>
+<p><img src="/image-20201207213732564.png" alt="image-20201207213732564"></p>
+<p>可以说明，在”versicolor”与”virginica”的花瓣宽度之间，约有70%的”versicolor”花瓣宽度低于”virginica”的均值。</p>
+<h6 id="参考文献-1"><a href="#参考文献-1" class="headerlink" title="参考文献"></a>参考文献</h6><p>马廷老师的课件</p>
+<p>Lakens, D. (2013). Calculating and reporting effect sizes to facilitate cumulative science: a practical primer for t-tests and ANOVAs. Frontiers in Psychology, 4, 863. doi:10.3389&#x2F;fpsyg.2013.00863</p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Meta-analysis">https://en.wikipedia.org/wiki/Meta-analysis</a></p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1634971">https://cloud.tencent.com/developer/article/1634971</a></p>
+<p><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_66d362d70101br5a.html">http://blog.sina.com.cn/s/blog_66d362d70101br5a.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/23453787">https://zhuanlan.zhihu.com/p/23453787</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90/" rel="tag"># 空间分析</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/7971f45/" rel="prev" title="[空间分析]叁·地理统计2">
+                  <i class="fa fa-chevron-left"></i> [空间分析]叁·地理统计2
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/eef4ba70/" rel="next" title="[空间分析]叁·地理统计4">
+                  [空间分析]叁·地理统计4 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">晋ICP备20000688号-2 </a>
+      <img src="/image/beian.jpg" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=14082702000119" rel="noopener" target="_blank">晋公网安备 14082702000124号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JoeSun</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"lGA8jDiu9xwPn8eGaVF2Ne2q-gzGzoHsz","app_key":"lI98i4LNGKqPDmaQTixb93yG","security":false,"betterPerformance":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

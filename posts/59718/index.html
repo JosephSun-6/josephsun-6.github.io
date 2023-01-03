@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"josephsun.cn","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="逻辑回归（LogisticRegression）吴恩达老师讲的是真的清楚。  Logistic regression （逻辑回归）是当前业界比较常用的机器学习方法，用于估计某种事物的可能性。之前在经典之作《数学之美》中也看到了它用于广告预测，也就是根据某广告被用户点击的可能性，把最可能被用户点击的广告摆在用户能看到的地方，然后叫他“你点我啊！”用户点了，你就有钱收了。这就是为什么我们的电脑现在广告">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Logistic Regression python实现">
+<meta property="og:url" content="https://josephsun.cn/posts/59718/">
+<meta property="og:site_name" content="JosephSun&#39;s Blogs">
+<meta property="og:description" content="逻辑回归（LogisticRegression）吴恩达老师讲的是真的清楚。  Logistic regression （逻辑回归）是当前业界比较常用的机器学习方法，用于估计某种事物的可能性。之前在经典之作《数学之美》中也看到了它用于广告预测，也就是根据某广告被用户点击的可能性，把最可能被用户点击的广告摆在用户能看到的地方，然后叫他“你点我啊！”用户点了，你就有钱收了。这就是为什么我们的电脑现在广告">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-06-18T02:23:46.723Z">
+<meta property="article:author" content="JoeSun">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="DeeperLearning">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://josephsun.cn/posts/59718/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://josephsun.cn/posts/59718/","path":"posts/59718/","title":"Logistic Regression python实现"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Logistic Regression python实现 | JosephSun's Blogs</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156331840-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-156331840-2","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1263cea084ac2c7b896396b81f9a4fbc"></script>
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JosephSun's Blogs</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">孙先生的失眠日记</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-cv"><a href="/CV/" rel="section"><i class="fa fa-user fa-fw"></i>CV</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-archive fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="JoeSun"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">JoeSun</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/JosephSun-6" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;JosephSun-6" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:417773447@qq.com" title="E-Mail → mailto:417773447@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://josephsun.cn/posts/59718/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="JoeSun">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JosephSun's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Logistic Regression python实现 | JosephSun's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Logistic Regression python实现
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-04-09 00:00:00" itemprop="dateCreated datePublished" datetime="2020-04-09T00:00:00+08:00">2020-04-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-06-18 10:23:46" itemprop="dateModified" datetime="2020-06-18T10:23:46+08:00">2020-06-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/posts/59718/" class="post-meta-item leancloud_visitors" data-flag-title="Logistic Regression python实现" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>逻辑回归（LogisticRegression）<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV164411m79z?p=8">吴恩达老师</a>讲的是真的清楚。</p>
+<p> Logistic regression （逻辑回归）是当前业界比较常用的机器学习方法，用于估计某种事物的可能性。之前在经典之作《数学之美》中也看到了它用于广告预测，也就是根据某广告被用户点击的可能性，把最可能被用户点击的广告摆在用户能看到的地方，然后叫他“你点我啊！”用户点了，你就有钱收了。这就是为什么我们的电脑现在广告泛滥的原因了。还有类似的某用户购买某商品的可能性，某病人患有某种疾病的可能性啊等等。这个世界是随机的（当然了，人为的确定性系统除外，但也有可能有噪声或产生错误的结果，只是这个错误发生的可能性太小了，小到千万年不遇，小到忽略不计而已），所以万物的发生都可以用可能性或者几率（Odds）来表达。“几率”指的是某事物发生的可能性与不发生的可能性的比值。</p>
+<span id="more"></span>
+
+<p> Logistic regression可以用来回归，也可以用来分类，主要是二分类，它可以将两个不同类别的样本给分开，思想是找到最能区分它们的那个分类超平面。但当你给一个新的样本给它，它能够给你的只有一个答案，你这个样本是正类还是负类。例如你问SVM，某个女生是否喜欢你，它只会回答你喜欢或者不喜欢。这对我们来说，显得太粗鲁了，要不希望，要不绝望，这都不利于身心健康。那如果它可以告诉我，她很喜欢、有一点喜欢、不怎么喜欢或者一点都不喜欢，你想都不用想了等等，告诉你她有49%的几率喜欢你，总比直接说她不喜欢你，来得温柔。而且还提供了额外的信息，她来到你的身边你有多少希望，你得再努力多少倍，知己知彼百战百胜，哈哈。Logistic regression就是这么温柔的，它给我们提供的就是你的这个样本属于正类的可能性是多少。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># _*_ coding:utf-8 _*_</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> numpy <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sigmoid</span>(<span class="params">inX</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1.0</span> / (<span class="number">1</span> + exp(-inX))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># train a logistic regression model using some optional optimize algorithm</span></span><br><span class="line"><span class="comment"># input: train_x is a mat datatype, each row stands for one sample</span></span><br><span class="line"><span class="comment">#      train_y is mat datatype too, each row is the corresponding label</span></span><br><span class="line"><span class="comment">#      opts is optimize option include step and maximum number of iterations</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">trainLogRegres</span>(<span class="params">train_x, train_y, opts</span>):</span><br><span class="line">    <span class="comment"># calculate training time</span></span><br><span class="line">    startTime = time.time()</span><br><span class="line"></span><br><span class="line">    numSamples, numFeatures = shape(train_x)</span><br><span class="line">    alpha = opts[<span class="string">&#x27;alpha&#x27;</span>]</span><br><span class="line">    maxIter = opts[<span class="string">&#x27;maxIter&#x27;</span>]</span><br><span class="line">    weights = ones((numFeatures, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># optimize through gradient descent algorilthm</span></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(maxIter):</span><br><span class="line">        <span class="keyword">if</span> opts[<span class="string">&#x27;optimizeType&#x27;</span>] == <span class="string">&#x27;gradDescent&#x27;</span>:  <span class="comment"># gradient descent algorilthm</span></span><br><span class="line">            output = sigmoid(train_x * weights)</span><br><span class="line">            error = train_y - output  <span class="comment"># 求导公式，推出</span></span><br><span class="line">            weights = weights + alpha * train_x.transpose() * error</span><br><span class="line">        <span class="keyword">elif</span> opts[<span class="string">&#x27;optimizeType&#x27;</span>] == <span class="string">&#x27;stocGradDescent&#x27;</span>:  <span class="comment"># stochastic gradient descent</span></span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(numSamples):</span><br><span class="line">                output = sigmoid(train_x[i, :] * weights)</span><br><span class="line">                error = train_y[i, <span class="number">0</span>] - output</span><br><span class="line">                weights = weights + alpha * train_x[i, :].transpose() * error  <span class="comment"># 求导公式，推出</span></span><br><span class="line">        <span class="keyword">elif</span> opts[<span class="string">&#x27;optimizeType&#x27;</span>] == <span class="string">&#x27;smoothStocGradDescent&#x27;</span>:  <span class="comment"># smooth stochastic gradient descent</span></span><br><span class="line">            <span class="comment"># randomly select samples to optimize for reducing cycle fluctuations</span></span><br><span class="line">            dataIndex = <span class="built_in">list</span>(<span class="built_in">range</span>(numSamples))</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(numSamples):</span><br><span class="line">                alpha = <span class="number">4.0</span> / (<span class="number">1.0</span> + k + i) + <span class="number">0.01</span></span><br><span class="line">                randIndex = <span class="built_in">int</span>(random.uniform(<span class="number">0</span>, <span class="built_in">len</span>(dataIndex)))</span><br><span class="line">                output = sigmoid(train_x[randIndex, :] * weights)</span><br><span class="line">                error = train_y[randIndex, <span class="number">0</span>] - output</span><br><span class="line">                weights = weights + alpha * train_x[randIndex, :].transpose() * error</span><br><span class="line">                <span class="keyword">del</span> (dataIndex[randIndex])  <span class="comment"># during one interation, delete the optimized sample</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> NameError(<span class="string">&#x27;Not support optimize method type!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span></span><br><span class="line">    <span class="string">&#x27;Congratulations, training complete! Took %fs!&#x27;</span> % (time.time() - startTime)</span><br><span class="line">    <span class="keyword">return</span> weights</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># test your trained Logistic Regression model given test set</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">testLogRegres</span>(<span class="params">weights, test_x, test_y</span>):</span><br><span class="line">    numSamples, numFeatures = shape(test_x)</span><br><span class="line">    matchCount = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(numSamples):</span><br><span class="line">        predict = sigmoid(test_x[i, :] * weights)[<span class="number">0</span>, <span class="number">0</span>] &gt; <span class="number">0.5</span>  <span class="comment"># 2-D array, so need [0,0] index</span></span><br><span class="line">        <span class="keyword">if</span> predict == <span class="built_in">bool</span>(test_y[i, <span class="number">0</span>]):</span><br><span class="line">            matchCount += <span class="number">1</span></span><br><span class="line">    accuracy = <span class="built_in">float</span>(matchCount) / numSamples</span><br><span class="line">    <span class="keyword">return</span> accuracy</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># show your trained logistic regression model only available with 2-D data</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">showLogRegres</span>(<span class="params">weights, train_x, train_y</span>):</span><br><span class="line">    <span class="comment"># notice: train_x and train_y is mat datatype</span></span><br><span class="line">    numSamples, numFeatures = shape(train_x)</span><br><span class="line">    <span class="keyword">if</span> numFeatures != <span class="number">3</span>:</span><br><span class="line">        <span class="built_in">print</span></span><br><span class="line">        <span class="string">&quot;Sorry! I can not draw because the dimension of your data is not 2!&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># draw all samples</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(numSamples):</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">int</span>(train_y[i, <span class="number">0</span>]) == <span class="number">0</span>:</span><br><span class="line">            plt.plot(train_x[i, <span class="number">1</span>], train_x[i, <span class="number">2</span>], <span class="string">&#x27;or&#x27;</span>)</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">int</span>(train_y[i, <span class="number">0</span>]) == <span class="number">1</span>:</span><br><span class="line">            plt.plot(train_x[i, <span class="number">1</span>], train_x[i, <span class="number">2</span>], <span class="string">&#x27;ob&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># draw the classify line</span></span><br><span class="line">    min_x = <span class="built_in">min</span>(train_x[:, <span class="number">1</span>])[<span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">    max_x = <span class="built_in">max</span>(train_x[:, <span class="number">1</span>])[<span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">    weights = weights.getA()  <span class="comment"># convert mat to array</span></span><br><span class="line">    y_min_x = <span class="built_in">float</span>(-weights[<span class="number">0</span>] - weights[<span class="number">1</span>] * min_x) / weights[<span class="number">2</span>]</span><br><span class="line">    y_max_x = <span class="built_in">float</span>(-weights[<span class="number">0</span>] - weights[<span class="number">1</span>] * max_x) / weights[<span class="number">2</span>]</span><br><span class="line">    plt.plot([min_x, max_x], [y_min_x, y_max_x], <span class="string">&#x27;-g&#x27;</span>)</span><br><span class="line">    plt.xlabel(<span class="string">&#x27;X1&#x27;</span>);</span><br><span class="line">    plt.ylabel(<span class="string">&#x27;X2&#x27;</span>)</span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 实现</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">loadData</span>():</span><br><span class="line">    train_x = []</span><br><span class="line">    train_y = []</span><br><span class="line">    fileIn = <span class="built_in">open</span>(<span class="string">r&#x27;C:\Users\JoeSun\Desktop\np.txt&#x27;</span>) <span class="comment">#引用数据</span></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> fileIn.readlines():</span><br><span class="line">        lineArr = line.strip().split()</span><br><span class="line">        train_x.append([<span class="number">1.0</span>, <span class="built_in">float</span>(lineArr[<span class="number">0</span>]), <span class="built_in">float</span>(lineArr[<span class="number">1</span>])])</span><br><span class="line">        train_y.append(<span class="built_in">float</span>(lineArr[<span class="number">2</span>]))</span><br><span class="line">    <span class="keyword">return</span> mat(train_x), mat(train_y).transpose()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## step 1: load data</span></span><br><span class="line"><span class="built_in">print</span></span><br><span class="line"><span class="string">&quot;step 1: load data...&quot;</span></span><br><span class="line">train_x, train_y = loadData()</span><br><span class="line">test_x = train_x</span><br><span class="line">test_y = train_y</span><br><span class="line"></span><br><span class="line"><span class="comment">## step 2: training...</span></span><br><span class="line"><span class="built_in">print</span></span><br><span class="line"><span class="string">&quot;step 2: training...&quot;</span></span><br><span class="line">opts = &#123;<span class="string">&#x27;alpha&#x27;</span>: <span class="number">0.01</span>, <span class="string">&#x27;maxIter&#x27;</span>: <span class="number">20</span>, <span class="string">&#x27;optimizeType&#x27;</span>: <span class="string">&#x27;smoothStocGradDescent&#x27;</span>&#125;</span><br><span class="line">optimalWeights = trainLogRegres(train_x, train_y, opts)</span><br><span class="line"></span><br><span class="line"><span class="comment">## step 3: testing</span></span><br><span class="line"><span class="built_in">print</span></span><br><span class="line"><span class="string">&quot;step 3: testing...&quot;</span></span><br><span class="line">accuracy = testLogRegres(optimalWeights, test_x, test_y)</span><br><span class="line"></span><br><span class="line"><span class="comment">## step 4: show the result</span></span><br><span class="line"><span class="built_in">print</span></span><br><span class="line"><span class="string">&quot;step 4: show the result...&quot;</span></span><br><span class="line"><span class="built_in">print</span></span><br><span class="line"><span class="string">&#x27;The classify accuracy is: %.3f%%&#x27;</span> % (accuracy * <span class="number">100</span>)</span><br><span class="line">showLogRegres(optimalWeights, train_x, train_y)</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/DeeperLearning/" rel="tag"># DeeperLearning</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/30773/" rel="prev" title="Windows 10 上强制 Visual Studio 以管理员身份运行">
+                  <i class="fa fa-chevron-left"></i> Windows 10 上强制 Visual Studio 以管理员身份运行
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/65274/" rel="next" title="温度反演模型IDL实现">
+                  温度反演模型IDL实现 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">晋ICP备20000688号-2 </a>
+      <img src="/image/beian.jpg" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=14082702000119" rel="noopener" target="_blank">晋公网安备 14082702000124号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JoeSun</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"lGA8jDiu9xwPn8eGaVF2Ne2q-gzGzoHsz","app_key":"lI98i4LNGKqPDmaQTixb93yG","security":false,"betterPerformance":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

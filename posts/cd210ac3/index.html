@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"josephsun.cn","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="相关分析相关分析需要建立在因果条件下，不可倒置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[空间分析]肆·地理统计-相关分析">
+<meta property="og:url" content="https://josephsun.cn/posts/cd210ac3/">
+<meta property="og:site_name" content="JosephSun&#39;s Blogs">
+<meta property="og:description" content="相关分析相关分析需要建立在因果条件下，不可倒置">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://josephsun.cn/image-20210119132450244.png">
+<meta property="og:image" content="https://josephsun.cn/image-20210119133653039.png">
+<meta property="og:image" content="https://josephsun.cn/image-20210119134553677.png">
+<meta property="og:image" content="https://josephsun.cn/image-20210119135035288.png">
+<meta property="og:image" content="https://josephsun.cn/image-20210119135128102.png">
+<meta property="og:image" content="https://josephsun.cn/image-20210119135524703.png">
+<meta property="og:image" content="https://josephsun.cn/pairplot.png">
+<meta property="og:image" content="https://josephsun.cn/kdeplot&scatter.png">
+<meta property="og:image" content="https://josephsun.cn/heatmap.png">
+<meta property="og:image" content="https://josephsun.cn/clustermap.png">
+<meta property="article:published_time" content="2021-01-19T06:39:19.000Z">
+<meta property="article:modified_time" content="2022-12-30T10:27:20.088Z">
+<meta property="article:author" content="JoeSun">
+<meta property="article:tag" content="空间分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://josephsun.cn/image-20210119132450244.png">
+
+
+<link rel="canonical" href="https://josephsun.cn/posts/cd210ac3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://josephsun.cn/posts/cd210ac3/","path":"posts/cd210ac3/","title":"[空间分析]肆·地理统计-相关分析"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>[空间分析]肆·地理统计-相关分析 | JosephSun's Blogs</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156331840-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-156331840-2","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1263cea084ac2c7b896396b81f9a4fbc"></script>
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JosephSun's Blogs</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">孙先生的失眠日记</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-cv"><a href="/CV/" rel="section"><i class="fa fa-user fa-fw"></i>CV</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-archive fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">相关分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%BA%BF%E6%80%A7%E7%9B%B8%E5%85%B3"><span class="nav-number">1.0.1.</span> <span class="nav-text">简单线性相关</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Pearson%E2%80%99s-%E7%9B%B8%E5%85%B3"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">Pearson’s 相关</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3%EF%BC%9F"><span class="nav-number">1.0.1.1.1.</span> <span class="nav-text">如何理解？</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Partial-correlation-%E5%81%8F%E7%9B%B8%E5%85%B3"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">Partial correlation 偏相关</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3%EF%BC%9F-1"><span class="nav-number">1.0.1.2.1.</span> <span class="nav-text">如何理解？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spearman%E2%80%99s-rank-correlation-%E7%A7%A9%E7%9B%B8%E5%85%B3"><span class="nav-number">1.0.2.</span> <span class="nav-text">Spearman’s rank correlation 秩相关</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%90%86%E8%A7%A3%EF%BC%9F-2"><span class="nav-number">1.0.2.0.1.</span> <span class="nav-text">如何理解？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kendall-correlation-%E5%88%86%E7%B1%BB%E5%8F%98%E9%87%8F%E7%9A%84%E7%A7%A9%E7%9B%B8%E5%85%B3"><span class="nav-number">1.0.3.</span> <span class="nav-text">Kendall correlation 分类变量的秩相关</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#R%E5%AE%9E%E7%8E%B0%E5%8F%8A%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-number">1.0.4.</span> <span class="nav-text">R实现及可视化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Python%E5%AE%9E%E7%8E%B0%E7%9B%B8%E5%85%B3%E5%88%86%E6%9E%90%E5%8F%8A%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-number">1.0.5.</span> <span class="nav-text">Python实现相关分析及可视化</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="JoeSun"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">JoeSun</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/JosephSun-6" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;JosephSun-6" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:417773447@qq.com" title="E-Mail → mailto:417773447@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://josephsun.cn/posts/cd210ac3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="JoeSun">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JosephSun's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="[空间分析]肆·地理统计-相关分析 | JosephSun's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [空间分析]肆·地理统计-相关分析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-19 14:39:19" itemprop="dateCreated datePublished" datetime="2021-01-19T14:39:19+08:00">2021-01-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-12-30 18:27:20" itemprop="dateModified" datetime="2022-12-30T18:27:20+08:00">2022-12-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">空间分析</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/posts/cd210ac3/" class="post-meta-item leancloud_visitors" data-flag-title="[空间分析]肆·地理统计-相关分析" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="相关分析"><a href="#相关分析" class="headerlink" title="相关分析"></a>相关分析</h2><p><strong>相关分析需要建立在因果条件下，不可倒置</strong></p>
+<span id="more"></span>
+
+<h4 id="简单线性相关"><a href="#简单线性相关" class="headerlink" title="简单线性相关"></a>简单线性相关</h4><ul>
+<li>相关分析(Correlation)测试随机变量之间的统计依赖性(dependence)</li>
+<li>相关系数(Coefficients)定量给出相关性的大小</li>
+<li>相关性不能用于推断变量之间的因果关系(Causal relationship)</li>
+</ul>
+<h5 id="Pearson’s-相关"><a href="#Pearson’s-相关" class="headerlink" title="Pearson’s 相关"></a>Pearson’s 相关</h5><p>Pearson’s r ：是一种参数方法，衡量变量之间的<strong>线性</strong>相关性，反映整个样本的平均响应。</p>
+<p>两个变量(X, Y)的皮尔森相关性系数(ρX,Y)等于它们之间的协方差cov(X,Y)除以它们各自标准差的乘积(σX, σY)。</p>
+<p>Pearson’s r 的计算和特性：</p>
+<ul>
+<li><p>$-1 ≤ r ≤ +1$</p>
+<ul>
+<li>-1 negative 负相关</li>
+<li>0 no linear relationship 不相关</li>
+<li>1 positive 正相关</li>
+</ul>
+</li>
+<li><p>总体：$\rho &#x3D; \frac{cov(X,Y)}{\sigma_X\sigma_Y}$</p>
+<p>样本：$r _ { x y } &#x3D; \frac { \sum _ { i &#x3D; 1 } ^ { n } ( x _ { i } - \overline { x } ) ( y _ { i } - \overline { y } ) } { \sqrt { \sum _ { i &#x3D; 1 } ^ { n } ( x _ { i } - \overline { x } ) ^ { 2 } } \sqrt { \sum _ { i &#x3D; 1 } ^ { n } ( y _ { i } - \overline { y } ) ^ { 2 } } }$</p>
+</li>
+</ul>
+<h6 id="如何理解？"><a href="#如何理解？" class="headerlink" title="如何理解？"></a>如何理解？</h6><p>从皮尔森的公式看，分母是变量的标准差，这就意味着计算皮尔森相关性系数时，变量的标准差不能为0（分母不能为0），也就是说两个变量中任何一个的值不能都是相同的。如果没有变化，用皮尔森相关系数是没办法算出这个变量与另一个变量之间是不是有相关性的。</p>
+<p>就好比我们想研究人跑步的速度与心脏跳动的相关性，如果你无论跑多快，心跳都不变（即心跳这个变量的标准差为0），或者你心跳忽快忽慢的，却一直保持一个速度在跑（即跑步速度这个变量的标准差为0），那我们都无法通过皮尔森相关性系数的计算来判断心跳与跑步速度到底相不相关。</p>
+<p>皮尔森相关性系数是协方差与标准差的比值，所以它对数据是有比较高的要求的：</p>
+<ol>
+<li>实验数据通常假设是成对的来自于正态分布的总体。因为我们在求皮尔森相关性系数以后，通常还会用t检验之类的方法来进行皮尔森相关性系数检验，而 t检验是基于数据呈正态分布的假设的。</li>
+<li>实验数据之间的差距不能太大，或者说皮尔森相关性系数受异常值的影响比较大。比如刚才心跳与跑步的例子，万一这个人的心脏不太好，跑到一定速度后承受不了，突发心脏病，那这时候我们会测到一个偏离正常值的心跳（过快或者过慢，甚至为0），如果我们把这个值也放进去进行相关性分析，它的存在会大大干扰计算的结果的。</li>
+</ol>
+<h5 id="Partial-correlation-偏相关"><a href="#Partial-correlation-偏相关" class="headerlink" title="Partial correlation 偏相关"></a>Partial correlation 偏相关</h5><p>参与了第三个变量因素，可以考虑控制或者移除。</p>
+<p><strong>使用偏相关前提在于已经知道三者相关，不可替代因果推断。</strong></p>
+<ul>
+<li>Partial correlation 用于测量在控制变量效应移除的情况下，两个随机变量的统计依赖程度；</li>
+<li>主要是基于这样一个事实：如果存在与两个变量都有相关性的混淆变量时，相关系数通常会给出一个有 misleading 的结果。</li>
+<li>当顾及其他影响因素时候，变量之间的相关性会改变 - 多因素相互作用的复杂性</li>
+</ul>
+<h6 id="如何理解？-1"><a href="#如何理解？-1" class="headerlink" title="如何理解？"></a>如何理解？</h6><p>皮尔森相关分析通过计算两个变量之间的相关系数，分析变量间线性相关的程度，在多元相关分析中，由于受到其他变量的影响，皮尔森相关系数只能从表面上反映两个变量相关的性质，往往不能真实地反映变量之间的线性相关程度，甚至会给人造成相关的假象，因此，在某些场合，简单的皮尔森相关系数并不是刻画相关关系的本质统计量。</p>
+<p>当其他变量被固定住，即将他们控制起来后，给定的任意两个变量之间的相关系数叫偏相关系数，偏相关系数才是真正反映两个变量相关关系的统计量。</p>
+<p>举个栗子，有研究说游泳可以促进冷饮的销售，即游泳的人越多，冷饮的销售量也越多。假如我们获取的数据两者确实是呈现皮尔森正相关，且具有显著性意义。那么我们真的能根据这个结果就判定：冷饮销售量和游泳人数存在内在关联吗？</p>
+<p>请注意全文开篇第一句话：<strong>相关分析要建立在建立在因果条件之下。</strong></p>
+<p>偏相关，仍然是在计算两个变量的相关系数，与之前学习的相关区别在于，计算“偏相关系数”时可以再引入其他的变量，这些变量我们称之为“控制变量”。所以，采用偏相关可以控制混杂。</p>
+<p>接着上面的例子，为什么不能通过两个变量之间的皮尔森相关系数来判断两者真实地存在相关甚至是因果呢？很明显，冷饮销售量增加和游泳人数地增加都可能与“天气热”相联系，所以，很有可能是因为天气热导致吃冷饮的人和游泳的人同时增加。</p>
+<p>所以在引入气温变量的条件下，再去计算皮尔森相关。</p>
+<h4 id="Spearman’s-rank-correlation-秩相关"><a href="#Spearman’s-rank-correlation-秩相关" class="headerlink" title="Spearman’s rank correlation 秩相关"></a>Spearman’s rank correlation 秩相关</h4><p>Spearman’s rho 是一种测试统计依赖性的非参数方法，适用于连续与离散型变量，刻画的是随机变量之间的<strong>单调</strong>（monotonic）关系，测量的是样本对应排序的响应，与绝对值大小无关，对异常值不敏感。</p>
+<p>Spearman’s rho 定义与计算:</p>
+<ul>
+<li>$\rho &#x3D; 1-\frac{6 \sum d^2 _i}{n(n^2 -1)}$              </li>
+<li>$d_i &#x3D; rg(X_i)-rg(Y_i)$</li>
+<li>$d_i$是对应观测值的顺序差，n为观测个数</li>
+</ul>
+<h6 id="如何理解？-2"><a href="#如何理解？-2" class="headerlink" title="如何理解？"></a>如何理解？</h6><p>斯皮尔曼相关性系数，通常也叫斯皮尔曼秩相关系数。“秩”，可以理解成就是一种顺序或者排序，那么它就是根据原始数据的排序位置进行求解，这种表征形式就没有了求皮尔森相关性系数时那些限制。不用管X和Y这两个变量具体的值到底差了多少，只需要算一下它们每个值所处的排列位置的差值，就可以求出相关性系数了。而且，即便在变量值没有变化的情况下，也不会出现像皮尔森系数那样分母为0而无法计算的情况。另外，即使出现异常值，由于异常值的秩次通常不会有明显的变化（比如过大或者过小，那要么排第一，要么排最后），所以对斯皮尔曼相关性系数的影响也非常小！</p>
+<h4 id="Kendall-correlation-分类变量的秩相关"><a href="#Kendall-correlation-分类变量的秩相关" class="headerlink" title="Kendall correlation 分类变量的秩相关"></a>Kendall correlation 分类变量的秩相关</h4><p>肯德尔相关性系数，又称肯德尔秩相关系数，它也是一种秩相关系数，不过它所计算的对象是分类变量。<br>分类变量可以理解成有类别的变量，可以分为</p>
+<p>无序的，比如性别（男、女）、血型（A、B、O、AB）；</p>
+<p>有序的，比如肥胖等级（重度肥胖，中度肥胖、轻度肥胖、不肥胖）。</p>
+<p>通常需要求相关性系数的都是有序分类变量。</p>
+<p>举个例子。比如评委对选手的评分（优、中、差等），我们想看两个（或者多个）评委对几位选手的评价标准是否一致；或者医院的尿糖化验报告，想检验各个医院对尿糖的化验结果是否一致，这时候就可以使用肯德尔相关性系数进行衡量。</p>
+<p>由于数据情况不同，求得肯德尔相关性系数的计算公式不一样，一般有3种计算公式，此处不再论述有兴趣可以自行百度。</p>
+<h4 id="R实现及可视化"><a href="#R实现及可视化" class="headerlink" title="R实现及可视化"></a>R实现及可视化</h4><p>数据来源：来源于美国50个州在1977年的人口，收入，文盲率，预期寿命，谋杀率以及高中毕业率的数据。</p>
+<p>导入数据并查看数据信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">states &lt;- state.x77[,1:6]</span><br><span class="line">head(states)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image-20210119132450244.png" alt="image-20210119132450244"></p>
+<p>R语言为相关分析提供了函数 <code>cor</code>，method默认参数是用pearson；并且遇到缺失值，use默认参数everything，所以结果会是NA.</p>
+<blockquote>
+<p>可以采用<code>is.na(states)</code> 检查是否有缺失值。</p>
+</blockquote>
+<p>前提我们已经知道了人口和收入具有一定相关性，然后我们可以进行相关分析。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> cor<span class="punctuation">(</span>states<span class="punctuation">[</span><span class="punctuation">,</span><span class="string">&quot;Population&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span>states<span class="punctuation">[</span><span class="punctuation">,</span><span class="string">&quot;Income&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span>method <span class="operator">=</span> <span class="string">&quot;pearson&quot;</span><span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">[</span><span class="number">1</span><span class="punctuation">]</span> <span class="number">0.2082276</span></span><br><span class="line"><span class="operator">&gt;</span> cor<span class="punctuation">(</span>states<span class="punctuation">[</span><span class="punctuation">,</span><span class="string">&quot;Population&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span>states<span class="punctuation">[</span><span class="punctuation">,</span><span class="string">&quot;Income&quot;</span><span class="punctuation">]</span><span class="punctuation">,</span>method <span class="operator">=</span> <span class="string">&quot;spearman&quot;</span><span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">[</span><span class="number">1</span><span class="punctuation">]</span> <span class="number">0.1246098</span></span><br></pre></td></tr></table></figure>
+
+<p>人口和收入结果具有线性的弱相关和无关的秩相关。由于人口和收入并不是分类数据，就不进行<code>kendall</code> 相关分析了。</p>
+<p>可以对整个矩阵对个变量进行相关性计算，结果也是矩阵</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cor<span class="punctuation">(</span>states<span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/image-20210119133653039.png" alt="image-20210119133653039"></p>
+<p>计算相关性的显著性则可以用 <code>cor.test</code> 函数，method默认是pearson，alternative默认是双尾（即总体相关系数不等于0）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt; cor.test(states[,&quot;Population&quot;], states[,&quot;Income&quot;],method = &quot;pearson&quot;)</span><br><span class="line"></span><br><span class="line">	Pearson&#x27;s product-moment correlation</span><br><span class="line"></span><br><span class="line">data:  states[, &quot;Population&quot;] and states[, &quot;Income&quot;]</span><br><span class="line">t = 1.475, df = 48, p-value = 0.1467</span><br><span class="line">alternative hypothesis: true correlation is not equal to 0</span><br><span class="line">95 percent confidence interval:</span><br><span class="line"> -0.07443435  0.45991855</span><br><span class="line">sample estimates:</span><br><span class="line">      cor </span><br><span class="line">0.2082276 </span><br></pre></td></tr></table></figure>
+
+<p>结果给出了p值和置信区间，并不显著的弱相关。</p>
+<p><code>cor.test</code>只能用于计算两个变量的相关性检验，如果对多个变量或者矩阵数据的话，则可以使用psych包的<code>corr.test</code>函数</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">corr.test<span class="punctuation">(</span>states<span class="punctuation">,</span> use <span class="operator">=</span> <span class="string">&quot;complete&quot;</span><span class="punctuation">,</span> method <span class="operator">=</span> <span class="string">&quot;pearson&quot;</span><span class="punctuation">,</span> adjust <span class="operator">=</span> <span class="string">&quot;none&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/image-20210119134553677.png" alt="image-20210119134553677"></p>
+<p>上面矩阵是相关系数，下面是p值(参数并未进行校正)。</p>
+<p>论文一般不直接堆数据进去，那么就涉及<strong>可视化</strong></p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> library<span class="punctuation">(</span>corrplot<span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> res_cor <span class="operator">&lt;-</span> cor<span class="punctuation">(</span>states<span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> corrplot<span class="punctuation">(</span>corr<span class="operator">=</span>res_cor<span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/image-20210119135035288.png" alt="image-20210119135035288"></p>
+<p>有点丑，加一点点修饰。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> corrplot<span class="punctuation">(</span>corr <span class="operator">=</span> res_cor<span class="punctuation">,</span>order <span class="operator">=</span> <span class="string">&quot;AOE&quot;</span><span class="punctuation">,</span>type<span class="operator">=</span><span class="string">&quot;upper&quot;</span><span class="punctuation">,</span>tl.pos <span class="operator">=</span> <span class="string">&quot;d&quot;</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> corrplot<span class="punctuation">(</span>corr <span class="operator">=</span> res_cor<span class="punctuation">,</span>add<span class="operator">=</span><span class="literal">TRUE</span><span class="punctuation">,</span> type<span class="operator">=</span><span class="string">&quot;lower&quot;</span><span class="punctuation">,</span> method<span class="operator">=</span><span class="string">&quot;number&quot;</span><span class="punctuation">,</span>order<span class="operator">=</span><span class="string">&quot;AOE&quot;</span><span class="punctuation">,</span>diag<span class="operator">=</span><span class="literal">FALSE</span><span class="punctuation">,</span>tl.pos<span class="operator">=</span><span class="string">&quot;n&quot;</span><span class="punctuation">,</span> cl.pos<span class="operator">=</span><span class="string">&quot;n&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/image-20210119135128102.png" alt="image-20210119135128102"></p>
+<p>如果遇到节约的老板还想你做个大体趋势，放在一张图里，而且还要黑白。</p>
+<p>PerformanceAnalytics包的<code>chart.Correlation</code>函数也是用于可视化相关系数矩阵的</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> library<span class="punctuation">(</span><span class="string">&#x27;PerformanceAnalytics&#x27;</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> chart.Correlation<span class="punctuation">(</span>states<span class="punctuation">,</span> method <span class="operator">=</span> <span class="string">&quot;pearson&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/image-20210119135524703.png" alt="image-20210119135524703"></p>
+<h4 id="Python实现相关分析及可视化"><a href="#Python实现相关分析及可视化" class="headerlink" title="Python实现相关分析及可视化"></a>Python实现相关分析及可视化</h4><p>把上文用的数据导出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">write.table (states, file =&quot;a.csv&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>如果不知道导出到哪里了，可以用<code>getwd()</code>，查看运行目录。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 导入库</span><br><span class="line">import numpy as np</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">import pandas as pd</span><br><span class="line">import seaborn as sns</span><br><span class="line">import os</span><br><span class="line">import scipy.stats as stats</span><br><span class="line"># 导入数据</span><br><span class="line">path = os.path.join(&quot;.&quot;)</span><br><span class="line">filename = os.path.join(path,&quot;a.csv&quot;)</span><br><span class="line">dt = pd.read_csv(filename,header=[0])</span><br><span class="line"># 相关分析</span><br><span class="line">dt.corr(&#x27;pearson&#x27;)</span><br><span class="line"># dt.corr(&#x27;spearman&#x27;)</span><br><span class="line"># dt.corr(&#x27;kendall&#x27;)</span><br><span class="line"># 计算相关性的显著性stats.pearsonr()，输出结果第一个值为pearsonr相关系数, 第二个为p-value</span><br><span class="line">print(stats.pearsonr(dt[&#x27;Population&#x27;],dt[&#x27;Income&#x27;]))</span><br></pre></td></tr></table></figure>
+
+<p>下面是可视化</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sns.pairplot(dt)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/pairplot.png" alt="pairplot"></p>
+<p>如果需要显示核密度图。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">g = sns.PairGrid(dt)</span><br><span class="line">g.map_diag(sns.histplot)</span><br><span class="line">g.map_upper(plt.scatter)</span><br><span class="line">g.map_lower(sns.kdeplot)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/kdeplot&scatter.png" alt="kdeplot&amp;scatter"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">corr = dt.corr(method=&#x27;pearson&#x27;)</span><br><span class="line">#以corr的形状生成一个全为0的矩阵</span><br><span class="line">mask = np.zeros_like(corr)</span><br><span class="line">#将mask的对角线及以上设置为True</span><br><span class="line">#这部分就是对应要被遮掉的部分</span><br><span class="line">mask[np.triu_indices_from(mask)] = True</span><br><span class="line">plt.subplots(figsize=(15, 15))  # 分辨率1200×1000</span><br><span class="line">with sns.axes_style(&quot;white&quot;):</span><br><span class="line">   sns.heatmap(corr, mask=mask,annot=True,cmap=&quot;RdBu_r&quot;,  # 在单元格中标注数据值</span><br><span class="line">               annot_kws=&#123;&#x27;fontsize&#x27;: 12&#125; # 热图，将矩形数据绘制为颜色编码矩阵</span><br><span class="line">               )</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/heatmap.png" alt="heatmap"></p>
+<p>如果需要聚类，则采用下面</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">corr = dt.corr(method=&#x27;pearson&#x27;)</span><br><span class="line">with sns.axes_style(&quot;white&quot;):</span><br><span class="line">   sns.clustermap(corr,annot=True,cmap=&quot;RdBu_r&quot;,  # 在单元格中标注数据值</span><br><span class="line">               annot_kws=&#123;&#x27;fontsize&#x27;: 12&#125; # 热图，将矩形数据绘制为颜色编码矩阵</span><br><span class="line">               )</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/clustermap.png" alt="clustermap"></p>
+<p><strong>参考文献</strong></p>
+<p>马廷老师的ppt</p>
+<p>《基础地理统计学》</p>
+<p>seaborn官方文档</p>
+<p>pandas官方文档</p>
+<p>Wiki维基百科</p>
+<p><a target="_blank" rel="noopener" href="https://www.bioinfo-scrounger.com/archives/603/">https://www.bioinfo-scrounger.com/archives/603/</a></p>
+<p><a target="_blank" rel="noopener" href="http://rcompanion.org/handbook/I_10.html">http://rcompanion.org/handbook/I_10.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013421629/article/details/72771241">https://blog.csdn.net/u013421629/article/details/72771241</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bioinfo-scrounger.com/archives/603/">https://www.bioinfo-scrounger.com/archives/603/</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/t15600624671/article/details/77247822?utm_medium=distribute.pc_relevant_t0.none-task-blog-searchFromBaidu-1.control&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-searchFromBaidu-1.control">https://blog.csdn.net/t15600624671/article/details/77247822?utm_medium=distribute.pc_relevant_t0.none-task-blog-searchFromBaidu-1.control&amp;depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-searchFromBaidu-1.control</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/ruthywei/article/details/82533595">https://blog.csdn.net/ruthywei/article/details/82533595</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90/" rel="tag"># 空间分析</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/88f0d19d/" rel="prev" title="[空间分析]-叁·地理统计7">
+                  <i class="fa fa-chevron-left"></i> [空间分析]-叁·地理统计7
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/c4240fb3/" rel="next" title="PYTHON地理出图配色及旁门左道">
+                  PYTHON地理出图配色及旁门左道 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">晋ICP备20000688号-2 </a>
+      <img src="/image/beian.jpg" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=14082702000119" rel="noopener" target="_blank">晋公网安备 14082702000124号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JoeSun</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"lGA8jDiu9xwPn8eGaVF2Ne2q-gzGzoHsz","app_key":"lI98i4LNGKqPDmaQTixb93yG","security":false,"betterPerformance":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"josephsun.cn","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="var ap &#x3D; new APlayer({             element: document.getElementById(&quot;aplayer-ZmLTvNqg&quot;),             narrow: false,             autoplay: true,             sh">
+<meta property="og:type" content="article">
+<meta property="og:title" content="气象数据NC批量转TIF及月尺度计算年尺度[同理其他指标]">
+<meta property="og:url" content="https://josephsun.cn/posts/3e3a0252/">
+<meta property="og:site_name" content="JosephSun&#39;s Blogs">
+<meta property="og:description" content="var ap &#x3D; new APlayer({             element: document.getElementById(&quot;aplayer-ZmLTvNqg&quot;),             narrow: false,             autoplay: true,             sh">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://josephsun.cn/C:/Users/lenovo/Desktop/1.png">
+<meta property="og:image" content="https://josephsun.cn/C:/Users/lenovo/Desktop/2.png">
+<meta property="og:image" content="https://josephsun.cn/3.png">
+<meta property="article:published_time" content="2023-01-02T07:12:43.000Z">
+<meta property="article:modified_time" content="2023-01-03T12:46:03.981Z">
+<meta property="article:author" content="JoeSun">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://josephsun.cn/C:/Users/lenovo/Desktop/1.png">
+
+
+<link rel="canonical" href="https://josephsun.cn/posts/3e3a0252/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://josephsun.cn/posts/3e3a0252/","path":"posts/3e3a0252/","title":"气象数据NC批量转TIF及月尺度计算年尺度[同理其他指标]"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>气象数据NC批量转TIF及月尺度计算年尺度[同理其他指标] | JosephSun's Blogs</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156331840-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-156331840-2","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1263cea084ac2c7b896396b81f9a4fbc"></script>
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="stylesheet" href="\assets\css\APlayer.min.css" class="aplayer-style-marker">
+<script src="\assets\js\APlayer.min.js" class="aplayer-script-marker"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JosephSun's Blogs</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">孙先生的失眠日记</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-cv"><a href="/CV/" rel="section"><i class="fa fa-user fa-fw"></i>CV</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-archive fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5%E5%BA%93"><span class="nav-number">1.</span> <span class="nav-text">导入库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6%E5%A4%B9%E6%96%87%E4%BB%B6%E5%8F%8A%E8%AF%BB%E5%8F%96nc%E6%96%87%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">第一步读取文件夹文件及读取nc文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89NC-to-tiffs%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">定义NC_to_tiffs函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A3%81%E5%89%AATIF"><span class="nav-number">4.</span> <span class="nav-text">裁剪TIF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1%E5%B9%B4%E8%92%B8%E5%8F%91%E6%80%BB%E9%87%8F"><span class="nav-number">5.</span> <span class="nav-text">统计年蒸发总量</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="JoeSun"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">JoeSun</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/JosephSun-6" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;JosephSun-6" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:417773447@qq.com" title="E-Mail → mailto:417773447@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://josephsun.cn/posts/3e3a0252/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="JoeSun">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JosephSun's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="气象数据NC批量转TIF及月尺度计算年尺度[同理其他指标] | JosephSun's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          气象数据NC批量转TIF及月尺度计算年尺度[同理其他指标]
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-01-02 15:12:43" itemprop="dateCreated datePublished" datetime="2023-01-02T15:12:43+08:00">2023-01-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-03 20:46:03" itemprop="dateModified" datetime="2023-01-03T20:46:03+08:00">2023-01-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/posts/3e3a0252/" class="post-meta-item leancloud_visitors" data-flag-title="气象数据NC批量转TIF及月尺度计算年尺度[同理其他指标]" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        
+        <div id="aplayer-ZmLTvNqg" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-ZmLTvNqg"),
+            narrow: false,
+            autoplay: true,
+            showlrc: false,
+            music: {
+              title: "交给他就好",
+              author: "直火帮",
+              url: "https://y.music.163.com/m/song?id=1808006794&uct2=Fzf8Wp6TJ9AhRgjpTErDmw%3D%3D&dlt=0846&app_version=8.9.1&sc=wmv&tn=",
+              pic: "",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+<p>大部分气象数据都是NC、NC4文件格式，因此如何读取NC文件，对于气象数据而言是十分重要的。本章主要涉及NC转TIF计算，以及批量读取TIF，批量计算年累计蒸发。</p>
+<p>涉及库包括netCDF4、gdal，安装库的流程内容在本文中不多叙述。</p>
+<span id="more"></span>
+
+<h3 id="导入库"><a href="#导入库" class="headerlink" title="导入库"></a>导入库</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> glob</span><br><span class="line"><span class="keyword">import</span> netCDF4 <span class="keyword">as</span> nc</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> osgeo <span class="keyword">import</span> gdal,osr,ogr</span><br></pre></td></tr></table></figure>
+
+<h3 id="第一步读取文件夹文件及读取nc文件"><a href="#第一步读取文件夹文件及读取nc文件" class="headerlink" title="第一步读取文件夹文件及读取nc文件"></a>第一步读取文件夹文件及读取nc文件</h3><p><strong>glob是一个很好用的读取文件夹中特定文件的库</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input_folder = <span class="string">r&#x27;.\nc&#x27;</span></span><br><span class="line">Output_folder = <span class="string">r&#x27;.\tif\output&#x27;</span></span><br><span class="line"><span class="comment"># 读取所有nc数据</span></span><br><span class="line">data_list = glob.glob(Input_folder + <span class="string">&#x27;/*.nc4&#x27;</span>)</span><br><span class="line">data_list[:<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">out[2]：</span><br><span class="line">[&#x27;.\\nc\\GLDAS_NOAH025_M.A202101.021.nc4&#x27;,</span><br><span class="line"> &#x27;.\\nc\\GLDAS_NOAH025_M.A202102.021.nc4&#x27;,</span><br><span class="line"> &#x27;.\\nc\\GLDAS_NOAH025_M.A202103.021.nc4&#x27;,</span><br><span class="line"> &#x27;.\\nc\\GLDAS_NOAH025_M.A202104.021.nc4&#x27;,</span><br><span class="line"> &#x27;.\\nc\\GLDAS_NOAH025_M.A202105.021.nc4&#x27;]</span><br></pre></td></tr></table></figure>
+
+<p>读取nc文件基本内容，关于注释的两行内容，读者可以自行查看</p>
+<p>具体有几项需要说明一下，后续定义NC_to_tiffs函数时需要修改部分内容，包括缺失值missing_value，变量名称variables，dimensions中对于经纬度的名称定义lons，lats</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nc_data_obj = nc.Dataset(data_list[<span class="number">0</span>])</span><br><span class="line"><span class="built_in">print</span>(nc_data_obj, <span class="built_in">type</span>(nc_data_obj))  <span class="comment"># 了解NC_DS的数据类型，&lt;class &#x27;netCDF4._netCDF4.Dataset&#x27;&gt;</span></span><br><span class="line"><span class="comment"># print(nc_data_obj.variables)  # 了解变量的基本信息</span></span><br><span class="line"><span class="comment"># print(nc_data_obj)</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">out[3]：</span><br><span class="line">&lt;class &#x27;netCDF4._netCDF4.Dataset&#x27;&gt;</span><br><span class="line">root group (NETCDF4 data model, file format HDF5):</span><br><span class="line">    missing_value: -9999.0</span><br><span class="line">    tavg definition:: past 3-hour average</span><br><span class="line">    acc definition:: past 3-hour accumulation</span><br><span class="line">    inst definition:: instantaneous</span><br><span class="line">    title: GLDAS2.1 LIS land surface model output monthly mean</span><br><span class="line">    institution: NASA GSFC</span><br><span class="line">    source: Noah_v3.6 forced with GDAS-AGRMET-GPCPv13rA1_202101</span><br><span class="line">    history: created on date: 2021-04-23T11:19:32.357</span><br><span class="line">    references: Rodell_etal_BAMS_2004, Kumar_etal_EMS_2006, Peters-Lidard_etal_ISSE_2007</span><br><span class="line">    conventions: CF-1.6</span><br><span class="line">    comment: website: https://ldas.gsfc.nasa.gov/gldas, https://lis.gsfc.nasa.gov/</span><br><span class="line">    MAP_PROJECTION: EQUIDISTANT CYLINDRICAL</span><br><span class="line">    SOUTH_WEST_CORNER_LAT: -59.875</span><br><span class="line">    SOUTH_WEST_CORNER_LON: -179.875</span><br><span class="line">    DX: 0.25</span><br><span class="line">    DY: 0.25</span><br><span class="line">    dimensions(sizes): lon(1440), lat(600), time(1), bnds(2)</span><br><span class="line">    variables(dimensions): float32 lat(lat), float32 lon(lon), float64 time(time), float64 time_bnds(time, bnds), float32 Swnet_tavg(time, lat, lon), float32 Lwnet_tavg(time, lat, lon), float32 Qle_tavg(time, lat, lon), float32 Qh_tavg(time, lat, lon), float32 Qg_tavg(time, lat, lon), float32 Snowf_tavg(time, lat, lon), float32 Rainf_tavg(time, lat, lon), float32 Evap_tavg(time, lat, lon), float32 Qs_acc(time, lat, lon), float32 Qsb_acc(time, lat, lon), float32 Qsm_acc(time, lat, lon), float32 AvgSurfT_inst(time, lat, lon), float32 Albedo_inst(time, lat, lon), float32 SWE_inst(time, lat, lon), float32 SnowDepth_inst(time, lat, lon), float32 SoilMoi0_10cm_inst(time, lat, lon), float32 SoilMoi10_40cm_inst(time, lat, lon), float32 SoilMoi40_100cm_inst(time, lat, lon), float32 SoilMoi100_200cm_inst(time, lat, lon), float32 SoilTMP0_10cm_inst(time, lat, lon), float32 SoilTMP10_40cm_inst(time, lat, lon), float32 SoilTMP40_100cm_inst(time, lat, lon), float32 SoilTMP100_200cm_inst(time, lat, lon), float32 PotEvap_tavg(time, lat, lon), float32 ECanop_tavg(time, lat, lon), float32 Tveg_tavg(time, lat, lon), float32 ESoil_tavg(time, lat, lon), float32 RootMoist_inst(time, lat, lon), float32 CanopInt_inst(time, lat, lon), float32 Wind_f_inst(time, lat, lon), float32 Rainf_f_tavg(time, lat, lon), float32 Tair_f_inst(time, lat, lon), float32 Qair_f_inst(time, lat, lon), float32 Psurf_f_inst(time, lat, lon), float32 SWdown_f_tavg(time, lat, lon), float32 LWdown_f_tavg(time, lat, lon)</span><br><span class="line">    groups:  &lt;class &#x27;netCDF4._netCDF4.Dataset&#x27;&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="定义NC-to-tiffs函数"><a href="#定义NC-to-tiffs函数" class="headerlink" title="定义NC_to_tiffs函数"></a>定义NC_to_tiffs函数</h3><p>继续重复，对于不同nc文件需要注意修改缺失值missing_value，变量名称variables，dimensions中对于经纬度的名称定义lons，lats。</p>
+<p>如果lats是从小到大排序，需要设置 u_arr[ i ] [::-1] </p>
+<p>另外需要考虑数据单位问题，在本章节中的蒸发量为例，GLDAS对于 “Evap_tavg” 的单位定义为 kg m-2 s-1 ，kg m-2 相当于 mm，所以对于月尺度的GLDAS数据蒸发量而言，只需要乘以时间即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">NC_to_tiffs</span>(<span class="params">data, Output_folder, bandname</span>):</span><br><span class="line">    nc_data_obj = nc.Dataset(data)</span><br><span class="line"><span class="comment">#     print(nc_data_obj, type(nc_data_obj))  # 了解NC_DS的数据类型，&lt;class &#x27;netCDF4._netCDF4.Dataset&#x27;&gt;</span></span><br><span class="line"><span class="comment">#     print(nc_data_obj.variables)  # 了解变量的基本信息</span></span><br><span class="line"><span class="comment">#     print(nc_data_obj)</span></span><br><span class="line">    Lon = nc_data_obj.variables[<span class="string">&#x27;lon&#x27;</span>][:]</span><br><span class="line">    Lat = nc_data_obj.variables[<span class="string">&#x27;lat&#x27;</span>][:]</span><br><span class="line"></span><br><span class="line">    u_arr = np.asarray(nc_data_obj.variables[bandname])  <span class="comment"># 这里根据需求输入想要转换的波段名称</span></span><br><span class="line">    <span class="comment"># 影像的左上角和右下角坐标</span></span><br><span class="line">    LonMin, LatMax, LonMax, LatMin = [Lon.<span class="built_in">min</span>(), Lat.<span class="built_in">max</span>(), Lon.<span class="built_in">max</span>(), Lat.<span class="built_in">min</span>()]</span><br><span class="line">    <span class="comment"># 分辨率计算</span></span><br><span class="line">    N_Lat = <span class="built_in">len</span>(Lat)</span><br><span class="line">    N_Lon = <span class="built_in">len</span>(Lon)</span><br><span class="line">    Lon_Res = (LonMax - LonMin) / (<span class="built_in">float</span>(N_Lon) - <span class="number">1</span>)</span><br><span class="line">    Lat_Res = (LatMax - LatMin) / (<span class="built_in">float</span>(N_Lat) - <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(u_arr[:])):</span><br><span class="line">        <span class="comment"># 创建.tif文件</span></span><br><span class="line">        driver = gdal.GetDriverByName(<span class="string">&#x27;GTiff&#x27;</span>)</span><br><span class="line">        out_tif_name = Output_folder + <span class="string">&#x27;/&#x27;</span> + bandname +<span class="string">&#x27;_&#x27;</span>  + data.split(<span class="string">&#x27;\\&#x27;</span>)[<span class="number">2</span>].split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">1</span>][<span class="number">1</span>:] +  <span class="string">&#x27;.tif&#x27;</span></span><br><span class="line">        out_tif = driver.Create(out_tif_name, N_Lon, N_Lat, <span class="number">1</span>, gdal.GDT_Float32)</span><br><span class="line">        <span class="comment"># 设置影像的显示范围</span></span><br><span class="line">        <span class="comment"># -Lat_Res一定要是-的</span></span><br><span class="line">        geotransform = (LonMin, Lon_Res, <span class="number">0</span>, LatMax, <span class="number">0</span>, -Lat_Res)</span><br><span class="line">        out_tif.SetGeoTransform(geotransform)</span><br><span class="line">        <span class="comment"># 获取地理坐标系统信息，用于选取需要的地理坐标系统</span></span><br><span class="line">        srs = osr.SpatialReference()</span><br><span class="line">        srs.ImportFromEPSG(<span class="number">4326</span>)  <span class="comment"># 定义输出的坐标系为&quot;WGS 84&quot;，AUTHORITY[&quot;EPSG&quot;,&quot;4326&quot;]</span></span><br><span class="line">        out_tif.SetProjection(srs.ExportToWkt())  <span class="comment"># 给新建图层赋予投影信息</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 去除异常值</span></span><br><span class="line">        u_arr[u_arr[:, :] == -<span class="number">9999.0</span>] = np.nan</span><br><span class="line">        <span class="comment"># 数据写出</span></span><br><span class="line">        out_tif.GetRasterBand(<span class="number">1</span>).WriteArray(u_arr[i][::-<span class="number">1</span>]*<span class="number">60</span>*<span class="number">60</span>*<span class="number">24</span>*<span class="number">30</span>)</span><br><span class="line">        <span class="comment"># 将数据写入内存，此时没有写入硬盘 此处[::-1]用于图像的垂直镜像对称，避免图像颠倒</span></span><br><span class="line">        out_tif.FlushCache()  <span class="comment"># 将数据写入硬盘</span></span><br><span class="line">        <span class="keyword">del</span> out_tif  <span class="comment"># 注意必须关闭tif文件</span></span><br></pre></td></tr></table></figure>
+
+<p>导出TIF并保存</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for i in range(len(data_list)):</span><br><span class="line">    data = data_list[i]</span><br><span class="line">    NC_to_tiffs(data, Output_folder,&quot;Evap_tavg&quot;)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/./C:/Users/lenovo/Desktop/1.png" alt="1"></p>
+<h3 id="裁剪TIF"><a href="#裁剪TIF" class="headerlink" title="裁剪TIF"></a>裁剪TIF</h3><p>虽然获得了全球蒸发量数据，换到GIS软件中裁剪也是可以的，但是好麻烦，尤其是遇到需要统计年单位结果时候。</p>
+<p>读取TIF数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input_folder = <span class="string">&#x27;./tif/output/&#x27;</span></span><br><span class="line">Output_folder = <span class="string">&#x27;./tif/clip/&#x27;</span></span><br><span class="line"><span class="comment"># 读取所有nc数据</span></span><br><span class="line">data_list = glob.glob(Input_folder + <span class="string">&#x27;/*.tif&#x27;</span>)</span><br><span class="line">data_list[:<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+
+<p>定义裁剪函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">clipTif</span>(<span class="params">data</span>):</span><br><span class="line">    input_shape = <span class="string">r&quot;shp/Uzb.shp&quot;</span> </span><br><span class="line">    output_raster= Output_folder + data.split(<span class="string">&#x27;\\&#x27;</span>)[<span class="number">1</span>].split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">0</span>].split(<span class="string">&quot;_&quot;</span>)[-<span class="number">1</span>] +<span class="string">&quot;.tif&quot;</span></span><br><span class="line">    <span class="comment"># tif输入路径，打开文件</span></span><br><span class="line">    input_raster = data</span><br><span class="line">    <span class="comment"># 矢量文件路径，打开矢量文件</span></span><br><span class="line">    input_raster=gdal.Open(input_raster)</span><br><span class="line">    ds = gdal.Warp(output_raster, <span class="comment"># 裁剪图像保存完整路径（包括文件名）</span></span><br><span class="line">                   input_raster, <span class="comment"># 待裁剪的影像</span></span><br><span class="line">                    <span class="comment"># warpMemoryLimit=500 内存大小M</span></span><br><span class="line">                   <span class="built_in">format</span>=<span class="string">&#x27;GTiff&#x27;</span>, <span class="comment"># 保存图像的格式</span></span><br><span class="line">                   cutlineDSName = input_shape, <span class="comment"># 矢量文件的完整路径</span></span><br><span class="line">                   cropToCutline = <span class="literal">True</span>,</span><br><span class="line">                   copyMetadata=<span class="literal">True</span>,</span><br><span class="line">                   creationOptions=[<span class="string">&#x27;COMPRESS=LZW&#x27;</span>,<span class="string">&quot;TILED=True&quot;</span>],</span><br><span class="line">                   cutlineWhere=<span class="string">&quot;FIELD = &#x27;whatever&#x27;&quot;</span>,</span><br><span class="line">                   dstNodata=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>裁剪</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(data_list)):</span><br><span class="line">    data = data_list[i]</span><br><span class="line">    clipTif(data)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/./C:/Users/lenovo/Desktop/2.png" alt="2"></p>
+<h3 id="统计年蒸发总量"><a href="#统计年蒸发总量" class="headerlink" title="统计年蒸发总量"></a>统计年蒸发总量</h3><p>定义读取tif函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def readTif(fileName):</span><br><span class="line">    dataset = gdal.Open(fileName)</span><br><span class="line">    im_width = dataset.RasterXSize #栅格矩阵的列数</span><br><span class="line">    im_height = dataset.RasterYSize #栅格矩阵的行数</span><br><span class="line">#     print(im_width, im_height)</span><br><span class="line">    im_data = dataset.ReadAsArray(0,0,im_width,im_height)#获取数据</span><br><span class="line">    im =  im_data[0:im_height,0:im_width]#获取蓝波段</span><br><span class="line">    return im</span><br></pre></td></tr></table></figure>
+
+<p>读取文件夹</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input_folder = <span class="string">&#x27;./tif/clip/&#x27;</span></span><br><span class="line">Output_folder = <span class="string">&#x27;./tif/sum/&#x27;</span></span><br><span class="line"><span class="comment"># 读取所有nc数据</span></span><br><span class="line">data_list = glob.glob(Input_folder + <span class="string">&#x27;/*.tif&#x27;</span>)</span><br><span class="line">data_list[:<span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+
+<p>设置输出的基本格式[方便批处理时候的标准参考]</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dataset = gdal.Open(data_list[<span class="number">0</span>])</span><br><span class="line">im_width = dataset.RasterXSize <span class="comment">#栅格矩阵的列数</span></span><br><span class="line">im_height = dataset.RasterYSize <span class="comment">#栅格矩阵的行数</span></span><br><span class="line">im_bands = dataset.RasterCount <span class="comment">#波段数</span></span><br><span class="line">im_data = dataset.ReadAsArray(<span class="number">0</span>,<span class="number">0</span>,im_width,im_height)<span class="comment">#获取数据</span></span><br><span class="line">im_geotrans = dataset.GetGeoTransform()<span class="comment">#获取仿射矩阵信息</span></span><br><span class="line">im_proj = dataset.GetProjection()<span class="comment">#获取投影信息</span></span><br></pre></td></tr></table></figure>
+
+<p>定义写入函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">writeTiff</span>(<span class="params">im_data,path,im_width,im_height,im_bands,im_geotrans,im_proj</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;int8&#x27;</span> <span class="keyword">in</span> im_data.dtype.name:</span><br><span class="line">        datatype = gdal.GDT_Byte</span><br><span class="line">    <span class="keyword">elif</span> <span class="string">&#x27;int16&#x27;</span> <span class="keyword">in</span> im_data.dtype.name:</span><br><span class="line">        datatype = gdal.GDT_UInt16</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        datatype = gdal.GDT_Float32</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(im_data.shape) == <span class="number">3</span>:</span><br><span class="line">        im_bands, im_height, im_width = im_data.shape</span><br><span class="line">    <span class="keyword">elif</span> <span class="built_in">len</span>(im_data.shape) == <span class="number">2</span>:</span><br><span class="line">        im_data = np.array([im_data])</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        im_bands, (im_height, im_width) = <span class="number">1</span>,im_data.shape</span><br><span class="line">        <span class="comment">#创建文件</span></span><br><span class="line">    driver = gdal.GetDriverByName(<span class="string">&quot;GTiff&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    path = Output_folder + <span class="string">&quot;\\&quot;</span> + path.split(<span class="string">&#x27;\\&#x27;</span>)[<span class="number">1</span>].split(<span class="string">&#x27;.&#x27;</span>)[<span class="number">0</span>][:<span class="number">4</span>] + <span class="string">&quot;.tif&quot;</span></span><br><span class="line">    dataset = driver.Create(path, im_width, im_height, im_bands, datatype)</span><br><span class="line">    <span class="keyword">if</span>(dataset!= <span class="literal">None</span>):</span><br><span class="line">        dataset.SetGeoTransform(im_geotrans) <span class="comment">#写入仿射变换参数</span></span><br><span class="line">        dataset.SetProjection(im_proj) <span class="comment">#写入投影</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(im_bands):</span><br><span class="line">        dataset.GetRasterBand(i+<span class="number">1</span>).WriteArray(im_data[i])</span><br><span class="line">    <span class="keyword">del</span> dataset</span><br></pre></td></tr></table></figure>
+
+<p>输出年结果</p>
+<p>需要注意的问题是年单位时候对于降水、蒸发等的定义问题，可以对tmp进行修改</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">index = <span class="number">1</span></span><br><span class="line">tmp = np.zeros(readTif(data_list[<span class="number">0</span>]).shape ,dtype=<span class="built_in">float</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(data_list)):</span><br><span class="line">    <span class="keyword">if</span> index % <span class="number">12</span> == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(index / <span class="number">12</span>)</span><br><span class="line">        writeTiff(tmp,data_list[i -<span class="number">1</span>] ,im_width ,im_height ,im_bands ,im_geotrans ,im_proj)</span><br><span class="line">        tmp = np.zeros(readTif(data_list[i]).shape ,dtype=<span class="built_in">float</span>)</span><br><span class="line"></span><br><span class="line">    tmp += np.array(readTif(data_list[i]))</span><br><span class="line">    index+=<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/3.png" alt="3"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/c4240fb3/" rel="prev" title="PYTHON地理出图配色及旁门左道">
+                  <i class="fa fa-chevron-left"></i> PYTHON地理出图配色及旁门左道
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">晋ICP备20000688号-2 </a>
+      <img src="/image/beian.jpg" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=14082702000119" rel="noopener" target="_blank">晋公网安备 14082702000124号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JoeSun</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"lGA8jDiu9xwPn8eGaVF2Ne2q-gzGzoHsz","app_key":"lI98i4LNGKqPDmaQTixb93yG","security":false,"betterPerformance":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"josephsun.cn","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="这一篇谈谈 u-test(z-test) 和 正态性检验">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[空间分析]叁·地理统计2">
+<meta property="og:url" content="https://josephsun.cn/posts/7971f45/">
+<meta property="og:site_name" content="JosephSun&#39;s Blogs">
+<meta property="og:description" content="这一篇谈谈 u-test(z-test) 和 正态性检验">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://josephsun.cn/p-value-and-z.png">
+<meta property="og:image" content="https://josephsun.cn/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/image-20201203214839241.png">
+<meta property="og:image" content="https://josephsun.cn/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/image-20201203215142342.png">
+<meta property="og:image" content="https://josephsun.cn/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/image-20201203215203745.png">
+<meta property="og:image" content="https://josephsun.cn/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/image-20201203215249435.png">
+<meta property="og:image" content="https://josephsun.cn/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/v2-044674d02d820d94ec7d8e409978b43a_720w.png">
+<meta property="article:published_time" content="2020-12-02T11:42:24.000Z">
+<meta property="article:modified_time" content="2020-12-06T12:28:19.264Z">
+<meta property="article:author" content="JoeSun">
+<meta property="article:tag" content="空间分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://josephsun.cn/p-value-and-z.png">
+
+
+<link rel="canonical" href="https://josephsun.cn/posts/7971f45/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://josephsun.cn/posts/7971f45/","path":"posts/7971f45/","title":"[空间分析]叁·地理统计2"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>[空间分析]叁·地理统计2 | JosephSun's Blogs</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156331840-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-156331840-2","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1263cea084ac2c7b896396b81f9a4fbc"></script>
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JosephSun's Blogs</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">孙先生的失眠日记</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-cv"><a href="/CV/" rel="section"><i class="fa fa-user fa-fw"></i>CV</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-archive fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#z-test"><span class="nav-number">1.</span> <span class="nav-text">z-test</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Normality-tests"><span class="nav-number">2.</span> <span class="nav-text">Normality tests</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="JoeSun"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">JoeSun</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/JosephSun-6" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;JosephSun-6" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:417773447@qq.com" title="E-Mail → mailto:417773447@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://josephsun.cn/posts/7971f45/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="JoeSun">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JosephSun's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="[空间分析]叁·地理统计2 | JosephSun's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [空间分析]叁·地理统计2
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-02 19:42:24" itemprop="dateCreated datePublished" datetime="2020-12-02T19:42:24+08:00">2020-12-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-12-06 20:28:19" itemprop="dateModified" datetime="2020-12-06T20:28:19+08:00">2020-12-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">空间分析</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/posts/7971f45/" class="post-meta-item leancloud_visitors" data-flag-title="[空间分析]叁·地理统计2" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>这一篇谈谈 u-test(z-test) 和 正态性检验</p>
+<span id="more"></span>
+
+<h4 id="z-test"><a href="#z-test" class="headerlink" title="z-test"></a>z-test</h4><p>Z检验，也称“U检验”，是为了检验在H<sub>0</sub>情况下样本数据能否可以接近正态分布的一种统计测试。Z-test也特指the one-sample location test 。</p>
+<p>如果将普通正态分布转换成标准正态分布，其核心在于z-score公式<br>$$<br>z_i&#x3D;\frac{X_i - \mu_0}{\sigma}<br>$$<br>$X_i$ 是样本总体数据中的第i个数据；$\mu$ 是总体均值；$\sigma$ 是总体标准差</p>
+<p>根据中心极限定理，在大样本条件下许多测验可以被贴合为正态分布。当实际标准差未知，而样本容量较小（小于等于30）时，T-test更加适用。</p>
+<p>步骤：</p>
+<p>第一步，建立H<sub>0</sub>假设：$\mu_1 &#x3D; \mu_2$，假定两个样本均值无显著差异或者一组的样本均值与已知总体均值无显著差异。</p>
+<p>第二步，计算统计量z-score，对于不同问题需要选用不同方法，如果要检验：</p>
+<ol>
+<li><p>两组样本均值是否具有显著差异，检验公式如下：<br>$$<br>Z&#x3D; \frac{(\overline X_1 - \overline X_2) \  - \ (\mu_1 - \mu_2)}{\sqrt{\frac{\sigma_1^2}{n_1}+\frac{\sigma_2^2}{n_2}}}&#x3D;\frac{(\overline X_1 - \overline X_2)}{\sqrt{\frac{\sigma_1^2}{n_1}+\frac{\sigma_2^2}{n_2}}} \<br>Z&#x3D; \frac{(\overline X_1 - \overline X_2) \  - \ (\mu_1 - \mu_2)}{\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}}&#x3D;\frac{(\overline X_1 - \overline X_2)}{\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}}<br>$$<br>$\overline X$ 为样本均值，$\mu$ 为样本抽样的总体均值，$\sigma$是总体标准差，$s$ 是样本标准差</p>
+</li>
+<li><p>一组样本均值与已知总体均值是否具有显著差异，检验公式如下：<br>$$<br>Z&#x3D;\frac{\overline X -\mu_0}{s&#x2F;\sqrt{n}} \<br>Z&#x3D;\frac{\overline X -\mu_0}{\sigma&#x2F;\sqrt{n}}<br>$$<br>$\overline X$ 为样本均值，$\mu_0$ 为假设与样本均值无显著差异的常数，$\sigma$是总体标准差，$s$ 是样本标准差</p>
+</li>
+</ol>
+<p><strong>再强调一次，样本容量大于30时，样本标准差与总体标准差的误差非常小，样本容量越大，它们之间的误差越小。</strong></p>
+<p>第三步，比较计算的z值和理论z值，推断发生概率</p>
+<ul>
+<li><p>双侧</p>
+<p><img src="/p-value-and-z.png" alt="p-value-and-z"></p>
+</li>
+<li><p>单侧</p>
+<p>同理上表，由于是单侧分布，因此当 Z值$\leq$-1.65 或 Z值$\geq$1.65 时，差异程度为显著</p>
+</li>
+</ul>
+<p><strong>参考文献</strong></p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Standard_score">https://en.wikipedia.org/wiki/Standard_score</a></p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Z-test">https://en.wikipedia.org/wiki/Z-test</a></p>
+<p><a target="_blank" rel="noopener" href="https://wiki.mbalib.com/wiki/Z%E6%A3%80%E9%AA%8C">https://wiki.mbalib.com/wiki/Z%E6%A3%80%E9%AA%8C</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/86457717">https://zhuanlan.zhihu.com/p/86457717</a></p>
+<h4 id="Normality-tests"><a href="#Normality-tests" class="headerlink" title="Normality tests"></a>Normality tests</h4><blockquote>
+<p>In statistics, normality tests are used to determine if a data set is well-modeled by a normal distribution and to compute how likely it is for a random variable underlying the data set to be normally distributed.</p>
+<p>–wiki</p>
+</blockquote>
+<p>t-test等检验都基于数据具有某种特征，比如正态分布等，而且其有效性取决于数据的分布。因此再进行检验前，最好先验证样本数据是否符合前提假设，如果不满足，可以考虑非参数检验。</p>
+<p>评估样本数据正态性可以考虑以下几个方法：</p>
+<ol>
+<li><p>大样本情况：如果样本数目大于30，可以默认为大样本情况，忽略其样本分布，采用参数检验，但最好采用目视检查或正态显著性检验等方法，查看其分布的正态性。</p>
+</li>
+<li><p>正态分布显著性检验</p>
+<p>通常情况下，目视检查只能看个大概，并不可靠，可以采用显著性检验方法对样本与正态分布进行比较，以定量确定样本的偏离程度。</p>
+<p>通常方法包括：</p>
+<ol>
+<li><p>图示法 </p>
+<p>P-P图 ppplot {需要包 StatDA}</p>
+<p>(按照样本的累计频率为横坐标，正态分布累计频率为纵坐标)</p>
+<p><img src="/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/image-20201203214839241.png" alt="image-20201203214839241"></p>
+<p>Q-Q图 qqplot()</p>
+<p><img src="/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/image-20201203215142342.png" alt="image-20201203215142342"></p>
+<p>频率直方图 hist()</p>
+<p><img src="/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/image-20201203215203745.png" alt="image-20201203215203745"></p>
+<p>箱线图 boxplot()</p>
+<p><img src="/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/image-20201203215249435.png" alt="image-20201203215249435"></p>
+<p>茎叶图 stem()</p>
+<p>茎叶图又称“枝叶图”，它的思路是将数组中的数按位数进行比较，将数的大小基本不变或变化不大的位作为一个主干（茎），将变化大的位的数作为分枝（叶），列在主干的后面，这样就可以清楚地看到每个主干后面的几个数，每个数具体是多少。</p>
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> stem<span class="punctuation">(</span>ts<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">  The decimal point is at the <span class="operator">|</span></span><br><span class="line"></span><br><span class="line">  <span class="operator">-</span><span class="number">2</span> <span class="operator">|</span> <span class="number">400</span></span><br><span class="line">  <span class="operator">-</span><span class="number">1</span> <span class="operator">|</span> <span class="number">98884432211100000</span></span><br><span class="line">  <span class="operator">-</span><span class="number">0</span> <span class="operator">|</span> <span class="number">999998877665444433322222111110000</span></span><br><span class="line">   <span class="number">0</span> <span class="operator">|</span> <span class="number">0111222223334556677778889</span></span><br><span class="line">   <span class="number">1</span> <span class="operator">|</span> <span class="number">011111222333455799</span></span><br><span class="line">   <span class="number">2</span> <span class="operator">|</span> <span class="number">017</span></span><br><span class="line">   <span class="number">3</span> <span class="operator">|</span> <span class="number">4</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>偏度、峰度检验法(冒牌 K-S 检验法)</p>
+<ul>
+<li><p>S，K 检验 —— 偏度(Skewness)和峰度(Kurtosis)</p>
+<p>**偏度 Skewness **</p>
+<p>偏度衡量随机变量概率分布的不对称性，是相对于平均值不对称程度的度量，通过对偏度系数的测量，我们能够判定数据分布的不对称程度以及方向。</p>
+<p>具体来说，对于随机变量X，我们定义偏度为其的三阶标准中心距:<br>$$<br>\gamma _ { 1 } &#x3D; E [ ( \frac { X - \mu } { \delta } ) ^ { 3 } ] &#x3D; \frac { E [ ( X - \mu ) ^ { 3 } ] } { \delta ^ { 3 } } &#x3D; \frac { E [ ( X - \mu ) ^ { 3 } ] } { ( E [ ( X - \mu ) ^ { 2 } ] ) ^ { \frac { 3 } { 2 } } } &#x3D; \frac { K _ { 3 } } { K _ { 2 } ^ { \frac { 3 } { 2 } } }<br>$$<br>对于样本的偏度，我们一般记为SK，我们可以基于矩估计，得到有:<br>$$<br>S K _ { 1 } &#x3D; \frac { m _ { 3 } } { m _ { 2 } ^ { \frac { 3 } { 2 } } } &#x3D; \frac { \frac { 1 } { n } \sum _ { i &#x3D; 1 } ^ { n } ( x _ { i } - \overline { x } ) ^ { 3 } } { [ \frac { 1 } { n } \sum _ { i &#x3D; 1 } ^ { n } ( x _ { i } - \overline { x } ) ^ { 2 } ] ^ { \frac { 3 } { 2 } } }<br>$$<br>其中，$\overline x$ 为样本均值，$m_3$ 为样本三阶中心矩，$m_2$ 是样本二阶中心矩</p>
+<p>偏度的衡量是相对于正态分布来说，正态分布的偏度为0，即若数据分布是对称的，偏度为0。若偏度大于0，则分布右偏，即分布有一条长尾在右；若偏度小于0，则分布为左偏，即分布有一条长尾在左（如下图）；同时偏度的绝对值越大，说明分布的偏移程度越严重。</p>
+<p>注意：数据分布的左偏或右偏，指的是数值拖尾的方向，而不是峰的位置。</p>
+<p>**峰度 Kurtosis **</p>
+<p>峰度，是研究数据分布陡峭或者平滑的统计量，通过对峰度系数的测量，我们能够判定数据相对于正态分布而言是更陡峭还是更平缓。比如正态分布的峰度为0，均匀分布的峰度为-1.2（平缓），指数分布的峰度6（陡峭）。</p>
+<p>峰度，定义为四阶中心距 $m_4$ 除以方差 $\delta$ 的平方减3。<br>$$<br>\gamma _ { 2 } &#x3D; \frac { K _ { 4 } } { K _ { 2 } ^ { 2 } } - 3 &#x3D; \frac { \mu _ { 4 } } { \delta ^ { 4 } } - 3 &#x3D; \frac { \frac { 1 } { n } \sum _ { i &#x3D; 1 } ^ { n } ( x _ { i } - \overline { x } ) ^ { 4 } } { ( \frac { 1 } { n } \sum _ { i &#x3D; 1 } ^ { n } ( x _ { i } - \overline { x } ) ^ { 2 } ) ^ { 2 } } - 3<br>$$<br>若峰度 $\approx$ 0 , 分布的峰态服从正态分布；若峰度 &gt; 0,分布的峰态陡峭（高尖）；若峰度 &lt; 0,分布的峰态平缓（矮胖）；</p>
+</li>
+<li><p>Jarque-bera 检验 —— 偏度和峰度的联合分布</p>
+<p>在统计学中，Jarque–Bera检验是对样本数据是否具有符合正态分布的偏度和峰度的拟合优度的检验。该检验以 Carlos Jarque and Anil K. Bera 来命名。JB统计量定义为<br>$$<br>JB&#x3D;\frac{S^2}{6&#x2F;n}+\frac{(K-3)^2}{24&#x2F;n}<br>$$<br>其中n是观测数(或自由度); S是样本偏度，K是样本峰度：<br>$$<br>S &#x3D; \frac { \hat { \mu } _ { 3 } } { \hat { \sigma } ^ { 3 } } &#x3D; \frac { \frac { 1 } { n } \sum _ { i &#x3D; 1 } ^ { n } ( x _ { i } - \overline { x } ) ^ { 3 } } { ( \frac { 1 } { n } \sum _ { i &#x3D; 1 } ^ { n } ( x _ { i } - \overline { x } ) ^ { 2 } ) ^ { 3 &#x2F; 2 } } \<br>  K &#x3D; \frac { \hat { \mu } _ { 4 } } { \hat { \sigma } ^ { 4 } } &#x3D; \frac { \frac { 1 } { n } \sum _ { i &#x3D; 1 } ^ { n } ( x _ { i } - \overline { x } ) ^ { 4 } } { ( \frac { 1 } { n } \sum _ { i &#x3D; 1 } ^ { n } ( x _ { i } - \overline { x } ) ^ { 2 } ) ^ { 4 &#x2F; 2 } }<br>$$<br>其中 $\hat \mu_3$ 和 $\hat \mu_4$ 分别是三阶中心矩和四阶中心矩的估计值，$\overline x$ 是样本均值，$\hat \sigma^2$是二阶中心矩（即方差）的估计值。</p>
+<p>如果样本数据来自具有正态分布的总体，JB统计量近似服从自由度为2的卡方分布，即 JBasy ~$\chi^2$，因此该统计量可以用于检验数据是否服从正态分布。原假设H<sub>0</sub>是偏度为0，峰度为3(因为正态分布的偏度为0，峰度为3)，若变量不是正态分布，则JB统计量将为一个逐渐增大值。</p>
+<p>如果JB统计量值较大，比如为11，则可以计算出卡方值大于11的概率为0.004，这个概率过小，因此不能认为样本来自正态分布。反之，成立。</p>
+<p>JB统计量用来检验序列观测值是否服从正态分布，该检验的零假设为样本服从正态分布。在零假设下，JB统计量服从$\chi^2 (2)$分布，变量X服从正态分布。</p>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<p>非参数检验方法</p>
+<p>在我国国标《GB&#x2F;T4882-2001数据的统计处理和解释：正态性检验》中，在有方向的检验方法中，推荐了偏度和峰度检验；在无方向的检验方法中，推荐了Shapiro–Wilk检验和Epps-Pulley检验，并明确Shapiro–Wilk检验适用于8≤n≤50的样本数据，Epps-Pulley检验适用于n≥8的样本。</p>
+<ul>
+<li><p>K-S检验 —— Kolmogorov-Smirnov检验</p>
+<p>K-S检验的思路是那样本数据和期望的理论分布进行对比，若差异不大，则可以认为服从正态分布。</p>
+<p><img src="/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/v2-044674d02d820d94ec7d8e409978b43a_720w.png" alt="img"></p>
+<p>Kolmogorov检验找出在每一个数据点上经验累积概率与目标分布的累积概率之差的上界，列出公式是这样的：<br>$$<br>D_n&#x3D;sup_x|F_n(x)-F(x)|<br>$$<br>其中$sup$函数表示一组距离中的上确界，这是个数学概念，表示在原假设$F_n(x)-F(x)$ 的条件下，$F_n(x)-F(x)$ 的绝对值的最小上界。$F_n(x)$和$F(x)$分别代表经验的和理论的累积概率。其意图在于如果原假设成立，则$D_n$应该很小，如果很大，则原假设不成立。</p>
+<p>计算上确界：<br>$$<br>D _ { n } &#x3D; \operatorname { sup }_x | F _ { n } ( x ) - F _ { 0 } ( x ) | &#x3D; \operatorname { max } _ { 1 \leq k \leq n } { | F _ { n } ( x _ { k } ) - F _ { 0 } ( x _ { k } ) | , \  | F _ { 0 } ( x _ { k + 1 } ) - F _ { n } ( x _ { k } ) | }<br>$$<br>其中$k$为样本从小到大排列后的序数。从公式中看出$D_n$是经验和目标累积概率之差和错一位后再求出的差中最大的一个。Kolmogorov还给出了这个距离的分布函数，并给出了判断的临界值。</p>
+<p>Smirnov检验则是针对两组样本数据是否服从同一分布的检验，其思想与Kolmogorov检验一致，区别在于Smirnov检验计算的是两个样本累积概率的最大差值，当然统计量分布和临界值表肯定也不一样。</p>
+<p>此方法假设总体的参数是已知的，但这在实际应用中是很难做到的。在这种情况下通常用样本均值和标准差代替总体均值和标准差，这就是所谓的Lilliefors正态性检验。</p>
+</li>
+<li><p>Lilliefors检验</p>
+<p>Lilliefors检验是基于Kolmogorov-Smirnov检验的正态检验。被用来测试H<sub>0</sub>不指定其正态分布，即没有指定期望值和方差。</p>
+<p>流程为采用样本数据估算总体平均值和总体方差，找到经验分布函数和正态分布累计分布函数之间最大区别，评估最大差异是否足够大到其统计的显著性，同需查表。</p>
+</li>
+<li><p>Anderson–Darling AD检验</p>
+<p>这个方法是由T. W. Anderson和D. A. Darling于1954年提出的，与K-S检验相比，AD检验度量经验累积概率和理论累积概率之差的方法显得更加自然。下面的公式就是其方法：<br>$$<br>Z &#x3D; n \int _ { - \infty } ^ { \infty } [ F _ { n } ( x ) - F ( x ) ] ^ { 2 } w ( x ) f ( x ) d x<br>$$<br>其中$f(x)$是理论分布密度函数，$w(x)$是权重函数。若$w(x)&#x3D;1$，则为Cramér-Von Mises统计量$W^2$</p>
+<p>有些类似方差公式并乘以权重，就是把每个数据点的差求平方以后相加，得到总的分布偏差，这样就考虑了所有的差异点，而不是像K-S检验那样只考虑一个最大的。</p>
+<p>但是其积分计算并不容易，可以采用<br>$$<br>A ^ { 2 } &#x3D; - n - \sum _ { i } \frac { 2 i - 1 } { n } [ \operatorname { ln } F ( Y _ { i } ) + \operatorname { ln } ( 1 - F ( Y _ { n + 1 - i } ) ) ]<br>$$<br>其中<br>$$<br>Y _ { i } &#x3D; \frac { X _ { i } - \hat { \mu } } { \hat { \sigma } }<br>$$<br>这个公式计算所采用的数据顺序是从小到大排列的，不是原来的数据排列顺序。</p>
+</li>
+<li><p>Shapiro–Wilk W检验</p>
+<p>K-S检验统计量用的是经验累积概率与目标理论累积概率之差的最大值，这有点像计算极差；AD检验则把所有的差平方后求和，有点像计算方差。当然计算方差的稳健性(Robustness)要好一些，这可能也是AD检验得到更多应用的原因。</p>
+<p>Shapiro–Wilk W检验，按照维基百科中，W检验类似是计算相关系数，这个数越接近1，则越有可能正态。<br>$$<br>W &#x3D; \frac { R ^ { 4 } \hat { \sigma } ^ { 2 } } { C ^ { 2 } S ^ { 2 } } &#x3D; \frac { b ^ { 2 } } { S ^ { 2 } } &#x3D; \frac { ( a ^ { \prime } y ) ^ { 2 } } { S ^ { 2 } } &#x3D; ( \sum _ { i &#x3D; 1 } ^ { n } a _ { i } y _ { i } ) ^ { 2 } &#x2F; \sum _ { i &#x3D; 1 } ^ { n } ( y _ { i } - \overline { y } ) ^ { 2 } \<br>或 \ W &#x3D; \frac { ( \sum _ { i &#x3D; 1 } ^ { \frac { n } { 2 } } a _ { i } ( y _ { n + 1 - i } - y _ { i } ) ) ^ { 2 } } { \sum _ { i &#x3D; 1 } ^ { n } ( y _ { i } - \overline { y } ) ^ { 2 } }<br>$$<br>上者出自Shapiro和Wilk论文，下者出自梁小筠教授的《正态性检验》。</p>
+<p><strong>关于正态性检验哪个好，可以参考这篇文章</strong></p>
+<p> <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26608758">https://zhuanlan.zhihu.com/p/26608758</a></p>
+<p><strong>关于数据不正态，进行数据正态转化可以参考这篇文章</strong></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26784184">https://zhuanlan.zhihu.com/p/26784184</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26869997">https://zhuanlan.zhihu.com/p/26869997</a></p>
+</li>
+</ul>
+<p><strong>参考文献：</strong></p>
+<p>马廷老师的ppt</p>
+<p>《GB&#x2F;T4882-2001数据的统计处理和解释：正态性检验》</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/53184516">https://zhuanlan.zhihu.com/p/53184516</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.docin.com/p-2006164716.html">https://www.docin.com/p-2006164716.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/53559300">https://zhuanlan.zhihu.com/p/53559300</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26477641">https://zhuanlan.zhihu.com/p/26477641</a></p>
+<p><a target="_blank" rel="noopener" href="http://college.gcbi.com.cn/archives/1863">http://college.gcbi.com.cn/archives/1863</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26477641">https://zhuanlan.zhihu.com/p/26477641</a></p>
+<p><a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_65efeb0c0100htz7.html">http://blog.sina.com.cn/s/blog_65efeb0c0100htz7.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/Jarque-Bera%E6%A3%80%E9%AA%8C">https://zh.wikipedia.org/zh-hans/Jarque-Bera%E6%A3%80%E9%AA%8C</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.minitab.com/blog">https://blog.minitab.com/blog</a></p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test">https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_20207459/article/details/103000285">https://blog.csdn.net/qq_20207459/article/details/103000285</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90/" rel="tag"># 空间分析</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/f5b12c10/" rel="prev" title="[空间分析]叁·地理统计">
+                  <i class="fa fa-chevron-left"></i> [空间分析]叁·地理统计
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/70902fd3/" rel="next" title="[空间分析]叁·地理统计3">
+                  [空间分析]叁·地理统计3 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">晋ICP备20000688号-2 </a>
+      <img src="/image/beian.jpg" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=14082702000119" rel="noopener" target="_blank">晋公网安备 14082702000124号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JoeSun</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"lGA8jDiu9xwPn8eGaVF2Ne2q-gzGzoHsz","app_key":"lI98i4LNGKqPDmaQTixb93yG","security":false,"betterPerformance":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"josephsun.cn","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="这一篇主要记录一下基本包括 arcgis for js 的基本类别以及创建项目的结构目录。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="arcgis api for js 基本类">
+<meta property="og:url" content="https://josephsun.cn/posts/21430/">
+<meta property="og:site_name" content="JosephSun&#39;s Blogs">
+<meta property="og:description" content="这一篇主要记录一下基本包括 arcgis for js 的基本类别以及创建项目的结构目录。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://josephsun.cn/Classmap.jpg">
+<meta property="article:published_time" content="2020-05-25T12:15:51.000Z">
+<meta property="article:modified_time" content="2020-06-18T02:24:19.125Z">
+<meta property="article:author" content="JoeSun">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="arcgis for js">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://josephsun.cn/Classmap.jpg">
+
+
+<link rel="canonical" href="https://josephsun.cn/posts/21430/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://josephsun.cn/posts/21430/","path":"posts/21430/","title":"arcgis api for js 基本类"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>arcgis api for js 基本类 | JosephSun's Blogs</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156331840-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-156331840-2","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1263cea084ac2c7b896396b81f9a4fbc"></script>
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JosephSun's Blogs</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">孙先生的失眠日记</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-cv"><a href="/CV/" rel="section"><i class="fa fa-user fa-fw"></i>CV</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-archive fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E7%B1%BB%E5%88%AB"><span class="nav-number">1.</span> <span class="nav-text">相关类别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E7%9B%AE%E5%BD%95"><span class="nav-number">2.</span> <span class="nav-text">项目结构目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F"><span class="nav-number">3.</span> <span class="nav-text">程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%EF%BC%9A%E6%82%A8%E6%B2%A1%E6%9C%89%E8%B6%B3%E5%A4%9F%E7%9A%84%E7%89%B9%E6%9D%83%E8%AE%BF%E9%97%AE%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%8A%E7%9A%84-IIS-%E7%BD%91%E7%AB%99"><span class="nav-number">4.</span> <span class="nav-text">问题：您没有足够的特权访问计算机上的 IIS 网站</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="JoeSun"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">JoeSun</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/JosephSun-6" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;JosephSun-6" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:417773447@qq.com" title="E-Mail → mailto:417773447@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://josephsun.cn/posts/21430/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="JoeSun">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JosephSun's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="arcgis api for js 基本类 | JosephSun's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          arcgis api for js 基本类
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-05-25 20:15:51" itemprop="dateCreated datePublished" datetime="2020-05-25T20:15:51+08:00">2020-05-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2020-06-18 10:24:19" itemprop="dateModified" datetime="2020-06-18T10:24:19+08:00">2020-06-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/posts/21430/" class="post-meta-item leancloud_visitors" data-flag-title="arcgis api for js 基本类" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>这一篇主要记录一下基本包括 arcgis for js 的基本类别以及创建项目的结构目录。</p>
+<span id="more"></span>
+
+<h2 id="相关类别"><a href="#相关类别" class="headerlink" title="相关类别"></a>相关类别</h2><p>arcgis for js 官方具有313类，所有类在<a target="_blank" rel="noopener" href="https://developers.arcgis.com/javascript/3/jsapi/">官方文档</a>均有介绍包括其构造函数选项以及属性，方法和事件，以map类为例。</p>
+<p>官方文件中提到“Map类创建一个容器和必需的DOM结构，以添加<a target="_blank" rel="noopener" href="https://developers.arcgis.com/javascript/3/jsapi/layer-amd.html">图层</a>，<a target="_blank" rel="noopener" href="https://developers.arcgis.com/javascript/3/jsapi/graphic-amd.html">图形</a>，<a target="_blank" rel="noopener" href="https://developers.arcgis.com/javascript/3/jsapi/infowindow-amd.html">信息窗口</a>和其他<a target="_blank" rel="noopener" href="https://developers.arcgis.com/javascript/3/jshelp/intro_navigation.html">导航控件</a>。通常，使用DIV将地图添加到页面。地图的宽度和高度被初始化为DIV容器的宽度和高度。在将第一层添加到地图后，将触发该load事件。”</p>
+<p><img src="/Classmap.jpg" alt="Classmap"></p>
+<h2 id="项目结构目录"><a href="#项目结构目录" class="headerlink" title="项目结构目录"></a>项目结构目录</h2><p>css 目录，主要是 css 文件和 image 文件。</p>
+<p>核心的 js 文件。</p>
+<p>地图主页面 html。</p>
+<h2 id="程序"><a href="#程序" class="headerlink" title="程序"></a>程序</h2><p>插入注释处是我将网页引用回本地离线arcgis for js</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span> </span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">&quot;Content-Type&quot;</span> <span class="attr">content</span>=<span class="string">&quot;text/html; charset=utf-8&quot;</span>&gt;</span></span><br><span class="line">  </span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;initial-scale=1, maximum-scale=1,user-scalable=no&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>Basemap gallery<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;https://js.arcgis.com/3.31/dijit/themes/claro/claro.css&quot;</span>&gt;</span>    </span><br><span class="line">  <span class="comment">&lt;!--&lt;link rel=&quot;stylesheet&quot; href=&quot;https://js.arcgis.com/3.31/esri/css/esri.css&quot;&gt;--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;http://localhost/arcgis_js_api/library/3.27/esri/css/esri.css&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"> </span></span><br><span class="line"><span class="language-css">    <span class="selector-tag">html</span>, <span class="selector-tag">body</span> &#123; <span class="attribute">height</span>: <span class="number">100%</span>; <span class="attribute">width</span>: <span class="number">100%</span>; <span class="attribute">margin</span>: <span class="number">0</span>; <span class="attribute">padding</span>: <span class="number">0</span>; &#125;</span></span><br><span class="line"><span class="language-css">    <span class="selector-id">#map</span>&#123;</span></span><br><span class="line"><span class="language-css">      <span class="attribute">padding</span>:<span class="number">0</span>;</span></span><br><span class="line"><span class="language-css">    &#125;</span></span><br><span class="line"><span class="language-css">  </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span> </span><br><span class="line">  </span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://js.arcgis.com/3.31/&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"> </span></span><br><span class="line"><span class="language-javascript">    <span class="keyword">var</span> map;</span></span><br><span class="line"><span class="language-javascript">    <span class="built_in">require</span>([</span></span><br><span class="line"><span class="language-javascript">      <span class="string">&quot;esri/map&quot;</span>, <span class="string">&quot;esri/dijit/BasemapGallery&quot;</span>, <span class="string">&quot;esri/arcgis/utils&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">      <span class="string">&quot;dojo/parser&quot;</span>,</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="string">&quot;dijit/layout/BorderContainer&quot;</span>, <span class="string">&quot;dijit/layout/ContentPane&quot;</span>, <span class="string">&quot;dijit/TitlePane&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">      <span class="string">&quot;dojo/domReady!&quot;</span></span></span><br><span class="line"><span class="language-javascript">    ], <span class="keyword">function</span>(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="language-javascript">      <span class="built_in">Map</span>, BasemapGallery, arcgisUtils,</span></span></span><br><span class="line"><span class="params"><span class="language-javascript">      parser</span></span></span><br><span class="line"><span class="params"><span class="language-javascript">    </span>) &#123;</span></span><br><span class="line"><span class="language-javascript">      parser.<span class="title function_">parse</span>();</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      map = <span class="keyword">new</span> <span class="title class_">Map</span>(<span class="string">&quot;map&quot;</span>, &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="attr">basemap</span>: <span class="string">&quot;topo&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">        <span class="attr">center</span>: [-<span class="number">105.255</span>, <span class="number">40.022</span>],</span></span><br><span class="line"><span class="language-javascript">        <span class="attr">zoom</span>: <span class="number">13</span></span></span><br><span class="line"><span class="language-javascript">      &#125;);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">      <span class="comment">//add the basemap gallery, in this case we&#x27;ll display maps from ArcGIS.com including bing maps</span></span></span><br><span class="line"><span class="language-javascript">      <span class="keyword">var</span> basemapGallery = <span class="keyword">new</span> <span class="title class_">BasemapGallery</span>(&#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="attr">showArcGISBasemaps</span>: <span class="literal">true</span>,</span></span><br><span class="line"><span class="language-javascript">        <span class="attr">map</span>: map</span></span><br><span class="line"><span class="language-javascript">      &#125;, <span class="string">&quot;basemapGallery&quot;</span>);</span></span><br><span class="line"><span class="language-javascript">      basemapGallery.<span class="title function_">startup</span>();</span></span><br><span class="line"><span class="language-javascript">      </span></span><br><span class="line"><span class="language-javascript">      basemapGallery.<span class="title function_">on</span>(<span class="string">&quot;error&quot;</span>, <span class="keyword">function</span>(<span class="params">msg</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;basemap gallery error:  &quot;</span>, msg);</span></span><br><span class="line"><span class="language-javascript">      &#125;);</span></span><br><span class="line"><span class="language-javascript">    &#125;);</span></span><br><span class="line"><span class="language-javascript">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span> </span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">class</span>=<span class="string">&quot;claro&quot;</span>&gt;</span> </span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">data-dojo-type</span>=<span class="string">&quot;dijit/layout/BorderContainer&quot;</span> </span></span><br><span class="line"><span class="tag">       <span class="attr">data-dojo-props</span>=<span class="string">&quot;design:&#x27;headline&#x27;, gutters:false&quot;</span> </span></span><br><span class="line"><span class="tag">       <span class="attr">style</span>=<span class="string">&quot;width:100%;height:100%;margin:0;&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;map&quot;</span> </span></span><br><span class="line"><span class="tag">         <span class="attr">data-dojo-type</span>=<span class="string">&quot;dijit/layout/ContentPane&quot;</span> </span></span><br><span class="line"><span class="tag">         <span class="attr">data-dojo-props</span>=<span class="string">&quot;region:&#x27;center&#x27;&quot;</span> </span></span><br><span class="line"><span class="tag">         <span class="attr">style</span>=<span class="string">&quot;padding:0;&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;position:absolute; right:20px; top:10px; z-Index:999;&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">data-dojo-type</span>=<span class="string">&quot;dijit/TitlePane&quot;</span> </span></span><br><span class="line"><span class="tag">             <span class="attr">data-dojo-props</span>=<span class="string">&quot;title:&#x27;Switch Basemap&#x27;, open:true&quot;</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">div</span> <span class="attr">data-dojo-type</span>=<span class="string">&quot;dijit/layout/ContentPane&quot;</span> <span class="attr">style</span>=<span class="string">&quot;width:380px; height:280px; overflow:auto;&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;basemapGallery&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="问题：您没有足够的特权访问计算机上的-IIS-网站"><a href="#问题：您没有足够的特权访问计算机上的-IIS-网站" class="headerlink" title="问题：您没有足够的特权访问计算机上的 IIS 网站"></a>问题：您没有足够的特权访问计算机上的 IIS 网站</h2><p>使用VS2015运行项目，选择使用本机iis运行时报错：</p>
+<p>XXXX 已配置为使用 IIS。 无法访问 IIS 元数据库。您没有足够的特权访问计算机上的 IIS 网站。</p>
+<p>解决方法1：</p>
+<p>以”管理员权限”运行VS,在VS菜单打开项目即可。</p>
+<p>但是以上解决方法不方便。</p>
+<p>解决方案2（不使用iis运行调试，使用iisexpress运行调试）：</p>
+<p>（1）右键点击XXXX项目，选择编辑XXXX.csprj.打开该项目的项目文件</p>
+<p>（2）在打开的项目文件中搜索找到Web应用程序的属性设置段</p>
+<p>（3)将UseIIS段的值由True改成False。关闭项目文件。</p>
+<p>（4）重新加载XXXX项目即可</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/js/" rel="tag"># js</a>
+              <a href="/tags/arcgis-for-js/" rel="tag"># arcgis for js</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/18681/" rel="prev" title="python记录">
+                  <i class="fa fa-chevron-left"></i> python记录
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/35823/" rel="next" title="温度反演模型对比">
+                  温度反演模型对比 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">晋ICP备20000688号-2 </a>
+      <img src="/image/beian.jpg" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=14082702000119" rel="noopener" target="_blank">晋公网安备 14082702000124号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JoeSun</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"lGA8jDiu9xwPn8eGaVF2Ne2q-gzGzoHsz","app_key":"lI98i4LNGKqPDmaQTixb93yG","security":false,"betterPerformance":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

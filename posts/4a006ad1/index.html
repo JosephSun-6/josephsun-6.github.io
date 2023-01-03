@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"josephsun.cn","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="假设检验与置信区间估计是统计推断中联系非常紧密的两种方法。检验中的显著性水平实际上就等于置信区间中的置信水平剩下的部分。用显著性水平表示为$\alpha$，置信区间表示为$1-\alpha$并非巧合。 置信区间是指由样本统计量所构造的总体参数的估计区间。 在统计学中，一个概率样本的置信区间（Confidence interval）是对这个样本的某个总体参数的区间估计。置信区间展现的是这个参数的真实">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[空间分析]叁·地理统计6">
+<meta property="og:url" content="https://josephsun.cn/posts/4a006ad1/">
+<meta property="og:site_name" content="JosephSun&#39;s Blogs">
+<meta property="og:description" content="假设检验与置信区间估计是统计推断中联系非常紧密的两种方法。检验中的显著性水平实际上就等于置信区间中的置信水平剩下的部分。用显著性水平表示为$\alpha$，置信区间表示为$1-\alpha$并非巧合。 置信区间是指由样本统计量所构造的总体参数的估计区间。 在统计学中，一个概率样本的置信区间（Confidence interval）是对这个样本的某个总体参数的区间估计。置信区间展现的是这个参数的真实">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-01-14T07:11:08.000Z">
+<meta property="article:modified_time" content="2021-01-14T07:22:03.797Z">
+<meta property="article:author" content="JoeSun">
+<meta property="article:tag" content="空间分析">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://josephsun.cn/posts/4a006ad1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://josephsun.cn/posts/4a006ad1/","path":"posts/4a006ad1/","title":"[空间分析]叁·地理统计6"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>[空间分析]叁·地理统计6 | JosephSun's Blogs</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156331840-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-156331840-2","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1263cea084ac2c7b896396b81f9a4fbc"></script>
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">JosephSun's Blogs</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">孙先生的失眠日记</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-cv"><a href="/CV/" rel="section"><i class="fa fa-user fa-fw"></i>CV</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-archive fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">1.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="JoeSun"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">JoeSun</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/JosephSun-6" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;JosephSun-6" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:417773447@qq.com" title="E-Mail → mailto:417773447@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://josephsun.cn/posts/4a006ad1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="JoeSun">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JosephSun's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="[空间分析]叁·地理统计6 | JosephSun's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [空间分析]叁·地理统计6
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-01-14 15:11:08 / 修改时间：15:22:03" itemprop="dateCreated datePublished" datetime="2021-01-14T15:11:08+08:00">2021-01-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">空间分析</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/posts/4a006ad1/" class="post-meta-item leancloud_visitors" data-flag-title="[空间分析]叁·地理统计6" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>假设检验与置信区间估计是统计推断中联系非常紧密的两种方法。检验中的显著性水平实际上就等于置信区间中的置信水平剩下的部分。用显著性水平表示为$\alpha$，置信区间表示为$1-\alpha$并非巧合。</p>
+<p>置信区间是指由样本统计量所构造的总体参数的估计区间。</p>
+<p>在统计学中，一个概率样本的置信区间（Confidence interval）是对这个样本的某个总体参数的区间估计。置信区间展现的是这个参数的真实值有一定概率落在测量结果的周围的程度。置信区间给出的是被测量参数的测量值的可信程度，即前面所要求的“一定概率”。这个概率被称为置信水平。</p>
+<span id="more"></span>
+
+<p>举例来说，如果在一次大选中某人的支持率为55%，而置信水平0.95以上的置信区间是（50%,60%），那么他的真实支持率有百分之九十五的机率落在百分之五十和百分之六十之间，因此他的真实支持率不足一半的可能性小于百分之5。如例子中一样，置信水平一般用百分比表示，因此置信水平0.95上的置信空间也可以表达为：95%置信区间。</p>
+<p>置信区间的两端被称为置信极限。对一个给定情形的估计来说，置信水平越高，所对应的置信区间就会越大。<br>$$<br>Pr(c1\leq μ\leq c2)&#x3D;1-\alpha<br>$$<br>$\alpha$是显著性水平。<br>$$<br>100 % *(1- \alpha) \ 是指置信水平(95% 或 90%)<br>$$<br>表达方式：$interval (c_1,c_2)$</p>
+<p>上面举例可以进一步假设。如果$1- \alpha$的置信区间没有包括假设值$\theta_0$，我们可以以显著性水平$\alpha$拒绝假设$\theta&#x3D;\theta_0$。另一方面，如果$1-\alpha$的置信区间包括$\theta_0$，假设检验就不允许拒绝假设$H_0$。我们可以看到每个置信区间其实是一个隐藏的双侧假设检验。检验的$\alpha$显著性水平等于检验$(1-\alpha)$的置信区间。</p>
+<p>那么关于统计显著性与实际显著性之间的关系：假设检验提供了一种正规的手段来评估统计假设。当我们得到了一个统计上显著性结果，我们知道应当拒绝$H_0$，出错的可能性不超过$\alpha$。从实际或者科学的角度上来看，这是否意味着所有统计显著的结果是否都是重要的？</p>
+<p>当然不是。我们得到的结果是否重要取决于我们检验的假设是否重要。尽管这个事实很明显，但是常常容易被忽视。</p>
+<p>举个简单的例子。</p>
+<p>比如说如果我们要检验假设“北京的雾霾比上海的雾霾严重”，那么我们会收集北京和上海在同一个时间段内的有对比意义的区域的雾霾严重程度。简便起见，就以PM2.5的量为衡量雾霾的指标，那么我们收集的就是北京和上海的空气中PM2.5的含量，假设结果显示北京和上海的PM2.5相差200微克每立方米。用独立t检验可以得到一个p，结果显示$p&lt;0.05$，这是统计显著。这个显著差异的意思是：<strong>如果北京和上海的PM2.5含量是相同的</strong>。$0.04$看上去不像是个不同可能发生的是，所以北京和上海的PM2.5含量应该是不同的吧。要注意的是，$p &#x3D; 0.04$不意味着看到收集的数据的结果后，北京和上海的PM2.5含量相同的概率$(p(H_0 \ |  \ D))$是0.04，$p(H0 \ | \ D)$要通过贝叶斯公式计算才知道是多少。实际和科学重要性通常需要的不仅仅是存在差异而已。</p>
+<p>科学显著问题有两个解决办法，一种是只检验重要的假设。先寻找一种足够大的差异，这种差异在实际中很重要，再定义了科学重要性后，我们可以相应调整$H_0$，在进行相应的检验。</p>
+<p>另一种是使用置信区间而不是假设检验。如果置信区间只包括科学上显著的值，那我们得到的结果就是很重要的。</p>
+<p>这两种方法都需要我们去定义什么是“科学上显著”或“实际中显著”。这些概念代表的含义并不是统计问题，取决于被调查的主体。无论定义这些概念多么的困难，但还是需要做的。尽管检验是否有差异似乎避免这个问题，但从实际出发，但它仅仅简单定义了显著，它可能包括无法测量的非常小的差异。但是几乎不能算是一个可接受的定义。</p>
+<h5 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h5><p>马廷老师的课件</p>
+<p>《<a target="_blank" rel="noopener" href="http://statsthinking21.org/">Statistical Thinking for the 21st Century</a>》</p>
+<p>《基础地理统计学(第三版)》</p>
+<p><a target="_blank" rel="noopener" href="https://support.minitab.com/zh-cn/minitab/18/help-and-how-to/statistics/basic-statistics/supporting-topics/basics/statistical-and-practical-significance/">https://support.minitab.com/zh-cn/minitab/18/help-and-how-to/statistics/basic-statistics/supporting-topics/basics/statistical-and-practical-significance/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/20749202">https://www.zhihu.com/question/20749202</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/20749202/answer/134564685">https://www.zhihu.com/question/20749202/answer/134564685</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/20749202/answer/140897100">https://www.zhihu.com/question/20749202/answer/140897100</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90/" rel="tag"># 空间分析</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/d3093b6b/" rel="prev" title="[空间分析]叁·地理统计5">
+                  <i class="fa fa-chevron-left"></i> [空间分析]叁·地理统计5
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/posts/88f0d19d/" rel="next" title="[空间分析]-叁·地理统计7">
+                  [空间分析]-叁·地理统计7 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">晋ICP备20000688号-2 </a>
+      <img src="/image/beian.jpg" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=14082702000119" rel="noopener" target="_blank">晋公网安备 14082702000124号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JoeSun</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"lGA8jDiu9xwPn8eGaVF2Ne2q-gzGzoHsz","app_key":"lI98i4LNGKqPDmaQTixb93yG","security":false,"betterPerformance":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
