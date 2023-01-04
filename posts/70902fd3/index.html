@@ -26,17 +26,17 @@
 <meta property="og:site_name" content="开心市民孙先生&#39;s Blogs">
 <meta property="og:description" content="这一节谈谈秩和检验和效应量。并用R语言去进行Mann-Whitney U 检验和效应量检验。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://josephsun.cn/.cn//image-20201207143330219.png">
-<meta property="og:image" content="https://josephsun.cn/.cn//image-20201207180019561.png">
-<meta property="og:image" content="https://josephsun.cn/.cn//v2-50d52420f090ef578417ca74d0a5bf46_r.jpg">
-<meta property="og:image" content="https://josephsun.cn/.cn//v2-e9315a7f1b0e83543e6360b6b32ea434_720w.png">
-<meta property="og:image" content="https://josephsun.cn/.cn//image-20201207213732564.png">
+<meta property="og:image" content="https://josephsun.cn/posts/70902fd3/image-20201207143330219.png">
+<meta property="og:image" content="https://josephsun.cn/posts/70902fd3/image-20201207180019561.png">
+<meta property="og:image" content="https://josephsun.cn/posts/70902fd3/v2-50d52420f090ef578417ca74d0a5bf46_r.jpg">
+<meta property="og:image" content="https://josephsun.cn/posts/70902fd3/v2-e9315a7f1b0e83543e6360b6b32ea434_720w.png">
+<meta property="og:image" content="https://josephsun.cn/image-20201207213732564.png">
 <meta property="article:published_time" content="2020-12-06T13:19:35.000Z">
 <meta property="article:modified_time" content="2020-12-07T13:43:24.957Z">
 <meta property="article:author" content="开心市民孙先生">
 <meta property="article:tag" content="空间分析">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://josephsun.cn/.cn//image-20201207143330219.png">
+<meta name="twitter:image" content="https://josephsun.cn/posts/70902fd3/image-20201207143330219.png">
 
 
 <link rel="canonical" href="https://josephsun.cn/posts/70902fd3/">
@@ -290,11 +290,11 @@
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">boxplot<span class="punctuation">(</span>idx <span class="operator">~</span> reg<span class="punctuation">,</span> data <span class="operator">=</span> dat<span class="punctuation">,</span>col<span class="operator">=</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&#x27;red&#x27;</span><span class="punctuation">,</span><span class="string">&#x27;blue&#x27;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
 
 <p>通过boxplot，查看数据属性。</p>
-<img src="/.cn//image-20201207143330219.png" alt="image-20201207143330219" style="zoom:67%;">
+<img src="image-20201207143330219.png" alt="image-20201207143330219" style="zoom:67%;" />
 
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> x11<span class="punctuation">(</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> plot<span class="punctuation">(</span>density<span class="punctuation">(</span>x2<span class="punctuation">,</span> bw<span class="operator">=</span><span class="number">0.5</span><span class="punctuation">)</span><span class="punctuation">,</span>xlab <span class="operator">=</span> <span class="string">&#x27;x&#x27;</span><span class="punctuation">,</span>ylab <span class="operator">=</span> <span class="string">&#x27;density&#x27;</span><span class="punctuation">,</span>main<span class="operator">=</span><span class="string">&quot;Kernel (高斯) density estimates&quot;</span><span class="punctuation">,</span> col<span class="operator">=</span><span class="string">&#x27;red&#x27;</span><span class="punctuation">,</span> lwd<span class="operator">=</span><span class="number">2</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> lines<span class="punctuation">(</span>density<span class="punctuation">(</span>x1<span class="punctuation">,</span> bw<span class="operator">=</span><span class="number">0.5</span><span class="punctuation">)</span><span class="punctuation">,</span> col<span class="operator">=</span><span class="string">&#x27;blue&#x27;</span><span class="punctuation">,</span> lwd<span class="operator">=</span><span class="number">2</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> legend<span class="punctuation">(</span><span class="string">&#x27;topright&#x27;</span><span class="punctuation">,</span><span class="built_in">c</span><span class="punctuation">(</span><span class="string">&quot;NA&quot;</span><span class="punctuation">,</span><span class="string">&quot;CA&quot;</span><span class="punctuation">)</span><span class="punctuation">,</span> lty <span class="operator">=</span> <span class="number">1</span><span class="punctuation">,</span> col <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="string">&#x27;blue&#x27;</span><span class="punctuation">,</span><span class="string">&#x27;red&#x27;</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
 
-<img src="/.cn//image-20201207180019561.png" alt="image-20201207180019561" style="zoom:67%;">
+<img src="image-20201207180019561.png" alt="image-20201207180019561" style="zoom:67%;" />
 
 <p>NA和CA两组之间存在差异性，两者均值不同，采用Mann-Whitney U test来评估两组样本的差异性。</p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> wilcox.test<span class="punctuation">(</span>x1<span class="punctuation">,</span>x2<span class="punctuation">,</span>alternative <span class="operator">=</span> <span class="string">&#x27;two.sided&#x27;</span><span class="punctuation">,</span>paired <span class="operator">=</span> <span class="literal">FALSE</span><span class="punctuation">,</span>exact <span class="operator">=</span> <span class="literal">TRUE</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">	Wilcoxon rank <span class="built_in">sum</span> exact test</span><br><span class="line"></span><br><span class="line">data<span class="operator">:</span>  x1 and x2</span><br><span class="line">W <span class="operator">=</span> <span class="number">47</span><span class="punctuation">,</span> p<span class="operator">-</span>value <span class="operator">=</span> <span class="number">0.1142</span></span><br><span class="line">alternative hypothesis<span class="operator">:</span> true location shift is not equal to <span class="number">0</span></span><br></pre></td></tr></table></figure>
@@ -320,9 +320,9 @@
 </blockquote>
 <p>P值只能提供有限的信息，我们要知道的是误差有多大，相关性有多强，而效果量可以告诉我们这些。例如，当我们说“吸烟和一个人生活满意度显著相关。（p &lt;0 .001）”，但我们不知道它们的关联性有多强，如果我们发现相关系数是0.1，那么实际上它们相关性是挺弱的；又如果相关系数是0.7，那么实际上它们彼此间的关系是挺有趣的。</p>
 <p>Lakens (2013)中提到了关于各种指标的用途。</p>
-<img src="/.cn//v2-50d52420f090ef578417ca74d0a5bf46_r.jpg" alt="preview" style="zoom:67%;">
+<img src="v2-50d52420f090ef578417ca74d0a5bf46_r.jpg" alt="preview" style="zoom:67%;" />
 
-<img src="/.cn//v2-e9315a7f1b0e83543e6360b6b32ea434_720w.png" alt="img" style="zoom:67%;">
+<img src="v2-e9315a7f1b0e83543e6360b6b32ea434_720w.png" alt="img" style="zoom:67%;" />
 
 <p>常用的效应量包括r, Cohen’s d和odds ratio。对于T检验的效应量一般常用 Cohen’s d 效应量指标。<br>$$<br>Cohen’s d &#x3D; (M_2 - M_1)&#x2F;SD_{pooled}<br>$$</p>
 <p>$$<br>SD<del>pooled</del> 为联合方差 ： SD_{pooled} &#x3D;\sqrt {\frac{SD^2_1+SD^2_2}{2}}<br>$$</p>
@@ -335,7 +335,7 @@
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> x1 <span class="operator">=</span> iris<span class="operator">$</span>Sepal.Width<span class="punctuation">[</span>iris<span class="operator">$</span>Species<span class="operator">==</span><span class="string">&quot;versicolor&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="operator">&gt;</span> x2 <span class="operator">=</span> iris<span class="operator">$</span>Sepal.Width<span class="punctuation">[</span>iris<span class="operator">$</span>Species<span class="operator">==</span><span class="string">&quot;virginica&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="operator">&gt;</span> <span class="built_in">length</span><span class="punctuation">(</span>x1<span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">[</span><span class="number">1</span><span class="punctuation">]</span> <span class="number">50</span></span><br><span class="line"><span class="operator">&gt;</span> <span class="built_in">length</span><span class="punctuation">(</span>x2<span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">[</span><span class="number">1</span><span class="punctuation">]</span> <span class="number">50</span></span><br><span class="line"><span class="operator">&gt;</span> cohen.d<span class="punctuation">(</span>x1<span class="punctuation">,</span>x2<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">Cohen<span class="string">&#x27;s d</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">d estimate: -0.6411522 (medium)</span></span><br><span class="line"><span class="string">95 percent confidence interval:</span></span><br><span class="line"><span class="string">     lower      upper </span></span><br><span class="line"><span class="string">-1.0481150      -0.2341893 </span></span><br></pre></td></tr></table></figure>
 
 <p>根据效应量与相关性大小的度量，即下表</p>
-<p><img src="/.cn//image-20201207213732564.png" alt="image-20201207213732564"></p>
+<p><img src="/image-20201207213732564.png" alt="image-20201207213732564"></p>
 <p>可以说明，在”versicolor”与”virginica”的花瓣宽度之间，约有70%的”versicolor”花瓣宽度低于”virginica”的均值。</p>
 <h6 id="参考文献-1"><a href="#参考文献-1" class="headerlink" title="参考文献"></a>参考文献</h6><p>马廷老师的课件</p>
 <p>Lakens, D. (2013). Calculating and reporting effect sizes to facilitate cumulative science: a practical primer for t-tests and ANOVAs. Frontiers in Psychology, 4, 863. doi:10.3389&#x2F;fpsyg.2013.00863</p>
