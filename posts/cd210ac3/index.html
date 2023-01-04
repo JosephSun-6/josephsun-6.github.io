@@ -26,22 +26,22 @@
 <meta property="og:site_name" content="开心市民孙先生&#39;s Blogs">
 <meta property="og:description" content="相关分析相关分析需要建立在因果条件下，不可倒置">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://josephsun.cn/image-20210119132450244.png">
-<meta property="og:image" content="https://josephsun.cn/image-20210119133653039.png">
-<meta property="og:image" content="https://josephsun.cn/image-20210119134553677.png">
-<meta property="og:image" content="https://josephsun.cn/image-20210119135035288.png">
-<meta property="og:image" content="https://josephsun.cn/image-20210119135128102.png">
-<meta property="og:image" content="https://josephsun.cn/image-20210119135524703.png">
-<meta property="og:image" content="https://josephsun.cn/pairplot.png">
-<meta property="og:image" content="https://josephsun.cn/kdeplot&scatter.png">
-<meta property="og:image" content="https://josephsun.cn/heatmap.png">
-<meta property="og:image" content="https://josephsun.cn/clustermap.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//image-20210119132450244.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//image-20210119133653039.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//image-20210119134553677.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//image-20210119135035288.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//image-20210119135128102.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//image-20210119135524703.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//pairplot.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//kdeplot&scatter.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//heatmap.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//clustermap.png">
 <meta property="article:published_time" content="2021-01-19T06:39:19.000Z">
 <meta property="article:modified_time" content="2022-12-30T10:27:20.088Z">
 <meta property="article:author" content="开心市民孙先生">
 <meta property="article:tag" content="空间分析">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://josephsun.cn/image-20210119132450244.png">
+<meta name="twitter:image" content="https://josephsun.cn/.cn//image-20210119132450244.png">
 
 
 <link rel="canonical" href="https://josephsun.cn/posts/cd210ac3/">
@@ -319,7 +319,7 @@
 <p>导入数据并查看数据信息</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">states &lt;- state.x77[,1:6]</span><br><span class="line">head(states)</span><br></pre></td></tr></table></figure>
 
-<p><img src="/image-20210119132450244.png" alt="image-20210119132450244"></p>
+<p><img src="/.cn//image-20210119132450244.png" alt="image-20210119132450244"></p>
 <p>R语言为相关分析提供了函数 <code>cor</code>，method默认参数是用pearson；并且遇到缺失值，use默认参数everything，所以结果会是NA.</p>
 <blockquote>
 <p>可以采用<code>is.na(states)</code> 检查是否有缺失值。</p>
@@ -331,7 +331,7 @@
 <p>可以对整个矩阵对个变量进行相关性计算，结果也是矩阵</p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cor<span class="punctuation">(</span>states<span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/image-20210119133653039.png" alt="image-20210119133653039"></p>
+<p><img src="/.cn//image-20210119133653039.png" alt="image-20210119133653039"></p>
 <p>计算相关性的显著性则可以用 <code>cor.test</code> 函数，method默认是pearson，alternative默认是双尾（即总体相关系数不等于0）</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt; cor.test(states[,&quot;Population&quot;], states[,&quot;Income&quot;],method = &quot;pearson&quot;)</span><br><span class="line"></span><br><span class="line">	Pearson&#x27;s product-moment correlation</span><br><span class="line"></span><br><span class="line">data:  states[, &quot;Population&quot;] and states[, &quot;Income&quot;]</span><br><span class="line">t = 1.475, df = 48, p-value = 0.1467</span><br><span class="line">alternative hypothesis: true correlation is not equal to 0</span><br><span class="line">95 percent confidence interval:</span><br><span class="line"> -0.07443435  0.45991855</span><br><span class="line">sample estimates:</span><br><span class="line">      cor </span><br><span class="line">0.2082276 </span><br></pre></td></tr></table></figure>
 
@@ -339,21 +339,21 @@
 <p><code>cor.test</code>只能用于计算两个变量的相关性检验，如果对多个变量或者矩阵数据的话，则可以使用psych包的<code>corr.test</code>函数</p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">corr.test<span class="punctuation">(</span>states<span class="punctuation">,</span> use <span class="operator">=</span> <span class="string">&quot;complete&quot;</span><span class="punctuation">,</span> method <span class="operator">=</span> <span class="string">&quot;pearson&quot;</span><span class="punctuation">,</span> adjust <span class="operator">=</span> <span class="string">&quot;none&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/image-20210119134553677.png" alt="image-20210119134553677"></p>
+<p><img src="/.cn//image-20210119134553677.png" alt="image-20210119134553677"></p>
 <p>上面矩阵是相关系数，下面是p值(参数并未进行校正)。</p>
 <p>论文一般不直接堆数据进去，那么就涉及<strong>可视化</strong></p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> library<span class="punctuation">(</span>corrplot<span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> res_cor <span class="operator">&lt;-</span> cor<span class="punctuation">(</span>states<span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> corrplot<span class="punctuation">(</span>corr<span class="operator">=</span>res_cor<span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/image-20210119135035288.png" alt="image-20210119135035288"></p>
+<p><img src="/.cn//image-20210119135035288.png" alt="image-20210119135035288"></p>
 <p>有点丑，加一点点修饰。</p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> corrplot<span class="punctuation">(</span>corr <span class="operator">=</span> res_cor<span class="punctuation">,</span>order <span class="operator">=</span> <span class="string">&quot;AOE&quot;</span><span class="punctuation">,</span>type<span class="operator">=</span><span class="string">&quot;upper&quot;</span><span class="punctuation">,</span>tl.pos <span class="operator">=</span> <span class="string">&quot;d&quot;</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> corrplot<span class="punctuation">(</span>corr <span class="operator">=</span> res_cor<span class="punctuation">,</span>add<span class="operator">=</span><span class="literal">TRUE</span><span class="punctuation">,</span> type<span class="operator">=</span><span class="string">&quot;lower&quot;</span><span class="punctuation">,</span> method<span class="operator">=</span><span class="string">&quot;number&quot;</span><span class="punctuation">,</span>order<span class="operator">=</span><span class="string">&quot;AOE&quot;</span><span class="punctuation">,</span>diag<span class="operator">=</span><span class="literal">FALSE</span><span class="punctuation">,</span>tl.pos<span class="operator">=</span><span class="string">&quot;n&quot;</span><span class="punctuation">,</span> cl.pos<span class="operator">=</span><span class="string">&quot;n&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/image-20210119135128102.png" alt="image-20210119135128102"></p>
+<p><img src="/.cn//image-20210119135128102.png" alt="image-20210119135128102"></p>
 <p>如果遇到节约的老板还想你做个大体趋势，放在一张图里，而且还要黑白。</p>
 <p>PerformanceAnalytics包的<code>chart.Correlation</code>函数也是用于可视化相关系数矩阵的</p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> library<span class="punctuation">(</span><span class="string">&#x27;PerformanceAnalytics&#x27;</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> chart.Correlation<span class="punctuation">(</span>states<span class="punctuation">,</span> method <span class="operator">=</span> <span class="string">&quot;pearson&quot;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/image-20210119135524703.png" alt="image-20210119135524703"></p>
+<p><img src="/.cn//image-20210119135524703.png" alt="image-20210119135524703"></p>
 <h4 id="Python实现相关分析及可视化"><a href="#Python实现相关分析及可视化" class="headerlink" title="Python实现相关分析及可视化"></a>Python实现相关分析及可视化</h4><p>把上文用的数据导出</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">write.table (states, file =&quot;a.csv&quot;)</span><br></pre></td></tr></table></figure>
 
@@ -363,18 +363,18 @@
 <p>下面是可视化</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sns.pairplot(dt)</span><br></pre></td></tr></table></figure>
 
-<p><img src="/pairplot.png" alt="pairplot"></p>
+<p><img src="/.cn//pairplot.png" alt="pairplot"></p>
 <p>如果需要显示核密度图。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">g = sns.PairGrid(dt)</span><br><span class="line">g.map_diag(sns.histplot)</span><br><span class="line">g.map_upper(plt.scatter)</span><br><span class="line">g.map_lower(sns.kdeplot)</span><br></pre></td></tr></table></figure>
 
-<p><img src="/kdeplot&scatter.png" alt="kdeplot&amp;scatter"></p>
+<p><img src="/.cn//kdeplot&scatter.png" alt="kdeplot&amp;scatter"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">corr = dt.corr(method=&#x27;pearson&#x27;)</span><br><span class="line">#以corr的形状生成一个全为0的矩阵</span><br><span class="line">mask = np.zeros_like(corr)</span><br><span class="line">#将mask的对角线及以上设置为True</span><br><span class="line">#这部分就是对应要被遮掉的部分</span><br><span class="line">mask[np.triu_indices_from(mask)] = True</span><br><span class="line">plt.subplots(figsize=(15, 15))  # 分辨率1200×1000</span><br><span class="line">with sns.axes_style(&quot;white&quot;):</span><br><span class="line">   sns.heatmap(corr, mask=mask,annot=True,cmap=&quot;RdBu_r&quot;,  # 在单元格中标注数据值</span><br><span class="line">               annot_kws=&#123;&#x27;fontsize&#x27;: 12&#125; # 热图，将矩形数据绘制为颜色编码矩阵</span><br><span class="line">               )</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 
-<p><img src="/heatmap.png" alt="heatmap"></p>
+<p><img src="/.cn//heatmap.png" alt="heatmap"></p>
 <p>如果需要聚类，则采用下面</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">corr = dt.corr(method=&#x27;pearson&#x27;)</span><br><span class="line">with sns.axes_style(&quot;white&quot;):</span><br><span class="line">   sns.clustermap(corr,annot=True,cmap=&quot;RdBu_r&quot;,  # 在单元格中标注数据值</span><br><span class="line">               annot_kws=&#123;&#x27;fontsize&#x27;: 12&#125; # 热图，将矩形数据绘制为颜色编码矩阵</span><br><span class="line">               )</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
 
-<p><img src="/clustermap.png" alt="clustermap"></p>
+<p><img src="/.cn//clustermap.png" alt="clustermap"></p>
 <p><strong>参考文献</strong></p>
 <p>马廷老师的ppt</p>
 <p>《基础地理统计学》</p>

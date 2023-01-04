@@ -26,20 +26,20 @@
 <meta property="og:site_name" content="开心市民孙先生&#39;s Blogs">
 <meta property="og:description" content="随着卫星遥感技术的发展，利用遥感反演地表温度的方法不断出现，如劈窗法、双角度法和单通道算法等。 Landsat 系列卫星的遥感数据是地表温度反演的重要数据之一。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://josephsun.cn/1.jpg">
-<meta property="og:image" content="https://josephsun.cn/2.jpg">
-<meta property="og:image" content="https://josephsun.cn/3.jpg">
-<meta property="og:image" content="https://josephsun.cn/4.jpg">
-<meta property="og:image" content="https://josephsun.cn/5.jpg">
-<meta property="og:image" content="https://josephsun.cn/6.jpg">
-<meta property="og:image" content="https://josephsun.cn/7.jpg">
-<meta property="og:image" content="https://josephsun.cn/8.jpg">
+<meta property="og:image" content="https://josephsun.cn/.cn//1.jpg">
+<meta property="og:image" content="https://josephsun.cn/.cn//2.jpg">
+<meta property="og:image" content="https://josephsun.cn/.cn//3.jpg">
+<meta property="og:image" content="https://josephsun.cn/.cn//4.jpg">
+<meta property="og:image" content="https://josephsun.cn/.cn//5.jpg">
+<meta property="og:image" content="https://josephsun.cn/.cn//6.jpg">
+<meta property="og:image" content="https://josephsun.cn/.cn//7.jpg">
+<meta property="og:image" content="https://josephsun.cn/.cn//8.jpg">
 <meta property="article:published_time" content="2020-05-25T12:17:53.000Z">
 <meta property="article:modified_time" content="2020-05-25T12:31:30.000Z">
 <meta property="article:author" content="开心市民孙先生">
 <meta property="article:tag" content="温度反演">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://josephsun.cn/1.jpg">
+<meta name="twitter:image" content="https://josephsun.cn/.cn//1.jpg">
 
 
 <link rel="canonical" href="https://josephsun.cn/posts/35823/">
@@ -254,7 +254,7 @@
 
 <h2 id="Landsat-系列卫星具有较高的空间分辨率。"><a href="#Landsat-系列卫星具有较高的空间分辨率。" class="headerlink" title="Landsat 系列卫星具有较高的空间分辨率。"></a>Landsat 系列卫星具有较高的空间分辨率。</h2><p>Landsat7 及之前的遥感数据只有一个热红外波段，所以只能使用单波段 LST 反演算法。2013 年 2 月 11 日，NASA 成功发射了 Landsat8 卫星，与之前的 TM 或 ETM 传感器相比， Landsat8 的热红外传感器 TIRS(ThermalInfraredSensor) 具有两个热红外波长。这两个热红外波段与MODIS第31和32两个热红外波段的波宽及中心波长均相近，为进行劈窗算法反演LST提供了可能。因此，Landsat8卫星的遥感数据在LST反演方面比其同系列的前期卫星遥感产品更具优势。</p>
 <p>总之，一句话，用 landset8 就对了。</p>
-<p><img src="/1.jpg" alt="landset系列传感器的热波段光谱曲线"></p>
+<p><img src="/.cn//1.jpg" alt="landset系列传感器的热波段光谱曲线"></p>
 <hr>
 <h2 id="代表性算法"><a href="#代表性算法" class="headerlink" title="代表性算法"></a>代表性算法</h2><p>地表温度反演算法主要有以下三种：大气校正法（也称为辐射传输方程：Radiative Transfer Equation——RTE）、单通道算法和分裂窗算法。</p>
 <p>单通道算法和分裂窗算法的代表性算法包括 Juan C． Jiménez-Muoz 单 通 道 算 法 ( Jiménez-Muoz 等，2009) 、覃志豪单窗算法( Qin 等， 2001) 、 Offer Ｒozenstein 劈窗算法( Ｒozenstein 等， 2014) 和 Juan C． Jiménez-Muoz 劈窗算法( Jiménez-Muoz 等， 2014) 。</p>
@@ -271,25 +271,25 @@
 <p>对于TIRS Band10，K1&#x3D; 774.89 W&#x2F;(m2<em>µm</em>sr)，K2 &#x3D; 1321.08K。</p>
 <p> 从上可知此类算法需要2个参数：大气剖面参数和地表比辐射率。大气剖面参数 在NASA提供的网站(<a target="_blank" rel="noopener" href="http://atmcorr.gsfc.nasa.gov/)%E4%B8%AD%EF%BC%8C%E8%BE%93%E5%85%A5%E6%88%90%E5%BD%B1%E6%97%B6%E9%97%B4%E4%BB%A5%E5%8F%8A%E4%B8%AD%E5%BF%83%E7%BB%8F%E7%BA%AC%E5%BA%A6%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%8F%96%E5%A4%A7%E6%B0%94%E5%89%96%E9%9D%A2%E5%8F%82%E6%95%B0%E3%80%82%E9%80%82%E7%94%A8%E4%BA%8E%E5%8F%AA%E6%9C%89%E4%B8%80%E4%B8%AA%E7%83%AD%E7%BA%A2%E5%A4%96%E6%B3%A2%E6%AE%B5%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%8C%E5%A6%82Landsat">http://atmcorr.gsfc.nasa.gov/)中，输入成影时间以及中心经纬度可以获取大气剖面参数。适用于只有一个热红外波段的数据，如Landsat</a> TM &#x2F;ETM+&#x2F;TIRS数据。</p>
 <p> 主要内容就是使用BandMath工具计算公式（1.2）和公式（1.3），处理流程如下图所示。</p>
-<p><img src="/2.jpg" alt="流程"></p>
+<p><img src="/.cn//2.jpg" alt="流程"></p>
 <p>不过，现在已经有了ENVI直接处理工具——<a target="_blank" rel="noopener" href="http://blog.sina.com.cn/s/blog_764b1e9d0102wbl7.html">Landsat8 TIRS地表温度反演工具</a></p>
 <hr>
 <h2 id="Juan-C．-Jimenez-Muoz-单通道算法"><a href="#Juan-C．-Jimenez-Muoz-单通道算法" class="headerlink" title="Juan C． Jiménez-Muoz 单通道算法"></a>Juan C． Jiménez-Muoz 单通道算法</h2><p>Juan C． Jiménez-Muoz 单通道算法 SC( Singlechannel Method) 由Jiménez-Muoz 等人( 2009) 提出， 计算 LST 使用以下的一般方程:</p>
-<p><img src="/3.jpg" alt="3"></p>
+<p><img src="/.cn//3.jpg" alt="3"></p>
 <p>式中， ε 为比辐射率， Lsen为卫星高度上遥感器测得 的辐射强度( W·m －2 ·sr －1 μm －1) ，Tsen为亮温温 度，bγ &#x3D; c2( λ4 &#x2F;c1 +1&#x2F;λ) ( λ 为中心波长， c1 &#x3D;1．91104 ×108 W·μm4·m－2· sr －1;c2 &#x3D;14387．7 μm·K) 。ε 为地表比辐射率。ψ1、 ψ2 和 ψ3 为大气功能参数。</p>
 <p>Jiménez-Muoz 等人( 2014) 通过从 GAPRI 数据库中选取的 4838 条大气廓线数据，利用大气辐射传输软件 MODTRAN4.0 计算得到的大气含水量、大气透过率、大气上行辐射和大气下行辐射等大气参数，通过最小二乘拟合得到 Landsat 8 的 3 个大气函数和大气水汽含量的表达式为:</p>
-<p><img src="/4.jpg" alt="4"></p>
-<h2 id="覃志豪-单窗算法"><a href="#覃志豪-单窗算法" class="headerlink" title="覃志豪 单窗算法"></a>覃志豪 单窗算法</h2><p><img src="/5.jpg" alt="5"></p>
-<p><img src="/6.jpg" alt="6"></p>
+<p><img src="/.cn//4.jpg" alt="4"></p>
+<h2 id="覃志豪-单窗算法"><a href="#覃志豪-单窗算法" class="headerlink" title="覃志豪 单窗算法"></a>覃志豪 单窗算法</h2><p><img src="/.cn//5.jpg" alt="5"></p>
+<p><img src="/.cn//6.jpg" alt="6"></p>
 <p>Rozenstein等人和覃志豪等人根据大气辐射传输软件LOWTRAN模拟得到不同温度范围内TIRS反演的回归系数。用该方法反演地表温度时，需首先根据研究区所处的位置以及数据获取季节，估算出研究区的大概温度范围，然后查表得到相应的系数。从表中我们可以看到，温度范围越小，回归系数的精度越高(表中的拟合决定系数越高)。因此，当所估算的研究区温度范围同时位于表中的不同温度区间时，应优先选择温度范围较窄的区间，式中系数即基于上述原则选取。</p>
-<p><img src="/7.jpg" alt="7"></p>
+<p><img src="/.cn//7.jpg" alt="7"></p>
 <h2 id="OfferRozenstein-劈窗算法"><a href="#OfferRozenstein-劈窗算法" class="headerlink" title="OfferRozenstein 劈窗算法"></a>OfferRozenstein 劈窗算法</h2><p>Rozenstein等人和覃志豪等人根据劈窗算法和 Landsat8 数据的特点，提出了适用于 Landsat8 数据的地表温度反演劈窗算法 SW1(SplitWindowAlgorithm)，其计算公式如下:</p>
 <p>Ts&#x3D;A0+A1T10－A2T11</p>
 <p>式中，Ts为地表温度，</p>
 <p>T10、T11分别Landsat8第10、第11波段的亮温温度，单位是K。</p>
 <p>A0、A1和A2是系数。</p>
 <p>上文中的表2给出了不同的温度范围时，系数ai和bi的值。同样的，为了获得较准确的地表反演温度，需要根据研究区所处位置以及数据拍摄季节，估算出大概的温度范围，选取合适的系数。该算法的具体计算公式如下:</p>
-<p><img src="/8.jpg" alt="8"></p>
+<p><img src="/.cn//8.jpg" alt="8"></p>
 <h2 id="Juan-C．-Jimenez-Muoz-劈窗算法"><a href="#Juan-C．-Jimenez-Muoz-劈窗算法" class="headerlink" title="Juan C． Jiménez-Muoz 劈窗算法"></a>Juan C． Jiménez-Muoz 劈窗算法</h2><p>Juan C． Jiménez-Muoz 等人( 2014) 利用 Sobrino 等人( 1996) 提出的数学结构，结合 Landsat8 的数据特点进行大气辐射传输模拟，提出了一种应用于 Landsat8 的地表温度反演算法 SW2(Split-WindowAlgorithm) 。计算模型如下:<br>Ts&#x3D;T10+C1(T10－T11)+C2(T10－T11)2+C0+(C3+C4ω)(1－ε)+(C5+C6ω)ε<br>式中，ε为平均地表比辐射率，ε&#x3D;0．5(ε10+ε11)，Δε&#x3D;(ε10－ε11)。<br>ω为大气水汽含量(g·cm－2)，<br>C0至C6为通过模拟实验得到的系数，<br>相关系数如下:C0&#x3D;－0．268，C1&#x3D;1．378，C2&#x3D;0．183，C3&#x3D;54．30，C4&#x3D;－2．238，C5&#x3D;－129．20，C6&#x3D;16．40</p>
 <hr>
 <h2 id="算法对比"><a href="#算法对比" class="headerlink" title="算法对比"></a>算法对比</h2><p>来自：<a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/966f53154531b90d6c85ec3a87c24028915f852b.html">宋挺, 段峥, 刘军志, 石浚哲, 严飞, &amp; 盛世杰, et al. (2015). Landsat 8数据地表温度反演算法对比. <em>遥感学报</em>(03), 101-114.</a></p>

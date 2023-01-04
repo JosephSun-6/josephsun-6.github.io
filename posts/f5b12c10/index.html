@@ -26,19 +26,19 @@
 <meta property="og:site_name" content="开心市民孙先生&#39;s Blogs">
 <meta property="og:description" content="假设检验(显著性检验)关于概率统计基本内容已经放在博客中，或者公众号内回复概率即可获得。此处不做过多说明  假设检验也叫显著性检验，是以小概率反证法的逻辑推理，判断假设是否成立的统计方法，它首先假设样本对应的总体参数（或分布）与某个已知总体参数（或分布）相同，然后根据统计量的分布规律来分析样本数据，利用样本信息判断是否支持这种假设，并对检验假设做出取舍抉择，做出的结论是概率性的，不是绝对的肯定或否">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://josephsun.cn/p&s.png">
-<meta property="og:image" content="https://josephsun.cn/t-testpaper.png">
-<meta property="og:image" content="https://josephsun.cn/ttest.png">
-<meta property="og:image" content="https://josephsun.cn/tstest.png">
-<meta property="og:image" content="https://josephsun.cn/qqttest.png">
-<meta property="og:image" content="https://josephsun.cn/density.png">
-<meta property="og:image" content="https://josephsun.cn/qqpvalue.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//p&s.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//t-testpaper.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//ttest.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//tstest.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//qqttest.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//density.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//qqpvalue.png">
 <meta property="article:published_time" content="2020-12-01T15:18:23.000Z">
 <meta property="article:modified_time" content="2020-12-02T12:39:08.664Z">
 <meta property="article:author" content="开心市民孙先生">
 <meta property="article:tag" content="空间分析">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://josephsun.cn/p&s.png">
+<meta name="twitter:image" content="https://josephsun.cn/.cn//p&s.png">
 
 
 <link rel="canonical" href="https://josephsun.cn/posts/f5b12c10/">
@@ -294,7 +294,7 @@
 <p>Significant Level&#x3D;显著性水平 $\alpha$</p>
 </blockquote>
 <p>p值是根据实验算出来的，我们还需要一个参照来说明，我们能否拒绝H<sub>0</sub>，低于significant level这个水位线（P-value 小于等于 $\alpha$）的话就可以否定H<sub>0</sub>，高于这个线的话就是否定不了H<sub>0</sub></p>
-<p><img src="/p&s.png" alt="p&amp;s.png"></p>
+<p><img src="/.cn//p&s.png" alt="p&amp;s.png"></p>
 <p class="text-center">Image Caption</p>
 
 <p>一般将 significant level 设置为5%</p>
@@ -315,7 +315,7 @@
 <p>![William Sealy Gosset.png](William Sealy Gosset.png)</p>
 <p>T检验最早起源于1876年，Helmert and Lüroth 将其用于后验概率分布，后来也以IV型皮尔逊分布形式出现于Karl Pearson的1895年论文中。</p>
 <p>但T检验(又称学生T检验，Student’s T Distribution)是源于William Sealy Gosset于1908年，以他的化名“学生”在科学杂志《Biometrika》上出版。</p>
-<p><img src="/t-testpaper.png" alt="t-testpaper.png"></p>
+<p><img src="/.cn//t-testpaper.png" alt="t-testpaper.png"></p>
 <p>克劳德·健力士（Claude Guinness）酿酒厂聘用从牛津大学和剑桥大学出来的最好的毕业生，希望将生物化学及统计学应用到酒厂的工业流程，Gosset 受雇于都柏林的健力士酿酒厂。Gosset 提出了t检验以降低啤酒质量监控的成本，后来以于1908年在《Biometrika》期刊上公布t检验，但因其老板认为其为商业机密而被迫使用笔名，但是 Gosset 的统计论文内容跟酿酒并无关系。</p>
 <p>采用笔名也用的 student，想必一定是个很谦虚的大牛吧。</p>
 <h5 id="T-test-引言"><a href="#T-test-引言" class="headerlink" title="T-test 引言"></a>T-test 引言</h5><p>要求样本服从正态分布或近似正态分布。</p>
@@ -358,15 +358,15 @@
 <p>一种方法是绘制 t 统计量的理论密度曲线，并将生成的样本密度叠加于理论曲线图上。</p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> <span class="built_in">range</span><span class="punctuation">(</span>ts<span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">[</span><span class="number">1</span><span class="punctuation">]</span> <span class="operator">-</span><span class="number">4.044813</span>  <span class="number">5.270784</span></span><br><span class="line"></span><br><span class="line"><span class="operator">&gt;</span> pts <span class="operator">=</span> seq<span class="punctuation">(</span><span class="operator">-</span><span class="number">5.2</span><span class="punctuation">,</span><span class="number">5.2</span><span class="punctuation">,</span><span class="built_in">length</span><span class="operator">=</span><span class="number">100</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> plot<span class="punctuation">(</span>pts<span class="punctuation">,</span>dt<span class="punctuation">(</span>pts<span class="punctuation">,</span>df<span class="operator">=</span><span class="number">18</span><span class="punctuation">)</span><span class="punctuation">,</span>col<span class="operator">=</span><span class="string">&#x27;red&#x27;</span><span class="punctuation">,</span>type<span class="operator">=</span><span class="string">&#x27;l&#x27;</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/ttest.png" alt="ttest.png"></p>
+<p><img src="/.cn//ttest.png" alt="ttest.png"></p>
 <p>现在，在图中添加显示样品密度的曲线：</p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> lines<span class="punctuation">(</span>density<span class="punctuation">(</span>ts<span class="punctuation">)</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/tstest.png" alt="tstest.png"></p>
+<p><img src="/.cn//tstest.png" alt="tstest.png"></p>
 <p>比较两个密度的另一种方法是使用 Q-Q图 。两个样本的分位数在0到1范围内的各个点处计算，然后对应数值绘制。如果两个样本来自具有相同参数的相同分布，我们将看到一条直线，斜率为1；换句话说，检验两个样本数据的各个分位数是否相同。如果两个样本来自相似的分布，但是参数不同，仍然会看到一条直线，但不是通过原点。</p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> qqplot<span class="punctuation">(</span>ts<span class="punctuation">,</span>rt<span class="punctuation">(</span><span class="number">1000</span><span class="punctuation">,</span>df<span class="operator">=</span><span class="number">18</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> abline<span class="punctuation">(</span><span class="number">0</span><span class="punctuation">,</span><span class="number">1</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/qqttest.png" alt="qqttest.png"></p>
+<p><img src="/.cn//qqttest.png" alt="qqttest.png"></p>
 <p>可以看到图的中心似乎相当吻合，但是分布的两端存在一些差异。</p>
 <p>分布的两端是最难准确测出的部分，因为这些数值通常是我们要验证命题的证据，即为了拒绝原假设的值。由于此处分布非常重要，因此检验样本分布是否遵循某个假设分布的另一种方法是计算某些尾部概率的分位数（使用分位数函数）。</p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> probs <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="number">.9</span><span class="punctuation">,</span><span class="number">.95</span><span class="punctuation">,</span><span class="number">.99</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> probs</span><br><span class="line"><span class="punctuation">[</span><span class="number">1</span><span class="punctuation">]</span> <span class="number">0.90</span> <span class="number">0.95</span> <span class="number">0.99</span></span><br><span class="line"><span class="operator">&gt;</span> quantile<span class="punctuation">(</span>ts<span class="punctuation">,</span>probs<span class="punctuation">)</span></span><br><span class="line">     <span class="number">90</span><span class="operator">%      95%</span>      <span class="number">99</span>% </span><br><span class="line"><span class="number">1.436046</span> <span class="number">1.808243</span> <span class="number">2.920762</span> </span><br><span class="line"><span class="operator">&gt;</span> qt<span class="punctuation">(</span>probs<span class="punctuation">,</span>df<span class="operator">=</span><span class="number">18</span><span class="punctuation">)</span></span><br><span class="line"><span class="punctuation">[</span><span class="number">1</span><span class="punctuation">]</span> <span class="number">1.330391</span> <span class="number">1.734064</span> <span class="number">2.552380</span></span><br></pre></td></tr></table></figure>
@@ -381,11 +381,11 @@
 <p>在原假设下，任何统计检验的p值都应在0和1之间形成均匀分布。</p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> tps <span class="operator">=</span> replicate<span class="punctuation">(</span><span class="number">1000</span><span class="punctuation">,</span>t.test<span class="punctuation">(</span>rnorm<span class="punctuation">(</span><span class="number">10</span><span class="punctuation">)</span><span class="punctuation">,</span>rnorm<span class="punctuation">(</span><span class="number">10</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="operator">$</span>p.value<span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> plot<span class="punctuation">(</span>density<span class="punctuation">(</span>tps<span class="punctuation">)</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/density.png" alt="image-20201201224418958"></p>
+<p><img src="/.cn//density.png" alt="image-20201201224418958"></p>
 <p>检查P值的概率是否遵循均匀分布的方法可以使用Q-Q图：</p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> qqplot<span class="punctuation">(</span>tps<span class="punctuation">,</span>runif<span class="punctuation">(</span><span class="number">1000</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> abline<span class="punctuation">(</span><span class="number">0</span><span class="punctuation">,</span><span class="number">1</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/qqpvalue.png" alt="qqpvalue.png"></p>
+<p><img src="/.cn//qqpvalue.png" alt="qqpvalue.png"></p>
 <p>看起来”P值概率遵循均匀分布”的想法似乎是合理的。</p>
 <p>此时再看一下在t.test函数使用var.equal时的p值的分位数</p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> tps <span class="operator">=</span> replicate<span class="punctuation">(</span><span class="number">1000</span><span class="punctuation">,</span>t.test<span class="punctuation">(</span>rnorm<span class="punctuation">(</span><span class="number">10</span><span class="punctuation">)</span><span class="punctuation">,</span>rnorm<span class="punctuation">(</span><span class="number">10</span><span class="punctuation">)</span><span class="punctuation">,</span>var.equal<span class="operator">=</span><span class="literal">TRUE</span><span class="punctuation">)</span><span class="operator">$</span>p.value<span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> probs <span class="operator">=</span> <span class="built_in">c</span><span class="punctuation">(</span><span class="number">.5</span><span class="punctuation">,</span><span class="number">.7</span><span class="punctuation">,</span><span class="number">.9</span><span class="punctuation">,</span><span class="number">.95</span><span class="punctuation">,</span><span class="number">.99</span><span class="punctuation">)</span></span><br><span class="line"><span class="operator">&gt;</span> quantile<span class="punctuation">(</span>tps<span class="punctuation">,</span>probs<span class="punctuation">)</span></span><br><span class="line">      <span class="number">50</span><span class="operator">%       70%</span>       <span class="number">90</span><span class="operator">%       95%</span>       <span class="number">99</span>% </span><br><span class="line"><span class="number">0.4896183</span> <span class="number">0.6747706</span> <span class="number">0.8888852</span> <span class="number">0.9438881</span> <span class="number">0.9849279</span> </span><br></pre></td></tr></table></figure>

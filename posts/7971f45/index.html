@@ -26,18 +26,18 @@
 <meta property="og:site_name" content="开心市民孙先生&#39;s Blogs">
 <meta property="og:description" content="这一篇谈谈 u-test(z-test) 和 正态性检验">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://josephsun.cn/p-value-and-z.png">
-<meta property="og:image" content="https://josephsun.cn/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/image-20201203214839241.png">
-<meta property="og:image" content="https://josephsun.cn/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/image-20201203215142342.png">
-<meta property="og:image" content="https://josephsun.cn/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/image-20201203215203745.png">
-<meta property="og:image" content="https://josephsun.cn/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/image-20201203215249435.png">
-<meta property="og:image" content="https://josephsun.cn/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/v2-044674d02d820d94ec7d8e409978b43a_720w.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//p-value-and-z.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//image-20201203214839241.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//image-20201203215142342.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//image-20201203215203745.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//image-20201203215249435.png">
+<meta property="og:image" content="https://josephsun.cn/.cn//v2-044674d02d820d94ec7d8e409978b43a_720w.png">
 <meta property="article:published_time" content="2020-12-02T11:42:24.000Z">
 <meta property="article:modified_time" content="2020-12-06T12:28:19.264Z">
 <meta property="article:author" content="开心市民孙先生">
 <meta property="article:tag" content="空间分析">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://josephsun.cn/p-value-and-z.png">
+<meta name="twitter:image" content="https://josephsun.cn/.cn//p-value-and-z.png">
 
 
 <link rel="canonical" href="https://josephsun.cn/posts/7971f45/">
@@ -272,7 +272,7 @@
 <p>第三步，比较计算的z值和理论z值，推断发生概率</p>
 <ul>
 <li><p>双侧</p>
-<p><img src="/p-value-and-z.png" alt="p-value-and-z"></p>
+<p><img src="/.cn//p-value-and-z.png" alt="p-value-and-z"></p>
 </li>
 <li><p>单侧</p>
 <p>同理上表，由于是单侧分布，因此当 Z值$\leq$-1.65 或 Z值$\geq$1.65 时，差异程度为显著</p>
@@ -299,13 +299,13 @@
 <li><p>图示法 </p>
 <p>P-P图 ppplot {需要包 StatDA}</p>
 <p>(按照样本的累计频率为横坐标，正态分布累计频率为纵坐标)</p>
-<p><img src="/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/image-20201203214839241.png" alt="image-20201203214839241"></p>
+<p><img src="/.cn//image-20201203214839241.png" alt="image-20201203214839241"></p>
 <p>Q-Q图 qqplot()</p>
-<p><img src="/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/image-20201203215142342.png" alt="image-20201203215142342"></p>
+<p><img src="/.cn//image-20201203215142342.png" alt="image-20201203215142342"></p>
 <p>频率直方图 hist()</p>
-<p><img src="/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/image-20201203215203745.png" alt="image-20201203215203745"></p>
+<p><img src="/.cn//image-20201203215203745.png" alt="image-20201203215203745"></p>
 <p>箱线图 boxplot()</p>
-<p><img src="/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/image-20201203215249435.png" alt="image-20201203215249435"></p>
+<p><img src="/.cn//image-20201203215249435.png" alt="image-20201203215249435"></p>
 <p>茎叶图 stem()</p>
 <p>茎叶图又称“枝叶图”，它的思路是将数组中的数按位数进行比较，将数的大小基本不变或变化不大的位作为一个主干（茎），将变化大的位的数作为分枝（叶），列在主干的后面，这样就可以清楚地看到每个主干后面的几个数，每个数具体是多少。</p>
 <figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">&gt;</span> stem<span class="punctuation">(</span>ts<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line">  The decimal point is at the <span class="operator">|</span></span><br><span class="line"></span><br><span class="line">  <span class="operator">-</span><span class="number">2</span> <span class="operator">|</span> <span class="number">400</span></span><br><span class="line">  <span class="operator">-</span><span class="number">1</span> <span class="operator">|</span> <span class="number">98884432211100000</span></span><br><span class="line">  <span class="operator">-</span><span class="number">0</span> <span class="operator">|</span> <span class="number">999998877665444433322222111110000</span></span><br><span class="line">   <span class="number">0</span> <span class="operator">|</span> <span class="number">0111222223334556677778889</span></span><br><span class="line">   <span class="number">1</span> <span class="operator">|</span> <span class="number">011111222333455799</span></span><br><span class="line">   <span class="number">2</span> <span class="operator">|</span> <span class="number">017</span></span><br><span class="line">   <span class="number">3</span> <span class="operator">|</span> <span class="number">4</span></span><br></pre></td></tr></table></figure>
@@ -338,7 +338,7 @@
 <ul>
 <li><p>K-S检验 —— Kolmogorov-Smirnov检验</p>
 <p>K-S检验的思路是那样本数据和期望的理论分布进行对比，若差异不大，则可以认为服从正态分布。</p>
-<p><img src="/%E7%A9%BA%E9%97%B4%E5%88%86%E6%9E%90-%E5%8F%81%C2%B7%E5%9C%B0%E7%90%86%E7%BB%9F%E8%AE%A12/v2-044674d02d820d94ec7d8e409978b43a_720w.png" alt="img"></p>
+<p><img src="/.cn//v2-044674d02d820d94ec7d8e409978b43a_720w.png" alt="img"></p>
 <p>Kolmogorov检验找出在每一个数据点上经验累积概率与目标分布的累积概率之差的上界，列出公式是这样的：<br>$$<br>D_n&#x3D;sup_x|F_n(x)-F(x)|<br>$$<br>其中$sup$函数表示一组距离中的上确界，这是个数学概念，表示在原假设$F_n(x)-F(x)$ 的条件下，$F_n(x)-F(x)$ 的绝对值的最小上界。$F_n(x)$和$F(x)$分别代表经验的和理论的累积概率。其意图在于如果原假设成立，则$D_n$应该很小，如果很大，则原假设不成立。</p>
 <p>计算上确界：<br>$$<br>D _ { n } &#x3D; \operatorname { sup }_x | F _ { n } ( x ) - F _ { 0 } ( x ) | &#x3D; \operatorname { max } _ { 1 \leq k \leq n } { | F _ { n } ( x _ { k } ) - F _ { 0 } ( x _ { k } ) | , \  | F _ { 0 } ( x _ { k + 1 } ) - F _ { n } ( x _ { k } ) | }<br>$$<br>其中$k$为样本从小到大排列后的序数。从公式中看出$D_n$是经验和目标累积概率之差和错一位后再求出的差中最大的一个。Kolmogorov还给出了这个距离的分布函数，并给出了判断的临界值。</p>
 <p>Smirnov检验则是针对两组样本数据是否服从同一分布的检验，其思想与Kolmogorov检验一致，区别在于Smirnov检验计算的是两个样本累积概率的最大差值，当然统计量分布和临界值表肯定也不一样。</p>
