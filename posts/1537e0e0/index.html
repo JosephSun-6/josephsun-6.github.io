@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"josephsun.cn","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="分区统计是一个用于计算另一个数据集的区域内栅格数据值的统计数据，包括均值，中位数，最大值，最小值，总和等。本章内容将从TIF数据中批量提取SHP区域范围统计值。 涉及的库包括glob、geopandas、rasterio、rasterstats">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用Pyhton对气象数据分区统计">
+<meta property="og:url" content="https://josephsun.cn/posts/1537e0e0/">
+<meta property="og:site_name" content="开心市民孙先生&#39;s Blogs">
+<meta property="og:description" content="分区统计是一个用于计算另一个数据集的区域内栅格数据值的统计数据，包括均值，中位数，最大值，最小值，总和等。本章内容将从TIF数据中批量提取SHP区域范围统计值。 涉及的库包括glob、geopandas、rasterio、rasterstats">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://josephsun.cn/2.png">
+<meta property="og:image" content="https://josephsun.cn/1.png">
+<meta property="article:published_time" content="2023-01-03T13:15:52.000Z">
+<meta property="article:modified_time" content="2023-01-04T10:13:29.974Z">
+<meta property="article:author" content="开心市民孙先生">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://josephsun.cn/2.png">
+
+
+<link rel="canonical" href="https://josephsun.cn/posts/1537e0e0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://josephsun.cn/posts/1537e0e0/","path":"posts/1537e0e0/","title":"利用Pyhton对气象数据分区统计"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>利用Pyhton对气象数据分区统计 | 开心市民孙先生's Blogs</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156331840-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-156331840-2","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1263cea084ac2c7b896396b81f9a4fbc"></script>
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">开心市民孙先生's Blogs</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">开心市民孙先生</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-cv"><a href="/CV/" rel="section"><i class="fa fa-user fa-fw"></i>CV</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-archive fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="开心市民孙先生"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">开心市民孙先生</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/JosephSun-6" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;JosephSun-6" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:417773447@qq.com" title="E-Mail → mailto:417773447@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://josephsun.cn/posts/1537e0e0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="开心市民孙先生">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="开心市民孙先生's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="利用Pyhton对气象数据分区统计 | 开心市民孙先生's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          利用Pyhton对气象数据分区统计
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-01-03 21:15:52" itemprop="dateCreated datePublished" datetime="2023-01-03T21:15:52+08:00">2023-01-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-01-04 18:13:29" itemprop="dateModified" datetime="2023-01-04T18:13:29+08:00">2023-01-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/posts/1537e0e0/" class="post-meta-item leancloud_visitors" data-flag-title="利用Pyhton对气象数据分区统计" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>分区统计是一个用于计算另一个数据集的区域内栅格数据值的统计数据，包括均值，中位数，最大值，最小值，总和等。本章内容将从TIF数据中批量提取SHP区域范围统计值。</p>
+<p>涉及的库包括glob、geopandas、rasterio、rasterstats</p>
+<span id="more"></span>
+
+<p>导入库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import glob</span><br><span class="line">import numpy as np</span><br><span class="line">import rasterio</span><br><span class="line">import rasterstats</span><br><span class="line">import pandas as pd</span><br></pre></td></tr></table></figure>
+
+<p>读取TIF文件目录</p>
+<p>[继续安利，glob是一个很好用的读取文件夹中特定文件的库]</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Input_folder = r&#x27;.\tif\output&#x27;</span><br><span class="line"># 读取所有nc数据</span><br><span class="line">data_list = glob.glob(Input_folder + &#x27;/*.tif&#x27;)</span><br><span class="line">data_list[:5]</span><br></pre></td></tr></table></figure>
+
+<p>分区统计</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mean = []</span><br><span class="line">for i in data_list:</span><br><span class="line">    mean.append(rasterstats.zonal_stats(&#x27;shp/Uzb.shp&#x27;, i))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">out[3]:</span><br><span class="line">[[&#123;&#x27;min&#x27;: 1.6692631244659424,</span><br><span class="line">   &#x27;max&#x27;: 32.75654220581055,</span><br><span class="line">   &#x27;mean&#x27;: 7.104131728566754,</span><br><span class="line">   &#x27;count&#x27;: 764&#125;],</span><br><span class="line"> [&#123;&#x27;min&#x27;: 6.693352699279785,</span><br><span class="line">   &#x27;max&#x27;: 52.895751953125,</span><br><span class="line">   &#x27;mean&#x27;: 17.020224046956805,</span><br><span class="line">   &#x27;count&#x27;: 764&#125;],</span><br><span class="line"> [&#123;&#x27;min&#x27;: 15.254048347473145,</span><br><span class="line">   &#x27;max&#x27;: 61.91945266723633,</span><br><span class="line">   &#x27;mean&#x27;: 29.42128701734293,</span><br><span class="line">   &#x27;count&#x27;: 764&#125;],</span><br><span class="line"> [&#123;&#x27;min&#x27;: 9.328380584716797,</span><br><span class="line">   &#x27;max&#x27;: 94.33841705322266,</span><br><span class="line">   &#x27;mean&#x27;: 31.399040821335078,</span><br><span class="line">   &#x27;count&#x27;: 764&#125;],</span><br><span class="line"> [&#123;&#x27;min&#x27;: 3.756659984588623,</span><br><span class="line">   &#x27;max&#x27;: 117.5350112915039,</span><br><span class="line">   &#x27;mean&#x27;: 25.642033601930628,</span><br><span class="line">   &#x27;count&#x27;: 764&#125;],</span><br><span class="line"> [&#123;&#x27;min&#x27;: 1.7687196731567383,</span><br><span class="line">   &#x27;max&#x27;: 112.15010833740234,</span><br><span class="line">   &#x27;mean&#x27;: 16.417166025850786,</span><br><span class="line">   &#x27;count&#x27;: 764&#125;],</span><br><span class="line"> [&#123;&#x27;min&#x27;: 1.5461831092834473,</span><br><span class="line">   &#x27;max&#x27;: 104.57400512695312,</span><br><span class="line">   &#x27;mean&#x27;: 14.721388252617801,</span><br><span class="line">   &#x27;count&#x27;: 764&#125;],</span><br><span class="line"> [&#123;&#x27;min&#x27;: 1.0155596733093262,</span><br><span class="line">   &#x27;max&#x27;: 65.43617248535156,</span><br><span class="line">   &#x27;mean&#x27;: 8.65694854896106,</span><br><span class="line">   &#x27;count&#x27;: 764&#125;],</span><br><span class="line"> [&#123;&#x27;min&#x27;: 0.7461696267127991,</span><br><span class="line">   &#x27;max&#x27;: 20.19913101196289,</span><br><span class="line">   &#x27;mean&#x27;: 5.3231859456806285,</span><br><span class="line">   &#x27;count&#x27;: 764&#125;],</span><br><span class="line"> [&#123;&#x27;min&#x27;: 0.38746243715286255,</span><br><span class="line">   &#x27;max&#x27;: 33.00067138671875,</span><br><span class="line">   &#x27;mean&#x27;: 6.337624754581152,</span><br><span class="line">   &#x27;count&#x27;: 764&#125;],</span><br><span class="line"> [&#123;&#x27;min&#x27;: 0.357392281293869,</span><br><span class="line">   &#x27;max&#x27;: 23.879793167114258,</span><br><span class="line">   &#x27;mean&#x27;: 6.345281311354712,</span><br><span class="line">   &#x27;count&#x27;: 764&#125;],</span><br><span class="line"> [&#123;&#x27;min&#x27;: 1.8076934814453125,</span><br><span class="line">   &#x27;max&#x27;: 26.18817138671875,</span><br><span class="line">   &#x27;mean&#x27;: 8.100336044870746,</span><br><span class="line">   &#x27;count&#x27;: 764&#125;]]</span><br></pre></td></tr></table></figure>
+
+<p>默认的策略是包括沿直线渲染路径的所有像素（对于直线），或者中心点在多边形内的单元（对于多边形）。另外也可以选择all_touched策略，通过包括它所接触的所有像素来栅格化几何体。</p>
+<p>左边是默认False，右边是True状态。</p>
+<p><img src="/2.png" alt="2"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onal_stats(&#x27;shp/Uzb.shp&#x27;, i, all_touched=True)</span><br></pre></td></tr></table></figure>
+
+<p>根据官方文档，也可以设置需要的统计函数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">def mymean(x): </span><br><span class="line">    return np.ma.mean(x)</span><br><span class="line"></span><br><span class="line">mean = []</span><br><span class="line">for i in data_list:</span><br><span class="line">    mean.append(rasterstats.zonal_stats(&#x27;shp/Uzb.shp&#x27;, i, stats=&quot;count&quot;, add_stats=&#123;&#x27;mymean&#x27;:mymean&#125;))</span><br><span class="line">    </span><br><span class="line">mean</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">out[4]:</span><br><span class="line">[[&#123;&#x27;count&#x27;: 764, &#x27;mymean&#x27;: 7.104131728566754&#125;],</span><br><span class="line"> [&#123;&#x27;count&#x27;: 764, &#x27;mymean&#x27;: 17.020224046956805&#125;],</span><br><span class="line"> [&#123;&#x27;count&#x27;: 764, &#x27;mymean&#x27;: 29.42128701734293&#125;],</span><br><span class="line"> [&#123;&#x27;count&#x27;: 764, &#x27;mymean&#x27;: 31.399040821335078&#125;],</span><br><span class="line"> [&#123;&#x27;count&#x27;: 764, &#x27;mymean&#x27;: 25.642033601930628&#125;],</span><br><span class="line"> [&#123;&#x27;count&#x27;: 764, &#x27;mymean&#x27;: 16.417166025850786&#125;],</span><br><span class="line"> [&#123;&#x27;count&#x27;: 764, &#x27;mymean&#x27;: 14.721388252617801&#125;],</span><br><span class="line"> [&#123;&#x27;count&#x27;: 764, &#x27;mymean&#x27;: 8.65694854896106&#125;],</span><br><span class="line"> [&#123;&#x27;count&#x27;: 764, &#x27;mymean&#x27;: 5.3231859456806285&#125;],</span><br><span class="line"> [&#123;&#x27;count&#x27;: 764, &#x27;mymean&#x27;: 6.337624754581152&#125;],</span><br><span class="line"> [&#123;&#x27;count&#x27;: 764, &#x27;mymean&#x27;: 6.345281311354712&#125;],</span><br><span class="line"> [&#123;&#x27;count&#x27;: 764, &#x27;mymean&#x27;: 8.100336044870746&#125;]]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sum(mymean)</span><br><span class="line">out[5]:</span><br><span class="line">176.4886481000491</span><br></pre></td></tr></table></figure>
+
+<p>与arcgis的区域统计结果一致</p>
+<p><img src="/1.png" alt="1"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/3e3a0252/" rel="prev" title="气象数据NC批量转TIF及月尺度计算年尺度[同理其他指标]">
+                  <i class="fa fa-chevron-left"></i> 气象数据NC批量转TIF及月尺度计算年尺度[同理其他指标]
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">晋ICP备20000688号-2 </a>
+      <img src="/image/beian.jpg" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=14082702000119" rel="noopener" target="_blank">晋公网安备 14082702000124号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">开心市民孙先生</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"lGA8jDiu9xwPn8eGaVF2Ne2q-gzGzoHsz","app_key":"lI98i4LNGKqPDmaQTixb93yG","security":false,"betterPerformance":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
