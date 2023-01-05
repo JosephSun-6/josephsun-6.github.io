@@ -27,7 +27,7 @@
 <meta property="og:description" content="Bayesian inference &amp; Bayes factor对于贝叶斯的理解，推荐阅读这两篇文章 怎样用非数学语言讲解贝叶斯定理（Bayes’s theorem）？ - 马同学的回答 - 知乎 如何理解贝叶斯推断和beta分布？ 贝叶斯因子是贝叶斯统计中用来进行模型比较和假设检验的方法。在贝叶斯统计框架下的假设检验中，相当于我们根据当前收集到的数据来检验某个理论模型为真的可能性。 因">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://josephsun.cn/posts/eef4ba70/image-20201209211627272.png">
-<meta property="og:image" content="https://josephsun.cn/posts/eef4ba70/posts/eef4ba70/v2-5ef50c9fe93ef928df8cdae5e91e756e_720w.jpg">
+<meta property="og:image" content="https://josephsun.cn/posts/eef4ba70/v2-5ef50c9fe93ef928df8cdae5e91e756e_720w.jpg">
 <meta property="og:image" content="https://josephsun.cn/posts/eef4ba70/image-20201209195132537.png">
 <meta property="og:image" content="https://josephsun.cn/posts/eef4ba70/image-20201209154116490.png">
 <meta property="article:published_time" content="2020-12-09T02:33:39.000Z">
@@ -268,7 +268,7 @@
 <p>bf 对象包含了贝叶斯因子，并显示用于贝叶斯因子比较的分子分母模型。</p>
 <p>这里的贝叶斯因子告诉我们，替代假设（即差异大于零）比给定数据的零假设（即平均差为零）的可能性高出 17.71 倍。</p>
 <p>注意贝叶斯因子的下标，一般用 $BF_{10}$ 来表示数据支持备择假设 $H_1$ 的程度，下标1、0分别代表$H_1 和 H_0$.<br>$$<br>BF_{10} &#x3D; \frac {p(data|H_1)}{p(data|H_0)} &#x3D; \frac{1}{BF_{01}}<br>$$<br>对于贝叶斯因子大小的意义一般参照Jeffreys (1961)给出的表述进行解释</p>
-<img src="posts/eef4ba70/v2-5ef50c9fe93ef928df8cdae5e91e756e_720w.jpg" alt="img" style="zoom:67%;">
+<img src="/posts/eef4ba70/v2-5ef50c9fe93ef928df8cdae5e91e756e_720w.jpg" alt="img" style="zoom:67%;">
 
 <p>现在从贝叶斯因子的分子的后验概率取样。</p>
 <p>$posterior$ 函数可以返回一个 BFmcmc 类型，此类型继承了mcmc类。可以用于探查性分析，画图或其他。</p>

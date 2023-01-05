@@ -26,19 +26,19 @@
 <meta property="og:site_name" content="开心市民孙先生&#39;s Blogs">
 <meta property="og:description" content="用统计来描述数据为了使对变量描述更加精确，需要定量测量或者描述性统计方法。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/posts/88f0d19d/image-20210118205748239-1610974674093-1610977511815-1610977799710.png">
-<meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/posts/88f0d19d/image-20210118210403242-1610975392938-1610977510108.png">
-<meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/posts/88f0d19d/image-20210118210910295-1610975371296-1610975395433-1610977508556.png">
-<meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/posts/88f0d19d/image-20210118213806428-1610977102900-1610977506517.png">
-<meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/posts/88f0d19d/image-20210118213937514-1610977190548-1610977504697.png">
-<meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/posts/88f0d19d/image-20210118214444420-1610977498340.png">
+<meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/image-20210118205748239-1610974674093-1610977511815-1610977799710.png">
+<meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/image-20210118210403242-1610975392938-1610977510108.png">
+<meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/image-20210118210910295-1610975371296-1610975395433-1610977508556.png">
+<meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/image-20210118213806428-1610977102900-1610977506517.png">
+<meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/image-20210118213937514-1610977190548-1610977504697.png">
+<meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/image-20210118214444420-1610977498340.png">
 <meta property="og:image" content="https://josephsun.cn/posts/88f0d19d/image-20210118214902282-1610977756518-1610978017495.png">
 <meta property="article:published_time" content="2021-01-18T13:52:00.000Z">
 <meta property="article:modified_time" content="2022-12-30T10:44:11.625Z">
 <meta property="article:author" content="开心市民孙先生">
 <meta property="article:tag" content="空间分析">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://josephsun.cn/posts/88f0d19d/posts/88f0d19d/image-20210118205748239-1610974674093-1610977511815-1610977799710.png">
+<meta name="twitter:image" content="https://josephsun.cn/posts/88f0d19d/image-20210118205748239-1610974674093-1610977511815-1610977799710.png">
 
 
 <link rel="canonical" href="https://josephsun.cn/posts/88f0d19d/">
@@ -335,7 +335,7 @@
 <p>①均值中心</p>
 <p>均值中心可以认为是点分布的“重心”，它是算术平均值的一个简单概括，很容易计算。</p>
 <p>均值中心的定义：将n个点的坐标表示为$(X_i,Y_i),i&#x3D;1,2,…,n$，该点分布的均值中心为$(\overline X , \overline Y)$，其值为<br>$$<br>\overline X&#x3D;\frac{1}{n} \sum^n _{i&#x3D;1}X_i \ ,\ \overline Y&#x3D;\frac{1}{n} \sum^n _{i&#x3D;1}Y_i<br>$$</p>
-<img src="posts/88f0d19d/image-20210118205748239-1610974674093-1610977511815-1610977799710.png" alt="点模式集中趋势的测度" style="zoom:67%;">
+<img src="/posts/88f0d19d/image-20210118205748239-1610974674093-1610977511815-1610977799710.png" alt="点模式集中趋势的测度" style="zoom:67%;">
 
 <p>②加权均值中心</p>
 <p>均值中心也可以关联地图上的每个点的频率、幅度和“权重”。</p>
@@ -343,14 +343,14 @@
 <p>中位数的概念也可以应用于点分布。对于一组n个观测值，中位数被定义为“中间”或者对于一组有序数据的第$(n+1)&#x2F;2$位观测值。我们如何寻找点分布中的中位数？这个意义上的空间中位数是两条垂线的交点一—平分南北和东西两个方向的垂线。</p>
 <p>Manhattan中位数出现了两个明显的问题。</p>
 <p>第一，当我们试图确定一组含有8个观测值分布的中位数时，根据定义，我们需要找到一条在南北方向上将两边各划分为4个观测值的直线，就像图中，任何在点A和C之间的垂线都将两侧分为4个点。类似地，点A和B之间的任一条水平线都将该组分为两个相同的部分。图中的阴影部分包括了所有具有Manhattan中位数特性的所有点，显然这并不是一个唯一的点。是哪里出错了吗？事实上是，当点的数量是偶数时，Manhattan中位数不唯一，而当点的个数是奇数时，Manhattan中位数唯一。</p>
-<img src="posts/88f0d19d/image-20210118210403242-1610975392938-1610977510108.png" alt="偶数个点的Manhattan中位数" style="zoom:67%;">
+<img src="/posts/88f0d19d/image-20210118210403242-1610975392938-1610977510108.png" alt="偶数个点的Manhattan中位数" style="zoom:67%;">
 
 <p>该方法的第二个问题也可以用图来说明。假设地图的坐标被转移（转换）到虚线显示的位置，那么阴影部分定义的中位数会发生什么变化？它必须以同样的方式旋转，这将定义另一个直角坐标区域，因此在这个旋转轴下，Manhattan中位数的位置不唯一。</p>
 <p>从统计学的角度来说，这是不可取的。</p>
 <p>Manhattan中位数与频率分布的中位数有一条相同的性质，在频率分布中，中位数与其他n个观测值之间的距离绝对值之和最小。</p>
 <p>Manhattan中位数定义: 令n个观测值的坐标为$(X_i,Y_i),i&#x3D;1,2,…,n$，Manhattan中位数$(X_m ,Y_m)$使得下式最小：<br>$$<br>\sum _{i&#x3D;1}^n (|X_i - X_m|+|Y_i - Y_m|)<br>$$<br>也就是说，Manhattan中位数$(X_m ,Y_m)$到$n$个观测值的绝对距离之和最小。</p>
 <p>为什么被称为Manhattan中位数？想象一下，我们试图在一座城市定位一些设施，但这座城市限制南北和东西方向的通行，即无法像鸟儿在天上飞一样自由穿行。如图3-15所示，点$(X_i,Y_i)$和点$(X_m ,Y_m)$之间的Manhattan距离是$|X_i - X_m|+|Y_i - Y_m|$。绝对值的符号是用来确保计算的距离是非负的，空间距离的这种度量方法与在密集的矩形网格街道网络中移动有着密切的联系，尤其是Manhattan，因此命名为Manhattan公约或者Manhattan中位数。需要注意的是，两点之间的Manhattan距离总是比用勾股定理计算得到的距离要大，除非这两点位于南北线或者东西线上。我们将运用勾股定理求的距离称为欧几里得距离。</p>
-<img src="posts/88f0d19d/image-20210118210910295-1610975371296-1610975395433-1610977508556.png" alt="在Manhattan和欧氏度量中的点之间的距离" style="zoom:67%;">
+<img src="/posts/88f0d19d/image-20210118210910295-1610975371296-1610975395433-1610977508556.png" alt="在Manhattan和欧氏度量中的点之间的距离" style="zoom:67%;">
 
 <p>④欧氏中位数</p>
 <p>我们知道，在空间分布中，Manhattan中位数到$n$个观测点的Manhattan距离之和最小，那么我们会问，哪个点使得到同样$n$个观测点的欧氏距离最小呢？</p>
@@ -358,11 +358,11 @@
 <p>⑤加权中位数</p>
 <p>正如均值中心可以一般化为加权均值中心值，欧氏中位数和Manhattan中位数也一样。加权Manhattan中位数是指上下左右的权重相等。不同于未加权的部分，问题的非唯一性并不是那么常见。相对于Manhattan中位数，地理学家更在意加权欧氏中位数。</p>
 <p>加权欧氏中位数定义: 令平面上一组点的坐标为 $(X_i,Y_i),i&#x3D;1,2,…,n$ ，对于每一个点都有一个附加的权重 $w_i$ ，加权欧氏中位数 $(X_{we} ,Y_{we})$ 使得下式最小：<br>$$<br>\sum_{i&#x3D;1}^n w_i \sqrt{(X_i - X_{we})^2+(Y_i - Y_{we})^2}<br>$$</p>
-<img src="posts/88f0d19d/image-20210118213806428-1610977102900-1610977506517.png" alt="点分布集中趋势的加权度量" style="zoom:67%;">
+<img src="/posts/88f0d19d/image-20210118213806428-1610977102900-1610977506517.png" alt="点分布集中趋势的加权度量" style="zoom:67%;">
 
 <p>这个问题也可以视为公共设施选址决策问题。给定设施使用者的位置，例如学生，那么学校的最佳位置是哪里呢？权重可以定义为一个街区内适龄儿童的数量，最小化对象可以定义为学生到学校的总路程最小，同时也使得儿童走过的平均距离最小，加权均值中心使得学生走过的距离平方和最小。鉴于我们关注的是他们行走的距离而不是距离的平方，所以加权欧氏距离是最简单的解决方法。</p>
 <p>定位空间中位数的问题是许多私营和公共设施选址问题的基石。确定整个设施的位置这一复杂问题已经引起了地理学家极大的关注，例如，对于潜在用户，5所学校的空间分布问题，我们称之为位置分配问题。一旦确定了一组设施的位置，消费者或者顾客会被分配到最佳，一般是距离最近的场所。下图显示了5个场所的最佳位置选择，韦伯问题的这一简单延伸被称为多源韦伯问题。现在有许多关于位置分配问题方面的理论以及对学校、医院和其他设施系统的实践类文献。在许多文献中，由于欧氏距离在现实中是不切实际的，因此我们经常使用网格距离的变形方法。</p>
-<img src="posts/88f0d19d/image-20210118213937514-1610977190548-1610977504697.png" alt="由5个设施构成的系统的最佳位置" style="zoom:67%;">
+<img src="/posts/88f0d19d/image-20210118213937514-1610977190548-1610977504697.png" alt="由5个设施构成的系统的最佳位置" style="zoom:67%;">
 </li>
 <li><p>离散程度的测定</p>
 <p>除了对集中趋势的度量，空间分布的第二个重要特征是它的离散程度。在描述性统计中，离散性通常是基于离差的概念，各点与一个中心值，如均值或中位数之间的差距。在空间分布中，离差的概念是指观测点与中心点之间的实际距离。</p>
@@ -370,7 +370,7 @@
 <p>空间统计中，标准差距离对应常规统计的标准差。</p>
 <p>标准差距离定义：令n个观测值的坐标为$(X_i,Y_i),i&#x3D;1,2,…,n$，标准差距离被定义为<br>$$<br>SD&#x3D; \sqrt{\frac{1}{n} \sum_{i&#x3D;1}^n(X_i- \overline X)^2 + \frac{1}{n} \sum_{i&#x3D;1}^n(Y_i- \overline Y)^2 }<br>$$<br>②四分位法</p>
 <p>离散性可以通过四分位差的空间距离等价形象地表现出来。四分位计算法将一个点的分布四等分。围绕着中值分别是东、西、北与南。它们一同定义了一个矩形，其大小无疑取决于该点集的分布。图中给出了n&#x3D;16时点集分布的一个例子。在该例中，非唯一性的问题出现了，这是因为这些具有偶数个观察结果的点的中心值是一个区域。中心值的东边和西边都对应有8个点。许多线段满足这一准则。这儿被选中的一条位于两个中心观察结果的中间。相似地，南北方向上指出中位数的线段位于这一方向上两个中心观察结果的中间。定义四分位法时遵循同样的原则。东四分位处于靠近最东边第4个和第5个观察结果中间，西四分位处于靠近最西边第4个和第5个观察结果中间，等等。四分位法得到的矩形越大，点越离散。四分位法在地理文献中并不常见。</p>
-<img src="posts/88f0d19d/image-20210118214444420-1610977498340.png" alt="用四分位差描述点分布的离散性" style="zoom:67%;">
+<img src="/posts/88f0d19d/image-20210118214444420-1610977498340.png" alt="用四分位差描述点分布的离散性" style="zoom:67%;">
 
 <p>③实证研究法</p>
 <p>有效地描述一组点分散情况的实证研究法是以曲线图表示中央区域一定距离处点的累积频率。例如，图b中以这种方式总结了图a的数据。容易发现，80%的点位于距离均值中心6英里远的位置，20%的点位于距离2英里远的位置，诸如此类。</p>
