@@ -26,14 +26,14 @@
 <meta property="og:site_name" content="开心市民孙先生&#39;s Blogs">
 <meta property="og:description" content="分区统计是一个用于计算另一个数据集的区域内栅格数据值的统计数据，包括均值，中位数，最大值，最小值，总和等。本章内容将从TIF数据中批量提取SHP区域范围统计值。 涉及的库包括glob、geopandas、rasterio、rasterstats">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://josephsun.cn/%E5%88%A9%E7%94%A8Python%E5%AF%B9%E6%B0%94%E8%B1%A1%E6%95%B0%E6%8D%AE%E5%88%86%E5%8C%BA%E7%BB%9F%E8%AE%A1/2.png">
-<meta property="og:image" content="https://josephsun.cn/%E5%88%A9%E7%94%A8Python%E5%AF%B9%E6%B0%94%E8%B1%A1%E6%95%B0%E6%8D%AE%E5%88%86%E5%8C%BA%E7%BB%9F%E8%AE%A1/1.png">
+<meta property="og:image" content="https://josephsun.cn/posts/1537e0e0/2.png">
+<meta property="og:image" content="https://josephsun.cn/posts/1537e0e0/1.png">
 <meta property="article:published_time" content="2023-01-03T13:15:52.000Z">
-<meta property="article:modified_time" content="2023-01-04T12:19:03.279Z">
+<meta property="article:modified_time" content="2023-01-05T03:49:14.762Z">
 <meta property="article:author" content="开心市民孙先生">
 <meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://josephsun.cn/%E5%88%A9%E7%94%A8Python%E5%AF%B9%E6%B0%94%E8%B1%A1%E6%95%B0%E6%8D%AE%E5%88%86%E5%8C%BA%E7%BB%9F%E8%AE%A1/2.png">
+<meta name="twitter:image" content="https://josephsun.cn/posts/1537e0e0/2.png">
 
 
 <link rel="canonical" href="https://josephsun.cn/posts/1537e0e0/">
@@ -219,7 +219,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-01-04 20:19:03" itemprop="dateModified" datetime="2023-01-04T20:19:03+08:00">2023-01-04</time>
+      <time title="修改时间：2023-01-05 11:49:14" itemprop="dateModified" datetime="2023-01-05T11:49:14+08:00">2023-01-05</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -266,7 +266,7 @@
 
 <p>默认的策略是包括沿直线渲染路径的所有像素（对于直线），或者中心点在多边形内的单元（对于多边形）。另外也可以选择all_touched策略，通过包括它所接触的所有像素来栅格化几何体。</p>
 <p>左边是默认False，右边是True状态。</p>
-<p><img src="/./%E5%88%A9%E7%94%A8Python%E5%AF%B9%E6%B0%94%E8%B1%A1%E6%95%B0%E6%8D%AE%E5%88%86%E5%8C%BA%E7%BB%9F%E8%AE%A1/2.png" alt="2"></p>
+<p><img src="/posts/1537e0e0/2.png" alt="2"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onal_stats(&#x27;shp/Uzb.shp&#x27;, i, all_touched=True)</span><br></pre></td></tr></table></figure>
 
 <p>根据官方文档，也可以设置需要的统计函数。</p>
@@ -277,7 +277,7 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sum(mymean)</span><br><span class="line">out[5]:</span><br><span class="line">176.4886481000491</span><br></pre></td></tr></table></figure>
 
 <p>与arcgis的区域统计结果一致</p>
-<p><img src="/./%E5%88%A9%E7%94%A8Python%E5%AF%B9%E6%B0%94%E8%B1%A1%E6%95%B0%E6%8D%AE%E5%88%86%E5%8C%BA%E7%BB%9F%E8%AE%A1/1.png" alt="1"></p>
+<p><img src="/posts/1537e0e0/1.png" alt="1"></p>
 
     </div>
 
