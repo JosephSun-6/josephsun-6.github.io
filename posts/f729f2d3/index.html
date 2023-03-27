@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"josephsun.cn","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"right","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="QGIS有加载WMS、WMTS、WFS，以及XYZ形式的瓦片等地图服务的能力，通常可以作为空间数据的底图一起可视化出来。 本文共三部分内容：下载影像、影像镶嵌及矢量化。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QGIS下载天地图影像、影像镶嵌及建筑物识别矢量化">
+<meta property="og:url" content="https://josephsun.cn/posts/f729f2d3/">
+<meta property="og:site_name" content="开心市民孙先生&#39;s Blogs">
+<meta property="og:description" content="QGIS有加载WMS、WMTS、WFS，以及XYZ形式的瓦片等地图服务的能力，通常可以作为空间数据的底图一起可视化出来。 本文共三部分内容：下载影像、影像镶嵌及矢量化。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323165510333.png">
+<meta property="og:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323170056060.png">
+<meta property="og:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323170221910.png">
+<meta property="og:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323170756664.png">
+<meta property="og:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323170809479.png">
+<meta property="og:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323205428872.png">
+<meta property="og:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/1.png">
+<meta property="og:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323205944023.png">
+<meta property="og:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323210021120.png">
+<meta property="og:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323210317432.png">
+<meta property="og:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323210407279.png">
+<meta property="og:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323212001422.png">
+<meta property="og:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323213227780.png">
+<meta property="og:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323220535928.png">
+<meta property="og:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230324085004505.png">
+<meta property="og:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230324084827407.png">
+<meta property="og:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230324085059860.png">
+<meta property="og:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230324090051980.png">
+<meta property="article:published_time" content="2023-03-23T08:52:37.000Z">
+<meta property="article:modified_time" content="2023-03-27T14:49:02.213Z">
+<meta property="article:author" content="开心市民孙先生">
+<meta property="article:tag" content="开心市民孙先生">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://josephsun.cn/QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323165510333.png">
+
+
+<link rel="canonical" href="https://josephsun.cn/posts/f729f2d3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://josephsun.cn/posts/f729f2d3/","path":"posts/f729f2d3/","title":"QGIS下载天地图影像、影像镶嵌及建筑物识别矢量化"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>QGIS下载天地图影像、影像镶嵌及建筑物识别矢量化 | 开心市民孙先生's Blogs</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156331840-2"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{"tracking_id":"UA-156331840-2","only_pageview":false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1263cea084ac2c7b896396b81f9a4fbc"></script>
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">开心市民孙先生's Blogs</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">开心市民孙先生</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-cv"><a href="/CV/" rel="section"><i class="fa fa-user fa-fw"></i>CV</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-archive fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8QGIS%E4%B8%8B%E8%BD%BD%E5%BD%B1%E5%83%8F%E5%BA%95%E5%9B%BE"><span class="nav-number">1.</span> <span class="nav-text">利用QGIS下载影像底图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A6%96%E5%85%88%E5%9C%A8QGIS%E4%B8%AD%E5%BB%BA%E7%AB%8B%E8%B5%B7%E5%A4%A9%E5%9C%B0%E5%9B%BE%E8%BF%9E%E6%8E%A5%E3%80%82"><span class="nav-number">1.1.</span> <span class="nav-text">首先在QGIS中建立起天地图连接。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%9D%E5%AD%98%E5%9C%B0%E5%9B%BE-%E5%A6%82%E6%9E%9C%E6%8F%90%E5%8F%96%E5%BB%BA%E7%AD%91%E7%89%A9%E8%8C%83%E5%9B%B4%E9%9C%80%E8%A6%81%E6%A0%BC%E5%BC%8F%E4%B8%BAtif"><span class="nav-number">1.2.</span> <span class="nav-text">保存地图(如果提取建筑物范围需要格式为tif)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AD%91%E7%89%A9%E6%8F%90%E5%8F%96"><span class="nav-number">2.</span> <span class="nav-text">建筑物提取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8R2V%E4%B8%AD%E6%89%93%E5%BC%80TIF%E5%9B%BE%E7%89%87%EF%BC%8C%E5%B9%B6%E8%BD%AC%E5%8C%96%E4%B8%BA%E7%81%B0%E5%BA%A6%E5%9B%BE%E5%83%8F"><span class="nav-number">2.1.</span> <span class="nav-text">在R2V中打开TIF图片，并转化为灰度图像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%9B%BE%E5%83%8F%E9%98%88%E5%80%BC%EF%BC%8C%E6%A0%B9%E6%8D%AE%E5%9B%BE%E7%89%87%E6%83%85%E5%86%B5%E8%AE%BE%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">设置图像阈值，根据图片情况设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A2%E9%87%8F-%E8%87%AA%E5%8A%A8%E7%9F%A2%E9%87%8F%E5%8C%96"><span class="nav-number">2.3.</span> <span class="nav-text">矢量-自动矢量化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6-%E8%BE%93%E5%87%BA%E7%9F%A2%E9%87%8F"><span class="nav-number">2.4.</span> <span class="nav-text">文件-输出矢量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C"><span class="nav-number">3.</span> <span class="nav-text">影像镶嵌</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%89%E7%85%A7%E4%B8%8B%E8%BD%BD%E5%BA%95%E5%9B%BE%E7%9A%84%E6%96%B9%E6%B3%95%E5%8F%AF%E4%BB%A5%E8%8E%B7%E5%BE%97%E4%B8%8D%E5%90%8C%E5%88%87%E7%89%87"><span class="nav-number">3.1.</span> <span class="nav-text">按照下载底图的方法可以获得不同切片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%93%E5%BC%80ENVI-sealess-mosaic-%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C"><span class="nav-number">3.2.</span> <span class="nav-text">打开ENVI-sealess mosaic[影像镶嵌]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E6%8B%BC%E6%8E%A5%E7%BA%BF%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%8E%A5%E7%BA%BF%E5%A4%84%E4%B8%8D%E6%BB%A1%E6%84%8F%E5%8F%AF%E4%BB%A5%E9%80%89%E6%8B%A9%E6%89%8B%E7%94%BB%E6%8E%A5%E7%BA%BF"><span class="nav-number">3.3.</span> <span class="nav-text">自动生成拼接线，如果接线处不满意可以选择手画接线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%80%E8%89%B2%EF%BC%8C%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%8C%B9%E9%85%8D%EF%BC%8C%E6%95%B4%E5%B9%85%E5%BD%B1%E5%83%8F"><span class="nav-number">3.4.</span> <span class="nav-text">匀色，直方图匹配，整幅影像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BE%BD%E5%8C%96%E5%8F%8A%E8%AE%BE%E7%BD%AE%E5%AF%BC%E5%87%BA%E7%9B%AE%E5%BD%95%EF%BC%8C%E5%AE%8C%E6%88%90"><span class="nav-number">3.5.</span> <span class="nav-text">羽化及设置导出目录，完成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%8C%B9%E9%85%8D%E7%AE%97%E6%B3%95%E5%8F%8AGEE%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%8C%B9%E9%85%8D-%E5%8C%80%E8%89%B2%E9%95%B6%E5%B5%8C"><span class="nav-number">4.</span> <span class="nav-text">直方图匹配算法及GEE直方图匹配+匀色镶嵌</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="开心市民孙先生"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">开心市民孙先生</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/JosephSun-6" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;JosephSun-6" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:417773447@qq.com" title="E-Mail → mailto:417773447@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://josephsun.cn/posts/f729f2d3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="开心市民孙先生">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="开心市民孙先生's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="QGIS下载天地图影像、影像镶嵌及建筑物识别矢量化 | 开心市民孙先生's Blogs">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          QGIS下载天地图影像、影像镶嵌及建筑物识别矢量化
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-03-23 16:52:37" itemprop="dateCreated datePublished" datetime="2023-03-23T16:52:37+08:00">2023-03-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-27 22:49:02" itemprop="dateModified" datetime="2023-03-27T22:49:02+08:00">2023-03-27</time>
+    </span>
+
+  
+    <span id="/posts/f729f2d3/" class="post-meta-item leancloud_visitors" data-flag-title="QGIS下载天地图影像、影像镶嵌及建筑物识别矢量化" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>QGIS有加载WMS、WMTS、WFS，以及XYZ形式的瓦片等地图服务的能力，通常可以作为空间数据的底图一起可视化出来。</p>
+<p>本文共三部分内容：下载影像、影像镶嵌及矢量化。</p>
+<span id="more"></span>
+
+<h2 id="利用QGIS下载影像底图"><a href="#利用QGIS下载影像底图" class="headerlink" title="利用QGIS下载影像底图"></a>利用QGIS下载影像底图</h2><h3 id="首先在QGIS中建立起天地图连接。"><a href="#首先在QGIS中建立起天地图连接。" class="headerlink" title="首先在QGIS中建立起天地图连接。"></a>首先在QGIS中建立起天地图连接。</h3><p>天地图API：<a target="_blank" rel="noopener" href="https://sso.tianditu.gov.cn/login?service=https://console.tianditu.gov.cn/">https://sso.tianditu.gov.cn/login?service=https%3A%2F%2Fconsole.tianditu.gov.cn%2F</a></p>
+<p><em>地图底图发布服务通常是以瓦片的形式，一种提供调用的方式是按照“行、列、级别”三个参数确定一个瓦片图片，通常是<strong>X-列；Y-行；Z-级别</strong>。在QGIS中，用这样一个URL表示。</em></p>
+<p><img src="/./QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323165510333.png" alt="image-20230323165510333"></p>
+<p><img src="/./QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323170056060.png" alt="image-20230323170056060"></p>
+<p>t0-t6都可以，</p>
+<p>连接为<a target="_blank" rel="noopener" href="https://t3.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=vec&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TileMatrix=%7Bz%7D&TileRow=%7By%7D&TileCol=%7Bx%7D&tk=%E4%BD%A0%E7%9A%84API">https://t3.tianditu.gov.cn/vec_w/wmts?SERVICE=WMTS&amp;REQUEST=GetTile&amp;VERSION=1.0.0&amp;LAYER=vec&amp;STYLE=default&amp;TILEMATRIXSET=w&amp;FORMAT=tiles&amp;TileMatrix={z}&amp;TileRow={y}&amp;TileCol={x}&amp;tk=你的API</a></p>
+<p><img src="/./QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323170221910.png" alt="image-20230323170221910"></p>
+<p><strong>&#x3D;&#x3D;一并导入如下链接获取方式请回复公众号【0323】后即可获取&#x3D;&#x3D;</strong></p>
+<p><img src="/./QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323170756664.png" alt="image-20230323170756664"></p>
+<p><img src="/./QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323170809479.png" alt="image-20230323170809479"></p>
+<h3 id="保存地图-如果提取建筑物范围需要格式为tif"><a href="#保存地图-如果提取建筑物范围需要格式为tif" class="headerlink" title="保存地图(如果提取建筑物范围需要格式为tif)"></a>保存地图(如果提取建筑物范围需要格式为tif)</h3><p><img src="/./QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323205428872.png" alt="image-20230323205428872"></p>
+<p><img src="/./QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/1.png" alt="1"></p>
+<p>如果出现缺失情况，基本是由于网络问题，可以再导出一次，采用相同分辨率和范围(务必不要移动)。</p>
+<h2 id="建筑物提取"><a href="#建筑物提取" class="headerlink" title="建筑物提取"></a>建筑物提取</h2><h3 id="在R2V中打开TIF图片，并转化为灰度图像"><a href="#在R2V中打开TIF图片，并转化为灰度图像" class="headerlink" title="在R2V中打开TIF图片，并转化为灰度图像"></a>在R2V中打开TIF图片，并转化为灰度图像</h3><p><img src="/./QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323205944023.png" alt="image-20230323205944023"></p>
+<h3 id="设置图像阈值，根据图片情况设置"><a href="#设置图像阈值，根据图片情况设置" class="headerlink" title="设置图像阈值，根据图片情况设置"></a>设置图像阈值，根据图片情况设置</h3><p><img src="/./QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323210021120.png" alt="image-20230323210021120"></p>
+<p><img src="/./QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323210317432.png" alt="image-20230323210317432"></p>
+<h3 id="矢量-自动矢量化"><a href="#矢量-自动矢量化" class="headerlink" title="矢量-自动矢量化"></a>矢量-自动矢量化</h3><p><img src="/./QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323210407279.png" alt="image-20230323210407279"></p>
+<p><img src="/./QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323212001422.png" alt="image-20230323212001422"></p>
+<h3 id="文件-输出矢量"><a href="#文件-输出矢量" class="headerlink" title="文件-输出矢量"></a>文件-输出矢量</h3><p><img src="/./QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323213227780.png" alt="image-20230323213227780"></p>
+<p>大体上还是可以的，后续线转面，同时删去不符合要求的面。</p>
+<h2 id="影像镶嵌"><a href="#影像镶嵌" class="headerlink" title="影像镶嵌"></a>影像镶嵌</h2><h3 id="按照下载底图的方法可以获得不同切片"><a href="#按照下载底图的方法可以获得不同切片" class="headerlink" title="按照下载底图的方法可以获得不同切片"></a>按照下载底图的方法可以获得不同切片</h3><p><img src="/./QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230323220535928.png" alt="image-20230323220535928"></p>
+<h3 id="打开ENVI-sealess-mosaic-影像镶嵌"><a href="#打开ENVI-sealess-mosaic-影像镶嵌" class="headerlink" title="打开ENVI-sealess mosaic[影像镶嵌]"></a>打开ENVI-sealess mosaic[影像镶嵌]</h3><p><img src="/./QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230324085004505.png" alt="image-20230324085004505"></p>
+<p><img src="/./QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230324084827407.png" alt="image-20230324084827407"></p>
+<h3 id="自动生成拼接线，如果接线处不满意可以选择手画接线"><a href="#自动生成拼接线，如果接线处不满意可以选择手画接线" class="headerlink" title="自动生成拼接线，如果接线处不满意可以选择手画接线"></a>自动生成拼接线，如果接线处不满意可以选择手画接线</h3><p><img src="/./QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230324085059860.png" alt="image-20230324085059860"></p>
+<h3 id="匀色，直方图匹配，整幅影像"><a href="#匀色，直方图匹配，整幅影像" class="headerlink" title="匀色，直方图匹配，整幅影像"></a>匀色，直方图匹配，整幅影像</h3><p><img src="/./QGIS%E4%B8%8B%E8%BD%BD%E5%A4%A9%E5%9C%B0%E5%9B%BE%E5%BD%B1%E5%83%8F%E3%80%81%E5%BD%B1%E5%83%8F%E9%95%B6%E5%B5%8C%E5%8F%8A%E5%BB%BA%E7%AD%91%E7%89%A9%E8%AF%86%E5%88%AB%E7%9F%A2%E9%87%8F%E5%8C%96/image-20230324090051980.png" alt="image-20230324090051980"></p>
+<h3 id="羽化及设置导出目录，完成"><a href="#羽化及设置导出目录，完成" class="headerlink" title="羽化及设置导出目录，完成"></a>羽化及设置导出目录，完成</h3><p>Seamlines&#x2F;Feathering：镶嵌线羽化：指将镶嵌线两侧的影像色调过度均匀、自然，不留拼接缝的痕迹。 在镶嵌线两侧一定范围内统计重叠区所有影像的灰度差，采用中值滤波、小波变换、强制改正、多尺度羽化等算法进行混色处理，消除拼接缝。 设置羽化范围的基本原则是不能出现双眼皮效应。</p>
+<h2 id="直方图匹配算法及GEE直方图匹配-匀色镶嵌"><a href="#直方图匹配算法及GEE直方图匹配-匀色镶嵌" class="headerlink" title="直方图匹配算法及GEE直方图匹配+匀色镶嵌"></a>直方图匹配算法及GEE直方图匹配+匀色镶嵌</h2><p>我没研究完等下次吧。</p>
+<p>地址在这，有兴趣的可以自己跑跑试试。</p>
+<p><a target="_blank" rel="noopener" href="https://developers.google.com/earth-engine/tutorials/community/histogram-matching">https://developers.google.com/earth-engine/tutorials/community/histogram-matching</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/posts/1537e0e0/" rel="prev" title="利用Pyhton对气象数据分区统计">
+                  <i class="fa fa-chevron-left"></i> 利用Pyhton对气象数据分区统计
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">晋ICP备20000688号-2 </a>
+      <img src="/image/beian.jpg" alt=""><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=14082702000119" rel="noopener" target="_blank">晋公网安备 14082702000124号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">开心市民孙先生</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"lGA8jDiu9xwPn8eGaVF2Ne2q-gzGzoHsz","app_key":"lI98i4LNGKqPDmaQTixb93yG","security":false,"betterPerformance":false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
